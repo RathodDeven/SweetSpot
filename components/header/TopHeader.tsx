@@ -1,6 +1,5 @@
 import React from 'react'
-import ConnectButton from './ConnectButton'
-
+import { ConnectButton } from '@rainbow-me/rainbowkit'
 const TopHeader = () => {
   return (
     <div className="flex flex-row items-center justify-between p-5">
