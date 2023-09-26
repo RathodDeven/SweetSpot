@@ -1,5 +1,5 @@
-import React from "react";
-import ConnectButton from "./ConnectButton";
+import React from 'react'
+import ConnectButton from './ConnectButton'
 
 const TopHeader = () => {
   return (
@@ -7,7 +7,7 @@ const TopHeader = () => {
       <div className="text-xl font-bold">Your Project Name</div>
       <ConnectButton />
     </div>
-  );
-};
+  )
+}
 
-export default TopHeader;
+export default TopHeader
