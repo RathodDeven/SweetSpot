@@ -5,6 +5,7 @@ import RainbowKitWrapper from './RainbowKitWrapper'
 import { ToastContainer } from 'react-toastify'
 import UILayout from './UILayout'
 import { useOnlyPWAOnMobile } from '../utils/config'
+import AddPWAPage from './AddPWAPage'
 
 const WrappersWithOnlyPwa = ({ children }: { children: React.ReactNode }) => {
   const [isPWA, setIsPWA] = useState(false)
@@ -24,7 +25,7 @@ const WrappersWithOnlyPwa = ({ children }: { children: React.ReactNode }) => {
   return (
     <>
       {!isPWA && isMobile && useOnlyPWAOnMobile ? (
-        <div>Add the app to your home screen to use it</div>
+        <AddPWAPage />
       ) : (
         <>
           <RainbowKitWrapper>
