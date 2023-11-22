@@ -4,4 +4,4 @@ export const EVER_REGION = 'us-west-2'
 export const EVER_ENDPOINT = 'https://endpoint.4everland.co'
 export const IPFS_ENDPOINT = 'https://4everland.io/ipfs/'
 export const IMAGE_KIT_ENDPOINT = 'https://ik.imagekit.io/kopveel8c'
-export const ZERO_ADDRESS = '0x0000000000000000000000000000000000000000'
+export const useOnlyPWAOnMobile = true
