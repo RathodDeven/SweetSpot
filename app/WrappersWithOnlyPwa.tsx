@@ -21,8 +21,6 @@ const WrappersWithOnlyPwa = ({ children }: { children: React.ReactNode }) => {
     setIsMobile(window.matchMedia('(max-width: 767px)').matches)
   }, [])
 
-  console.log('isPWA', isPWA)
-  console.log('isMobile', isMobile)
   return (
     <>
       {!isPWA && isMobile && useOnlyPWAOnMobile ? (
