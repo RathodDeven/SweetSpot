@@ -7,7 +7,8 @@
 * react-toastify : for in-app alerts and info popups
 * Eslint & Prettier setup
 * An IPFS file uploader functionality with 4everland
-* PWA ability
+* NEXT PWA
+* Zustand library for state management
 
 ### Configurations for PWA :
 
