@@ -6,7 +6,7 @@ import { Button } from '@mui/material'
 const TopHeader = () => {
   const { theme, toggleTheme } = useTheme()
   return (
-    <div className="flex flex-row items-center justify-between p-5">
+    <div className="flex flex-row items-center justify-between p-5 bg-s-bg">
       <div className="text-xl font-bold">{APP_NAME}</div>
       <ConnectButton />
       <Button variant="contained" onClick={toggleTheme}>
