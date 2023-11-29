@@ -15,10 +15,11 @@
 * Configure `tailwind.config.ts`, to add extend colors variables.
 * Use `globals.css` to define variable colors for light mode and dark mode, but add dark mode variable colors in `[data-theme='dark']` and light mode variable colors in `:root`
 * configure `darkTheme` and `lightTHeme` in `MuiThemeWrapper.tsx` to theme mui components
-* Use `const {theme, toggleTheme} = useTheme()` from `TailwindThemeProvider.tsx` to get the current theme and toggle theme.
+* Use `const {theme, toggleTheme} = useTheme()` from `TailwindThemeProvider.tsx` to get the current theme and toggle the theme.
 
 ### Configurations for PWA :
 
-* If you don't want to use PWA at all then in next.config.js just export nextConfig without withPWA.
-* If you only want to allow PWA to be shown on mobile and show a Page that asks to install PWA, then in config.js make useONlyPWAOnMobile true, and edit ADDPWAPage.tsx as you wish
-* Configure public/manifest.json as per your app  
+* If you don't want to use PWA at all then in `next.config.js` just export `nextConfig` without `withPWA`.
+* If you only want to allow PWA to be shown on mobile and show a Page that asks to install PWA, then in `config.ts` make `export const useOnlyPWAOnMobile = true`, and edit `ADDPWAPage.tsx` as you wish
+* This `ADDPWAPage.tsx` will be shown on the mobile web page, if the web app is opened from the browser, to prompt the user to install pwa.
+* Configure `public/manifest.json` as per your app  
