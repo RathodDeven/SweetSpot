@@ -1,6 +1,10 @@
 import type { Config } from 'tailwindcss'
 
 const config: Config = {
+  corePlugins: {
+    preflight: false
+  },
+  // important: '#__next',
   content: [
     './pages/**/*.{js,ts,jsx,tsx,mdx}',
     './components/**/*.{js,ts,jsx,tsx,mdx}',
@@ -14,10 +18,10 @@ const config: Config = {
           'conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))'
       },
       colors: {
-        'p-bg': '#1F1C1B',
-        's-bg': '#272325',
-        's-text': '#7B7A7B',
-        'p-text': '#FFFFFF'
+        'p-bg': 'var(--primary-background)',
+        's-bg': 'var(--secondary-background)',
+        's-text': 'var(--secondary-text)',
+        'p-text': 'var(--primary-text)'
       }
     }
   },
