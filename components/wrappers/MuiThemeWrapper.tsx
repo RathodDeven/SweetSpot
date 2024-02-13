@@ -25,28 +25,21 @@ declare module '@mui/material/styles' {
   }
 }
 
-// const CustomCheckbox = styled(Checkbox)(({ theme }) => ({
-//   color: theme.status.danger,
-//   '&.Mui-checked': {
-//     color: theme.status.danger
-//   }
-// }))
-
-// const theme = createTheme({
-//   status: {
-//     danger: orange[500]
-//   }
-// })
-
 const darkTheme = createTheme({
   palette: {
-    mode: 'dark'
+    mode: 'dark',
+    primary: {
+      main: '#f0f0f0'
+    }
   }
 })
 
 const lightTheme = createTheme({
   palette: {
-    mode: 'light'
+    mode: 'light',
+    primary: {
+      main: '#1c1c1c'
+    }
   }
 })
 
