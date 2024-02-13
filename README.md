@@ -2,9 +2,9 @@
 
 ### It includes : 
 
-* `Rainbow Kit`, `Wagmi` & `ethers`: For connecting walling and playing with contracts
+* `Rainbow Kit`, `Wagmi` & `ethers`: For connecting wallet and playing with contracts
 * `Tailwindcss`: CSS Framework
-* `react-toastify`: for in-app alerts and info popups
+* `react-hot-toast`: for in-app alerts and info popups
 * `Eslint` & `Prettier` setup
 * PWA functionality using `@ducanh2912/next-pwa` 
 * `Zustand` Library for state management
@@ -17,9 +17,6 @@
 * configure `darkTheme` and `lightTHeme` in `MuiThemeWrapper.tsx` to theme mui components
 * Use `const {theme, toggleTheme} = useTheme()` from `TailwindThemeProvider.tsx` to get the current theme and toggle the theme.
 
-### Configurations for PWA :
+### PWA Setup out of box :
 
-* If you don't want to use PWA at all then in `next.config.js` just export `nextConfig` without `withPWA`.
-* If you only want to allow PWA to be shown on mobile and show a Page that asks to install PWA, then in `config.ts` make `export const useOnlyPWAOnMobile = true`, and edit `ADDPWAPage.tsx` as you wish
-* This `ADDPWAPage.tsx` will be shown on the mobile web page, if the web app is opened from the browser, to prompt the user to install pwa.
-* Configure `public/manifest.json` as per your app  
+* Configure `public/manifest.json` as per your app , to change app name and app icon for your PWA app.
