@@ -1,6 +1,7 @@
 import './globals.css'
 import type { Metadata } from 'next'
-import WrappersWithOnlyPwa from '../components/wrappers/WrappersWithOnlyPwa'
+import WrappersWithOnlyPwa from '../components/wrappers/Wrappers'
+import Wrappers from '../components/wrappers/Wrappers'
 
 declare global {
   interface Navigator {
@@ -22,7 +23,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-        <WrappersWithOnlyPwa>{children}</WrappersWithOnlyPwa>
+        <Wrappers>{children}</Wrappers>
       </body>
     </html>
   )
