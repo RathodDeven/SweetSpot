@@ -1,12 +1,12 @@
 'use client'
 import React, { useEffect, useState } from 'react'
 import RainbowKitWrapper from './RainbowKitWrapper'
-import { ToastContainer } from 'react-toastify'
 import UILayout from './UILayout'
 import { useOnlyPWAOnMobile } from '../../utils/config'
 import AddPWAPage from '../pages/home/AddPWAPage'
 import MuiThemeWrapper from './MuiThemeWrapper'
 import ThemeProvider from './TailwindThemeProvider'
+import { Toaster } from 'react-hot-toast'
 
 const WrappersWithOnlyPwa = ({ children }: { children: React.ReactNode }) => {
   const [isPWA, setIsPWA] = useState(false)
@@ -32,11 +32,7 @@ const WrappersWithOnlyPwa = ({ children }: { children: React.ReactNode }) => {
           ) : (
             <>
               <RainbowKitWrapper>
-                <ToastContainer
-                  position="bottom-right"
-                  theme="dark"
-                  closeButton={false}
-                />
+                <Toaster position={'top-center'} />
                 <UILayout>{children}</UILayout>
               </RainbowKitWrapper>
             </>
