@@ -1,3 +1,4 @@
+'use client'
 import React from 'react'
 import { useContext } from 'react'
 import { useEffect } from 'react'
@@ -11,7 +12,7 @@ interface ContextType {
 }
 
 export const ThemeContext = createContext<ContextType>({
-  theme: DEFAULT_THEME,
+  theme: 'light',
   toggleTheme: () => {}
 })
 // import MUITheme from './MUITheme'
@@ -40,12 +41,28 @@ const ThemeProvider = ({ children }: { children: React.ReactNode }) => {
       // @ts-ignore
       setTheme(theme)
     } else {
-      document.body.classList.add(DEFAULT_THEME)
-      document.documentElement.setAttribute('data-theme', DEFAULT_THEME)
-      window.localStorage.setItem('data-theme', DEFAULT_THEME)
-      setTheme(DEFAULT_THEME)
+      const systemTheme = window.matchMedia('(prefers-color-scheme: dark)')
+        .matches
+        ? 'dark'
+        : DEFAULT_THEME
+      document.body.classList.add(systemTheme)
+      document.documentElement.setAttribute('data-theme', systemTheme)
+      window.localStorage.setItem('data-theme', systemTheme)
+      setTheme(systemTheme)
     }
   }, [])
+
+  useEffect(() => {
+    const metaThemeColor = document.querySelector('meta[name=theme-color]')
+    if (metaThemeColor) {
+      // @ts-ignore
+      metaThemeColor.setAttribute(
+        'content',
+        theme === 'dark' ? '#2c2c2c' : '#ffffff'
+      )
+    }
+  }, [theme])
+
   return (
     <ThemeContext.Provider value={{ theme, toggleTheme }}>
       {children}
