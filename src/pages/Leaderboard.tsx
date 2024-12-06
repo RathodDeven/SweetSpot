@@ -45,7 +45,8 @@ function LeaderboardTab() {
             <div className="relative z-10">
               <div className="flex items-center space-x-4 mb-4">
                 <div className="relative">
-                  <UserAvatar user={score.user} size="lg" />
+                  {/* todo  */}
+                  {/* <UserAvatar user={score.user} size="lg" /> */}
                   <div className="absolute -top-2 -right-2 w-8 h-8 rounded-full bg-yellow-400 flex items-center justify-center text-white font-bold">
                     {index + 1}
                   </div>
@@ -120,7 +121,7 @@ function LeaderboardTab() {
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap">
                   <div className="flex items-center">
-                    <UserAvatar user={score.user} size="sm" />
+                    {/* <UserAvatar user={score.user} size="sm" /> */}
                     <div className="ml-4">
                       <div className="text-sm font-medium text-gray-900">
                         {score.user.name}

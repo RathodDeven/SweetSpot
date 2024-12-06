@@ -1,12 +1,20 @@
-import React from 'react';
-import { motion } from 'framer-motion';
-import { MOCK_SCORES } from '../../types/scores';
-import { LeaderboardCard } from './LeaderboardCard';
+import React from 'react'
+import { motion } from 'framer-motion'
+import { LeaderboardCard } from './LeaderboardCard'
+import {
+  OrderDirection,
+  useGetUsersQuery,
+  User_OrderBy
+} from '../../graphql/generated'
 
 export function TopContributors() {
-  const topScores = [...MOCK_SCORES]
-    .sort((a, b) => b.totalScore - a.totalScore)
-    .slice(0, 3);
+  const { data } = useGetUsersQuery({
+    variables: {
+      first: 10,
+      orderBy: User_OrderBy.TotalScore,
+      orderDirection: OrderDirection.Desc
+    }
+  })
 
   return (
     <motion.div
@@ -14,15 +22,16 @@ export function TopContributors() {
       animate={{ opacity: 1 }}
       className="space-y-4"
     >
-      {topScores.map((score, index) => (
+      {data?.users.map((user, index) => (
         <LeaderboardCard
-          key={score.user.id}
-          user={score.user}
+          key={user.id}
+          // @ts-ignore
+          user={user}
           rank={index + 1}
-          score={score.totalScore}
-          achievements={score.achievements.length}
+          score={user.totalScore}
+          achievements={user.scores?.length || 0}
         />
       ))}
     </motion.div>
-  );
+  )
 }

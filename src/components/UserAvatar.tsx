@@ -1,13 +1,11 @@
 import React from 'react'
 import { motion } from 'framer-motion'
-import { User } from 'lucide-react'
+import { User as UserIcon } from 'lucide-react'
 import Link from 'next/link'
+import { User } from '../graphql/generated'
 
 interface UserAvatarProps {
-  user: {
-    name: string
-    address: string
-  }
+  user: User
   size?: 'sm' | 'md' | 'lg'
 }
 
@@ -40,7 +38,7 @@ export function UserAvatar({ user, size = 'md' }: UserAvatarProps) {
         variants={glowAnimation}
         className={`${sizeClasses[size]} bg-purple-100 rounded-full flex items-center justify-center cursor-pointer`}
       >
-        <User
+        <UserIcon
           className={`${size === 'sm' ? 'h-4 w-4' : 'h-5 w-5'} text-purple-600`}
         />
       </motion.div>
