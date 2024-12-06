@@ -1,33 +1,35 @@
-import React, { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { Coins, X } from 'lucide-react';
-import toast from 'react-hot-toast';
-import { SUPPORTED_TOKENS } from '../../types/tokens';
-import { User } from '../../types/users';
-import { formatAddress } from '../../utils/formatters';
+import React, { useState } from 'react'
+import { motion, AnimatePresence } from 'framer-motion'
+import { Coins, X } from 'lucide-react'
+import toast from 'react-hot-toast'
+import { SUPPORTED_TOKENS } from '../../types/tokens'
+import { User } from '../../types/users'
+import { formatAddress } from '../../utils/formatters'
 
 interface QuickAllocationProps {
-  user: User | null;
-  onClose: () => void;
+  user: User | null
+  onClose: () => void
 }
 
 export function QuickAllocation({ user, onClose }: QuickAllocationProps) {
-  const [amount, setAmount] = useState('');
-  const [selectedToken, setSelectedToken] = useState(SUPPORTED_TOKENS[0]);
+  const [amount, setAmount] = useState('')
+  const [selectedToken, setSelectedToken] = useState(SUPPORTED_TOKENS[0])
 
-  if (!user) return null;
+  if (!user) return null
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
+    e.preventDefault()
     try {
       // Simulated allocation
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      toast.success(`Successfully allocated ${amount} ${selectedToken.symbol} to ${user.name}`);
-      onClose();
+      await new Promise((resolve) => setTimeout(resolve, 1000))
+      toast.success(
+        `Successfully allocated ${amount} ${selectedToken.symbol} to ${user.name}`
+      )
+      onClose()
     } catch (error) {
-      toast.error('Failed to allocate tokens');
+      toast.error('Failed to allocate tokens')
     }
-  };
+  }
 
   return (
     <motion.div
@@ -58,7 +60,9 @@ export function QuickAllocation({ user, onClose }: QuickAllocationProps) {
           <h3 className="font-medium mb-2">Allocating to:</h3>
           <div className="flex items-center space-x-2 text-gray-600">
             <span>{user.name}</span>
-            <span className="text-gray-400">({formatAddress(user.address)})</span>
+            <span className="text-gray-400">
+              ({formatAddress(user.address)})
+            </span>
           </div>
         </div>
 
@@ -69,10 +73,14 @@ export function QuickAllocation({ user, onClose }: QuickAllocationProps) {
             </label>
             <select
               value={selectedToken.symbol}
-              onChange={(e) => setSelectedToken(SUPPORTED_TOKENS.find(t => t.symbol === e.target.value)!)}
+              onChange={(e) =>
+                setSelectedToken(
+                  SUPPORTED_TOKENS.find((t) => t.symbol === e.target.value)!
+                )
+              }
               className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-600 focus:border-transparent"
             >
-              {SUPPORTED_TOKENS.map(token => (
+              {SUPPORTED_TOKENS.map((token) => (
                 <option key={token.symbol} value={token.symbol}>
                   {token.symbol} - {token.name}
                 </option>
@@ -105,5 +113,5 @@ export function QuickAllocation({ user, onClose }: QuickAllocationProps) {
         </form>
       </motion.div>
     </motion.div>
-  );
+  )
 }

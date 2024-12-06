@@ -1,32 +1,32 @@
-import { User } from './users';
+import { User } from './users'
 
 export interface UserScore {
-  user: User;
+  user: User
   metrics: {
-    humanity: number;      // 0-100: Measures human-centric behavior
-    trust: number;         // 0-100: Reliability and trustworthiness
-    philanthropy: number;  // 0-100: Community contribution
-    participation: number; // 0-100: Active involvement
-    consistency: number;   // 0-100: Regular engagement
-    community: number;     // 0-100: Community support
-    innovation: number;    // 0-100: Creative contributions
-    administration: number; // 0-100: Protocol administration skills
-    cookieGiving: number;  // 0-100: Token distribution fairness
-    cookieHolding: number; // 0-100: Token holding responsibility
-  };
-  achievements: Achievement[];
-  level: number;
-  totalScore: number;
-  lastUpdated: number;
-  role: 'admin' | 'holder' | 'giver' | 'user';
+    humanity: number // 0-100: Measures human-centric behavior
+    trust: number // 0-100: Reliability and trustworthiness
+    philanthropy: number // 0-100: Community contribution
+    participation: number // 0-100: Active involvement
+    consistency: number // 0-100: Regular engagement
+    community: number // 0-100: Community support
+    innovation: number // 0-100: Creative contributions
+    administration: number // 0-100: Protocol administration skills
+    cookieGiving: number // 0-100: Token distribution fairness
+    cookieHolding: number // 0-100: Token holding responsibility
+  }
+  achievements: Achievement[]
+  level: number
+  totalScore: number
+  lastUpdated: number
+  role: 'admin' | 'holder' | 'giver' | 'user'
 }
 
 export interface Achievement {
-  id: string;
-  name: string;
-  description: string;
-  icon: string;
-  dateEarned: number;
+  id: string
+  name: string
+  description: string
+  icon: string
+  dateEarned: number
 }
 
 // Mock data for demonstration
@@ -102,4 +102,4 @@ export const MOCK_SCORES: UserScore[] = [
     lastUpdated: Date.now() - 86400000 * 2,
     role: 'giver'
   }
-];
+]

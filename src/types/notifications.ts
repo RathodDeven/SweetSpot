@@ -1,10 +1,10 @@
 export interface Notification {
-  id: string;
-  title: string;
-  message: string;
-  type: 'info' | 'success' | 'warning' | 'error';
-  timestamp: number;
-  read: boolean;
+  id: string
+  title: string
+  message: string
+  type: 'info' | 'success' | 'warning' | 'error'
+  timestamp: number
+  read: boolean
 }
 
 // Dummy notifications data
@@ -33,4 +33,4 @@ export const DUMMY_NOTIFICATIONS: Notification[] = [
     timestamp: Date.now() - 172800000, // 2 days ago
     read: true
   }
-];
+]

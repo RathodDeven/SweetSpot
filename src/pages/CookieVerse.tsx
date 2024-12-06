@@ -1,24 +1,19 @@
-import React, { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { 
-  Trophy, 
-  Clock, 
-  Rocket,
-  Globe2
-} from 'lucide-react';
-import { LeaderboardTab } from '../components/sweetverse/LeaderboardTab';
-import { RoundsTab } from '../components/sweetverse/RoundsTab';
-import { ProjectsTab } from '../components/sweetverse/ProjectsTab';
-import { TabNavigation } from '../components/common/TabNavigation';
+import React, { useState } from 'react'
+import { motion, AnimatePresence } from 'framer-motion'
+import { Trophy, Clock, Rocket, Globe2 } from 'lucide-react'
+import { LeaderboardTab } from '../components/sweetverse/LeaderboardTab'
+import { RoundsTab } from '../components/sweetverse/RoundsTab'
+import { ProjectsTab } from '../components/sweetverse/ProjectsTab'
+import { TabNavigation } from '../components/common/TabNavigation'
 
 const tabs = [
   { id: 'leaderboard', label: 'Leaderboard', icon: Trophy },
   { id: 'rounds', label: 'Rounds', icon: Clock },
   { id: 'projects', label: 'Projects', icon: Rocket }
-];
+]
 
 export function CookieVerse() {
-  const [activeTab, setActiveTab] = useState('leaderboard');
+  const [activeTab, setActiveTab] = useState('leaderboard')
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -54,5 +49,5 @@ export function CookieVerse() {
         </motion.div>
       </AnimatePresence>
     </div>
-  );
+  )
 }

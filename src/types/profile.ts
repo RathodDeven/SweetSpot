@@ -1,11 +1,11 @@
 export interface UserProfileData {
-  name: string;
-  address: string;
-  avatar: string | null;
-  reputation: number;
-  verified: boolean;
-  createdAt: Date;
-  bio: string;
+  name: string
+  address: string
+  avatar: string | null
+  reputation: number
+  verified: boolean
+  createdAt: Date
+  bio: string
 }
 
 export const MOCK_USER_PROFILE: UserProfileData = {
@@ -15,16 +15,16 @@ export const MOCK_USER_PROFILE: UserProfileData = {
   reputation: 85,
   verified: true,
   createdAt: new Date('2023-09-15'),
-  bio: 'Active contributor to DeFi protocols and blockchain ecosystems. Passionate about decentralized governance and community building.',
-};
+  bio: 'Active contributor to DeFi protocols and blockchain ecosystems. Passionate about decentralized governance and community building.'
+}
 
 export interface AllocationHistory {
-  id: string;
-  date: Date;
-  token: string;
-  amount: string;
-  usdValue: number;
-  status: 'claimed' | 'pending';
+  id: string
+  date: Date
+  token: string
+  amount: string
+  usdValue: number
+  status: 'claimed' | 'pending'
 }
 
 export const MOCK_ALLOCATION_HISTORY: AllocationHistory[] = [
@@ -44,21 +44,21 @@ export const MOCK_ALLOCATION_HISTORY: AllocationHistory[] = [
     usdValue: 1250,
     status: 'pending'
   }
-];
+]
 
 export interface FinancialStats {
   totalClaimed: {
-    tokens: number;
-    usdValue: number;
-  };
+    tokens: number
+    usdValue: number
+  }
   pendingAllocations: {
-    tokens: number;
-    usdValue: number;
-  };
-  totalTransactions: number;
-  donationsMade: number;
-  donationsReceived: number;
-  successRate: number;
+    tokens: number
+    usdValue: number
+  }
+  totalTransactions: number
+  donationsMade: number
+  donationsReceived: number
+  successRate: number
 }
 
 export const MOCK_FINANCIAL_STATS: FinancialStats = {
@@ -74,4 +74,4 @@ export const MOCK_FINANCIAL_STATS: FinancialStats = {
   donationsMade: 15,
   donationsReceived: 8,
   successRate: 98
-};
+}

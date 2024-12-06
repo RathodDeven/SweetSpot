@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { 
-  Star, 
+import React, { useState } from 'react'
+import { motion, AnimatePresence } from 'framer-motion'
+import {
+  Star,
   ChevronDown,
   Heart,
   Shield,
@@ -15,86 +15,92 @@ import {
   Wallet,
   Plus,
   Sparkles
-} from 'lucide-react';
-import { UserAvatar } from '../UserAvatar';
-import { MOCK_SCORES } from '../../types/scores';
-import { MetricBar } from './MetricBar';
-import toast from 'react-hot-toast';
+} from 'lucide-react'
+import { UserAvatar } from '../UserAvatar'
+import { MOCK_SCORES } from '../../types/scores'
+import { MetricBar } from './MetricBar'
+import toast from 'react-hot-toast'
 
 const SCORE_CATEGORIES = [
-  { 
+  {
     id: 'humanity',
     label: 'Humanity',
     icon: Heart,
     description: 'Measures empathy and human-centric behavior',
     emoji: '💖'
   },
-  { 
+  {
     id: 'trust',
     label: 'Trust',
     icon: Shield,
     description: 'Reliability and trustworthiness',
     emoji: '🛡️'
   },
-  { 
+  {
     id: 'philanthropy',
     label: 'Philanthropy',
     icon: Award,
     description: 'Community contribution and giving',
     emoji: '🏆'
   },
-  { 
+  {
     id: 'participation',
     label: 'Participation',
     icon: Target,
     description: 'Active involvement in protocol',
     emoji: '🎯'
   },
-  { 
+  {
     id: 'consistency',
     label: 'Consistency',
     icon: TrendingUp,
     description: 'Regular engagement',
     emoji: '📈'
   },
-  { 
+  {
     id: 'community',
     label: 'Community',
     icon: Users,
     description: 'Supporting other members',
     emoji: '👥'
   },
-  { 
+  {
     id: 'innovation',
     label: 'Innovation',
     icon: Brain,
     description: 'Creative contributions',
     emoji: '🧠'
   },
-  { 
+  {
     id: 'administration',
     label: 'Administration',
     icon: Settings,
     description: 'Protocol management skills',
     emoji: '⚙️'
   },
-  { 
+  {
     id: 'cookieGiving',
     label: 'Cookie Giving',
     icon: Gift,
     description: 'Token distribution fairness',
     emoji: '🎁'
   },
-  { 
+  {
     id: 'cookieHolding',
     label: 'Cookie Holding',
     icon: Wallet,
     description: 'Token holding responsibility',
     emoji: '💰'
   }
-];
+]
 
-function ScoreIncrementAnimation({ emoji, onComplete }: { emoji: string; onComplete: () => void }) {
+function ScoreIncrementAnimation({
+  emoji,
+  onComplete
+}: {
+  emoji: string
+  onComplete: () => void
+}) {
   return (
     <motion.div
       initial={{ opacity: 0, y: 0 }}
@@ -105,20 +111,20 @@ function ScoreIncrementAnimation({ emoji, onComplete }: { emoji: string; onCompl
     >
       {emoji} +5
     </motion.div>
-  );
+  )
 }
 
 function AddScorePopup({ user, onClose }: { user: any; onClose: () => void }) {
-  const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
-  const [showAnimation, setShowAnimation] = useState(false);
+  const [selectedCategory, setSelectedCategory] = useState<string | null>(null)
+  const [showAnimation, setShowAnimation] = useState(false)
 
   const handleScoreIncrease = (categoryId: string) => {
-    setShowAnimation(true);
-    const category = SCORE_CATEGORIES.find(c => c.id === categoryId);
+    setShowAnimation(true)
+    const category = SCORE_CATEGORIES.find((c) => c.id === categoryId)
     if (category) {
-      toast.success(`Added 5 points to ${category.label}`);
+      toast.success(`Added 5 points to ${category.label}`)
     }
-  };
+  }
 
   return (
     <motion.div
@@ -133,7 +139,7 @@ function AddScorePopup({ user, onClose }: { user: any; onClose: () => void }) {
         animate={{ scale: 1 }}
         exit={{ scale: 0.9 }}
         className="bg-white rounded-lg shadow-xl p-6 w-full max-w-md relative"
-        onClick={e => e.stopPropagation()}
+        onClick={(e) => e.stopPropagation()}
       >
         <div className="flex items-center space-x-3 mb-6">
           <Sparkles className="h-6 w-6 text-purple-600" />
@@ -145,7 +151,9 @@ function AddScorePopup({ user, onClose }: { user: any; onClose: () => void }) {
             <UserAvatar user={user} />
             <div>
               <h3 className="font-semibold">{user.name}</h3>
-              <p className="text-sm text-gray-600">Select a category to add points</p>
+              <p className="text-sm text-gray-600">
+                Select a category to add points
+              </p>
             </div>
           </div>
         </div>
@@ -161,36 +169,43 @@ function AddScorePopup({ user, onClose }: { user: any; onClose: () => void }) {
                   ← Back to categories
                 </button>
               </div>
-              {SCORE_CATEGORIES.filter(c => c.id === selectedCategory).map(category => (
-                <div key={category.id} className="p-4 bg-purple-50 rounded-lg">
-                  <div className="flex items-center space-x-3 mb-4">
-                    <div className="p-2 bg-purple-100 rounded-lg">
-                      <category.icon className="h-6 w-6 text-purple-600" />
-                    </div>
-                    <div>
-                      <h3 className="font-semibold">{category.label}</h3>
-                      <p className="text-sm text-gray-600">{category.description}</p>
-                    </div>
-                  </div>
-                  <motion.button
-                    whileHover={{ scale: 1.02 }}
-                    whileTap={{ scale: 0.98 }}
-                    onClick={() => handleScoreIncrease(category.id)}
-                    className="w-full bg-purple-600 text-white py-3 rounded-lg font-medium hover:bg-purple-700 transition-colors relative"
+              {SCORE_CATEGORIES.filter((c) => c.id === selectedCategory).map(
+                (category) => (
+                  <div
+                    key={category.id}
+                    className="p-4 bg-purple-50 rounded-lg"
                   >
-                    Add 5 Points
-                    {showAnimation && (
-                      <ScoreIncrementAnimation
-                        emoji={category.emoji}
-                        onComplete={() => setShowAnimation(false)}
-                      />
-                    )}
-                  </motion.button>
-                </div>
-              ))}
+                    <div className="flex items-center space-x-3 mb-4">
+                      <div className="p-2 bg-purple-100 rounded-lg">
+                        <category.icon className="h-6 w-6 text-purple-600" />
+                      </div>
+                      <div>
+                        <h3 className="font-semibold">{category.label}</h3>
+                        <p className="text-sm text-gray-600">
+                          {category.description}
+                        </p>
+                      </div>
+                    </div>
+                    <motion.button
+                      whileHover={{ scale: 1.02 }}
+                      whileTap={{ scale: 0.98 }}
+                      onClick={() => handleScoreIncrease(category.id)}
+                      className="w-full bg-purple-600 text-white py-3 rounded-lg font-medium hover:bg-purple-700 transition-colors relative"
+                    >
+                      Add 5 Points
+                      {showAnimation && (
+                        <ScoreIncrementAnimation
+                          emoji={category.emoji}
+                          onComplete={() => setShowAnimation(false)}
+                        />
+                      )}
+                    </motion.button>
+                  </div>
+                )
+              )}
             </div>
           ) : (
-            SCORE_CATEGORIES.map(category => (
+            SCORE_CATEGORIES.map((category) => (
               <motion.button
                 key={category.id}
                 whileHover={{ scale: 1.02 }}
@@ -211,12 +226,12 @@ function AddScorePopup({ user, onClose }: { user: any; onClose: () => void }) {
         </div>
       </motion.div>
     </motion.div>
-  );
+  )
 }
 
-function ScoreCard({ score }: { score: typeof MOCK_SCORES[0] }) {
-  const [isExpanded, setIsExpanded] = useState(false);
-  const [showAddScore, setShowAddScore] = useState(false);
+function ScoreCard({ score }: { score: (typeof MOCK_SCORES)[0] }) {
+  const [isExpanded, setIsExpanded] = useState(false)
+  const [showAddScore, setShowAddScore] = useState(false)
 
   return (
     <motion.div
@@ -228,7 +243,7 @@ function ScoreCard({ score }: { score: typeof MOCK_SCORES[0] }) {
       <div className="p-6">
         <div className="flex items-center justify-between mb-4">
           <div className="flex items-center space-x-4">
-            <UserAvatar user={score.user} />
+            {/* <UserAvatar user={score.user} /> */}
             <div>
               <h3 className="text-lg font-semibold">{score.user.name}</h3>
               <div className="flex items-center space-x-2 text-sm text-gray-600">
@@ -272,8 +287,8 @@ function ScoreCard({ score }: { score: typeof MOCK_SCORES[0] }) {
             >
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 {Object.entries(score.metrics).map(([key, value]) => {
-                  const category = SCORE_CATEGORIES.find(c => c.id === key);
-                  if (!category) return null;
+                  const category = SCORE_CATEGORIES.find((c) => c.id === key)
+                  if (!category) return null
                   return (
                     <MetricBar
                       key={key}
@@ -281,7 +296,7 @@ function ScoreCard({ score }: { score: typeof MOCK_SCORES[0] }) {
                       value={value}
                       icon={category.icon}
                     />
-                  );
+                  )
                 })}
               </div>
 
@@ -289,7 +304,7 @@ function ScoreCard({ score }: { score: typeof MOCK_SCORES[0] }) {
                 <div>
                   <h4 className="font-semibold mb-3">Achievements</h4>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                    {score.achievements.map(achievement => (
+                    {score.achievements.map((achievement) => (
                       <div
                         key={achievement.id}
                         className="flex items-center space-x-3 p-3 bg-gray-50 rounded-lg"
@@ -320,17 +335,17 @@ function ScoreCard({ score }: { score: typeof MOCK_SCORES[0] }) {
         </AnimatePresence>
       </div>
     </motion.div>
-  );
+  )
 }
 
 export function UserScores() {
   return (
     <div className="space-y-6">
       <div className="grid grid-cols-1 gap-6">
-        {MOCK_SCORES.map(score => (
+        {MOCK_SCORES.map((score) => (
           <ScoreCard key={score.user.id} score={score} />
         ))}
       </div>
     </div>
-  );
+  )
 }

@@ -1,18 +1,18 @@
-import { Token } from './tokens';
+import { Token } from './tokens'
 
 export interface Round {
-  id: string;
-  name: string;
-  description: string;
-  startTime: number;
-  endTime: number;
-  status: 'upcoming' | 'active' | 'completed';
+  id: string
+  name: string
+  description: string
+  startTime: number
+  endTime: number
+  status: 'upcoming' | 'active' | 'completed'
   totalAllocation: {
-    token: Token;
-    amount: string;
-  };
-  claimedAmount: string;
-  participantCount: number;
+    token: Token
+    amount: string
+  }
+  claimedAmount: string
+  participantCount: number
 }
 
 // Mock data for demonstration
@@ -30,7 +30,8 @@ export const MOCK_ROUNDS: Round[] = [
         name: 'Cookie Token',
         decimals: 18,
         address: '0x...',
-        logoUrl: 'https://raw.githubusercontent.com/spothq/cryptocurrency-icons/master/128/color/eth.png'
+        logoUrl:
+          'https://raw.githubusercontent.com/spothq/cryptocurrency-icons/master/128/color/eth.png'
       },
       amount: '1000000000000000000000000' // 1,000,000 COOKIE
     },
@@ -50,11 +51,12 @@ export const MOCK_ROUNDS: Round[] = [
         name: 'Cookie Token',
         decimals: 18,
         address: '0x...',
-        logoUrl: 'https://raw.githubusercontent.com/spothq/cryptocurrency-icons/master/128/color/eth.png'
+        logoUrl:
+          'https://raw.githubusercontent.com/spothq/cryptocurrency-icons/master/128/color/eth.png'
       },
       amount: '2000000000000000000000000' // 2,000,000 COOKIE
     },
     claimedAmount: '0',
     participantCount: 0
   }
-];
+]

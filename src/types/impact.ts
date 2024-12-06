@@ -1,6 +1,6 @@
-import { Token } from './tokens';
+import { Token } from './tokens'
 
-export type ImpactCategory = 
+export type ImpactCategory =
   | 'community_building'
   | 'education'
   | 'development'
@@ -8,9 +8,9 @@ export type ImpactCategory =
   | 'security'
   | 'sustainability'
   | 'inclusion'
-  | 'innovation';
+  | 'innovation'
 
-export type ProofType = 
+export type ProofType =
   | 'transaction_hash'
   | 'github_pr'
   | 'forum_post'
@@ -18,56 +18,56 @@ export type ProofType =
   | 'snapshot_vote'
   | 'documentation'
   | 'video_content'
-  | 'other';
+  | 'other'
 
 export interface ImpactMetrics {
-  peopleReached?: number;
-  communityGrowth?: number;
-  resourcesSaved?: number;
-  participationRate?: number;
-  completionRate?: number;
-  satisfactionScore?: number;
+  peopleReached?: number
+  communityGrowth?: number
+  resourcesSaved?: number
+  participationRate?: number
+  completionRate?: number
+  satisfactionScore?: number
 }
 
 export interface ResourceContribution {
-  type: 'time' | 'token' | 'skill';
-  amount: number;
-  token?: Token;
-  description: string;
+  type: 'time' | 'token' | 'skill'
+  amount: number
+  token?: Token
+  description: string
 }
 
 export interface ImpactEvidence {
-  type: ProofType;
-  url: string;
-  description: string;
-  timestamp: number;
+  type: ProofType
+  url: string
+  description: string
+  timestamp: number
 }
 
 export interface ImpactReport {
-  id: string;
-  title: string;
-  description: string;
-  category: ImpactCategory;
-  subcategory?: string;
-  startDate: number;
-  endDate: number;
-  status: 'draft' | 'submitted' | 'verified' | 'rejected';
-  metrics: ImpactMetrics;
-  contributions: ResourceContribution[];
-  evidence: ImpactEvidence[];
-  collaborators: string[]; // Array of wallet addresses
-  tags: string[];
-  beneficiaries: string[];
+  id: string
+  title: string
+  description: string
+  category: ImpactCategory
+  subcategory?: string
+  startDate: number
+  endDate: number
+  status: 'draft' | 'submitted' | 'verified' | 'rejected'
+  metrics: ImpactMetrics
+  contributions: ResourceContribution[]
+  evidence: ImpactEvidence[]
+  collaborators: string[] // Array of wallet addresses
+  tags: string[]
+  beneficiaries: string[]
   location?: {
-    type: 'global' | 'regional' | 'local';
-    details?: string;
-  };
-  sdgGoals?: number[]; // UN Sustainable Development Goals (1-17)
-  chainId?: number;
-  createdAt: number;
-  updatedAt: number;
-  verifiedBy?: string;
-  verificationNotes?: string;
+    type: 'global' | 'regional' | 'local'
+    details?: string
+  }
+  sdgGoals?: number[] // UN Sustainable Development Goals (1-17)
+  chainId?: number
+  createdAt: number
+  updatedAt: number
+  verifiedBy?: string
+  verificationNotes?: string
 }
 
 export const IMPACT_CATEGORIES = [
@@ -119,7 +119,7 @@ export const IMPACT_CATEGORIES = [
     description: 'New ideas and innovative solutions',
     icon: '💡'
   }
-] as const;
+] as const
 
 export const PROOF_TYPES = [
   {
@@ -170,7 +170,7 @@ export const PROOF_TYPES = [
     description: 'Other forms of proof',
     icon: '📎'
   }
-] as const;
+] as const
 
 export const SDG_GOALS = [
   { id: 1, name: 'No Poverty' },
@@ -190,4 +190,4 @@ export const SDG_GOALS = [
   { id: 15, name: 'Life on Land' },
   { id: 16, name: 'Peace, Justice, and Strong Institutions' },
   { id: 17, name: 'Partnerships for the Goals' }
-] as const;
+] as const

@@ -1,4 +1,4 @@
-import React from 'react';
+import React from 'react'
 
 export function ElectricEffect() {
   return (
@@ -12,5 +12,5 @@ export function ElectricEffect() {
       <div className="absolute top-0 bottom-0 left-0 w-px bg-gradient-to-b from-transparent via-purple-500 to-transparent" />
       <div className="absolute top-0 bottom-0 right-0 w-px bg-gradient-to-b from-transparent via-pink-500 to-transparent" />
     </div>
-  );
+  )
 }

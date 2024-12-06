@@ -1,22 +1,22 @@
-import React from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { 
-  Gift, 
-  History, 
-  ExternalLink, 
+import React from 'react'
+import { motion, AnimatePresence } from 'framer-motion'
+import {
+  Gift,
+  History,
+  ExternalLink,
   X,
   ChevronRight,
   Calendar,
   ArrowUpRight
-} from 'lucide-react';
-import { DONATION_PLATFORMS, MOCK_PAST_DONATIONS } from '../../types/donations';
-import { formatDate } from '../../utils/formatters';
+} from 'lucide-react'
+import { DONATION_PLATFORMS, MOCK_PAST_DONATIONS } from '../../types/donations'
+import { formatDate } from '../../utils/formatters'
 
 interface DonationSuggestionsModalProps {
-  isOpen: boolean;
-  onClose: () => void;
-  claimedAmount: string;
-  claimedToken: string;
+  isOpen: boolean
+  onClose: () => void
+  claimedAmount: string
+  claimedToken: string
 }
 
 export function DonationSuggestionsModal({
@@ -40,7 +40,7 @@ export function DonationSuggestionsModal({
             animate={{ scale: 1, y: 0 }}
             exit={{ scale: 0.9, y: 20 }}
             className="bg-white rounded-xl shadow-xl max-w-4xl w-full max-h-[90vh] overflow-hidden"
-            onClick={e => e.stopPropagation()}
+            onClick={(e) => e.stopPropagation()}
           >
             {/* Header */}
             <div className="p-6 border-b border-gray-200">
@@ -52,7 +52,8 @@ export function DonationSuggestionsModal({
                   <div>
                     <h2 className="text-xl font-bold">Pay It Forward</h2>
                     <p className="text-sm text-gray-600">
-                      You claimed {claimedAmount} {claimedToken}. Consider supporting these initiatives.
+                      You claimed {claimedAmount} {claimedToken}. Consider
+                      supporting these initiatives.
                     </p>
                   </div>
                 </div>
@@ -70,10 +71,12 @@ export function DonationSuggestionsModal({
               <div>
                 <div className="flex items-center justify-between mb-4">
                   <h3 className="font-semibold">Suggested Platforms</h3>
-                  <span className="text-sm text-gray-500">{DONATION_PLATFORMS.length} available</span>
+                  <span className="text-sm text-gray-500">
+                    {DONATION_PLATFORMS.length} available
+                  </span>
                 </div>
                 <div className="space-y-4">
-                  {DONATION_PLATFORMS.map(platform => (
+                  {DONATION_PLATFORMS.map((platform) => (
                     <motion.a
                       key={platform.id}
                       href={platform.url}
@@ -90,7 +93,7 @@ export function DonationSuggestionsModal({
                             {platform.description}
                           </p>
                           <div className="flex flex-wrap gap-2 mt-2">
-                            {platform.categories.map(category => (
+                            {platform.categories.map((category) => (
                               <span
                                 key={category}
                                 className="px-2 py-1 bg-white rounded-full text-xs text-gray-600"
@@ -114,7 +117,7 @@ export function DonationSuggestionsModal({
                   <h3 className="font-semibold">Your Past Donations</h3>
                 </div>
                 <div className="space-y-4">
-                  {MOCK_PAST_DONATIONS.map(donation => (
+                  {MOCK_PAST_DONATIONS.map((donation) => (
                     <div
                       key={donation.id}
                       className="p-4 bg-gray-50 rounded-lg"
@@ -171,5 +174,5 @@ export function DonationSuggestionsModal({
         </motion.div>
       )}
     </AnimatePresence>
-  );
+  )
 }

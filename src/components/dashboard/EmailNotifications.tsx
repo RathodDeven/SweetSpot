@@ -1,20 +1,20 @@
-import React, { useState } from 'react';
-import { motion } from 'framer-motion';
-import { Bell, Mail, Check, AlertCircle } from 'lucide-react';
-import toast from 'react-hot-toast';
+import React, { useState } from 'react'
+import { motion } from 'framer-motion'
+import { Bell, Mail, Check, AlertCircle } from 'lucide-react'
+import toast from 'react-hot-toast'
 
 interface NotificationPreferences {
-  accountUpdates: boolean;
-  securityAlerts: boolean;
-  newsletters: boolean;
-  roundUpdates: boolean;
-  claimReminders: boolean;
-  projectUpdates: boolean;
+  accountUpdates: boolean
+  securityAlerts: boolean
+  newsletters: boolean
+  roundUpdates: boolean
+  claimReminders: boolean
+  projectUpdates: boolean
 }
 
 export function EmailNotifications() {
-  const [email, setEmail] = useState('');
-  const [isVerified, setIsVerified] = useState(false);
+  const [email, setEmail] = useState('')
+  const [isVerified, setIsVerified] = useState(false)
   const [preferences, setPreferences] = useState<NotificationPreferences>({
     accountUpdates: true,
     securityAlerts: true,
@@ -22,28 +22,28 @@ export function EmailNotifications() {
     roundUpdates: true,
     claimReminders: true,
     projectUpdates: false
-  });
-  const [isEditing, setIsEditing] = useState(false);
+  })
+  const [isEditing, setIsEditing] = useState(false)
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
+    e.preventDefault()
     try {
       // Simulated API call
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      setIsVerified(true);
-      toast.success('Verification email sent! Please check your inbox.');
+      await new Promise((resolve) => setTimeout(resolve, 1000))
+      setIsVerified(true)
+      toast.success('Verification email sent! Please check your inbox.')
     } catch (error) {
-      toast.error('Failed to update email settings.');
+      toast.error('Failed to update email settings.')
     }
-  };
+  }
 
   const handlePreferenceChange = (key: keyof NotificationPreferences) => {
-    setPreferences(prev => ({
+    setPreferences((prev) => ({
       ...prev,
       [key]: !prev[key]
-    }));
-    toast.success('Preference updated successfully!');
-  };
+    }))
+    toast.success('Preference updated successfully!')
+  }
 
   return (
     <motion.div
@@ -54,7 +54,9 @@ export function EmailNotifications() {
       <div className="flex items-center justify-between mb-6">
         <div>
           <h2 className="text-2xl font-bold">Email Notifications</h2>
-          <p className="text-gray-600 mt-1">Manage your email preferences and notification settings</p>
+          <p className="text-gray-600 mt-1">
+            Manage your email preferences and notification settings
+          </p>
         </div>
         <Bell className="h-6 w-6 text-purple-600" />
       </div>
@@ -82,7 +84,9 @@ export function EmailNotifications() {
           </div>
 
           <div className="space-y-4">
-            <h3 className="font-semibold text-gray-900">Active Notifications</h3>
+            <h3 className="font-semibold text-gray-900">
+              Active Notifications
+            </h3>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               {Object.entries(preferences).map(([key, value]) => (
                 <div
@@ -92,13 +96,19 @@ export function EmailNotifications() {
                   }`}
                 >
                   <span className="text-sm font-medium">
-                    {key.replace(/([A-Z])/g, ' $1').replace(/^./, str => str.toUpperCase())}
+                    {key
+                      .replace(/([A-Z])/g, ' $1')
+                      .replace(/^./, (str) => str.toUpperCase())}
                   </span>
                   <label className="relative inline-flex items-center cursor-pointer">
                     <input
                       type="checkbox"
                       checked={value}
-                      onChange={() => handlePreferenceChange(key as keyof NotificationPreferences)}
+                      onChange={() =>
+                        handlePreferenceChange(
+                          key as keyof NotificationPreferences
+                        )
+                      }
                       className="sr-only peer"
                     />
                     <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-purple-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-purple-600"></div>
@@ -165,5 +175,5 @@ export function EmailNotifications() {
         </motion.div>
       )}
     </motion.div>
-  );
+  )
 }

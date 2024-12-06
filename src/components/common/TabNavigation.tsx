@@ -1,26 +1,30 @@
-import React from 'react';
-import { motion } from 'framer-motion';
-import { LucideIcon } from 'lucide-react';
+import React from 'react'
+import { motion } from 'framer-motion'
+import { LucideIcon } from 'lucide-react'
 
 interface Tab {
-  id: string;
-  label: string;
-  icon: LucideIcon;
+  id: string
+  label: string
+  icon: LucideIcon
 }
 
 interface TabNavigationProps {
-  tabs: Tab[];
-  activeTab: string;
-  onTabChange: (tabId: string) => void;
+  tabs: Tab[]
+  activeTab: string
+  onTabChange: (tabId: string) => void
 }
 
-export function TabNavigation({ tabs, activeTab, onTabChange }: TabNavigationProps) {
+export function TabNavigation({
+  tabs,
+  activeTab,
+  onTabChange
+}: TabNavigationProps) {
   return (
     <>
       {/* Desktop Navigation */}
       <nav className="hidden md:flex justify-center space-x-8 overflow-x-auto no-scrollbar">
         {tabs.map((tab) => {
-          const isActive = activeTab === tab.id;
+          const isActive = activeTab === tab.id
           return (
             <motion.button
               key={tab.id}
@@ -36,20 +40,22 @@ export function TabNavigation({ tabs, activeTab, onTabChange }: TabNavigationPro
               >
                 <tab.icon className="h-5 w-5 flex-shrink-0" />
               </div>
-              <span className={`text-sm mt-1 ${
-                isActive ? 'text-purple-600 font-medium' : 'text-gray-600'
-              }`}>
+              <span
+                className={`text-sm mt-1 ${
+                  isActive ? 'text-purple-600 font-medium' : 'text-gray-600'
+                }`}
+              >
                 {tab.label}
               </span>
               {isActive && (
                 <motion.div
                   layoutId="activeTabDesktop"
                   className="absolute -bottom-1 w-1.5 h-1.5 rounded-full bg-purple-600"
-                  transition={{ type: "spring", stiffness: 500, damping: 30 }}
+                  transition={{ type: 'spring', stiffness: 500, damping: 30 }}
                 />
               )}
             </motion.button>
-          );
+          )
         })}
       </nav>
 
@@ -57,7 +63,7 @@ export function TabNavigation({ tabs, activeTab, onTabChange }: TabNavigationPro
       <nav className="md:hidden">
         <div className="flex justify-around items-center bg-white rounded-lg shadow-sm py-3">
           {tabs.map((tab) => {
-            const isActive = activeTab === tab.id;
+            const isActive = activeTab === tab.id
             return (
               <motion.button
                 key={tab.id}
@@ -73,23 +79,25 @@ export function TabNavigation({ tabs, activeTab, onTabChange }: TabNavigationPro
                 >
                   <tab.icon className="h-5 w-5" />
                 </div>
-                <span className={`text-xs mt-2 ${
-                  isActive ? 'text-purple-600 font-medium' : 'text-gray-600'
-                }`}>
+                <span
+                  className={`text-xs mt-2 ${
+                    isActive ? 'text-purple-600 font-medium' : 'text-gray-600'
+                  }`}
+                >
                   {tab.label}
                 </span>
                 {isActive && (
                   <motion.div
                     layoutId="activeTabMobile"
                     className="absolute -bottom-2 w-1.5 h-1.5 rounded-full bg-purple-600"
-                    transition={{ type: "spring", stiffness: 500, damping: 30 }}
+                    transition={{ type: 'spring', stiffness: 500, damping: 30 }}
                   />
                 )}
               </motion.button>
-            );
+            )
           })}
         </div>
       </nav>
     </>
-  );
+  )
 }

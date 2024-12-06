@@ -1,32 +1,32 @@
-import React, { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { Candy, ChevronRight, X } from 'lucide-react';
-import toast from 'react-hot-toast';
+import React, { useState } from 'react'
+import { motion, AnimatePresence } from 'framer-motion'
+import { Candy, ChevronRight, X } from 'lucide-react'
+import toast from 'react-hot-toast'
 
 interface ApplicationModalProps {
-  isOpen: boolean;
-  onClose: () => void;
+  isOpen: boolean
+  onClose: () => void
 }
 
 export function ApplicationModal({ isOpen, onClose }: ApplicationModalProps) {
-  const [step, setStep] = useState(1);
+  const [step, setStep] = useState(1)
   const [formData, setFormData] = useState({
     experience: '',
     reason: '',
     contribution: ''
-  });
+  })
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
+    e.preventDefault()
     try {
       // Simulated submission
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      toast.success('Application submitted successfully!');
-      onClose();
+      await new Promise((resolve) => setTimeout(resolve, 1000))
+      toast.success('Application submitted successfully!')
+      onClose()
     } catch (error) {
-      toast.error('Failed to submit application');
+      toast.error('Failed to submit application')
     }
-  };
+  }
 
   return (
     <AnimatePresence>
@@ -93,7 +93,12 @@ export function ApplicationModal({ isOpen, onClose }: ApplicationModalProps) {
                       </label>
                       <textarea
                         value={formData.experience}
-                        onChange={(e) => setFormData({ ...formData, experience: e.target.value })}
+                        onChange={(e) =>
+                          setFormData({
+                            ...formData,
+                            experience: e.target.value
+                          })
+                        }
                         className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-600 focus:border-transparent h-32"
                         placeholder="Share your experience with DeFi protocols..."
                         required
@@ -117,7 +122,9 @@ export function ApplicationModal({ isOpen, onClose }: ApplicationModalProps) {
                       </label>
                       <textarea
                         value={formData.reason}
-                        onChange={(e) => setFormData({ ...formData, reason: e.target.value })}
+                        onChange={(e) =>
+                          setFormData({ ...formData, reason: e.target.value })
+                        }
                         className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-600 focus:border-transparent h-32"
                         placeholder="Explain your motivation..."
                         required
@@ -141,7 +148,12 @@ export function ApplicationModal({ isOpen, onClose }: ApplicationModalProps) {
                       </label>
                       <textarea
                         value={formData.contribution}
-                        onChange={(e) => setFormData({ ...formData, contribution: e.target.value })}
+                        onChange={(e) =>
+                          setFormData({
+                            ...formData,
+                            contribution: e.target.value
+                          })
+                        }
                         className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-600 focus:border-transparent h-32"
                         placeholder="Describe your potential contributions..."
                         required
@@ -193,5 +205,5 @@ export function ApplicationModal({ isOpen, onClose }: ApplicationModalProps) {
         </motion.div>
       )}
     </AnimatePresence>
-  );
+  )
 }

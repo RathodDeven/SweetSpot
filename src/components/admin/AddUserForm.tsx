@@ -1,17 +1,17 @@
-import React, { useState } from 'react';
-import { motion } from 'framer-motion';
-import { UserPlus, X } from 'lucide-react';
-import toast from 'react-hot-toast';
-import { SUPPORTED_TOKENS } from '../../types/tokens';
+import React, { useState } from 'react'
+import { motion } from 'framer-motion'
+import { UserPlus, X } from 'lucide-react'
+import toast from 'react-hot-toast'
+import { SUPPORTED_TOKENS } from '../../types/tokens'
 
 interface AddUserFormProps {
-  onClose: () => void;
+  onClose: () => void
   onAdd: (userData: {
-    name: string;
-    address: string;
-    token: string;
-    amount: string;
-  }) => void;
+    name: string
+    address: string
+    token: string
+    amount: string
+  }) => void
 }
 
 export function AddUserForm({ onClose, onAdd }: AddUserFormProps) {
@@ -20,20 +20,20 @@ export function AddUserForm({ onClose, onAdd }: AddUserFormProps) {
     address: '',
     token: SUPPORTED_TOKENS[0].symbol,
     amount: ''
-  });
+  })
 
   const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    
+    e.preventDefault()
+
     if (!userData.address.match(/^0x[a-fA-F0-9]{40}$/)) {
-      toast.error('Please enter a valid Ethereum address');
-      return;
+      toast.error('Please enter a valid Ethereum address')
+      return
     }
 
-    onAdd(userData);
-    toast.success('User added successfully!');
-    onClose();
-  };
+    onAdd(userData)
+    toast.success('User added successfully!')
+    onClose()
+  }
 
   return (
     <motion.div
@@ -63,7 +63,9 @@ export function AddUserForm({ onClose, onAdd }: AddUserFormProps) {
             <input
               type="text"
               value={userData.name}
-              onChange={(e) => setUserData({ ...userData, name: e.target.value })}
+              onChange={(e) =>
+                setUserData({ ...userData, name: e.target.value })
+              }
               className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-600 focus:border-transparent"
               placeholder="Enter user name"
               required
@@ -77,7 +79,9 @@ export function AddUserForm({ onClose, onAdd }: AddUserFormProps) {
             <input
               type="text"
               value={userData.address}
-              onChange={(e) => setUserData({ ...userData, address: e.target.value })}
+              onChange={(e) =>
+                setUserData({ ...userData, address: e.target.value })
+              }
               className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-600 focus:border-transparent"
               placeholder="0x..."
               required
@@ -90,10 +94,12 @@ export function AddUserForm({ onClose, onAdd }: AddUserFormProps) {
             </label>
             <select
               value={userData.token}
-              onChange={(e) => setUserData({ ...userData, token: e.target.value })}
+              onChange={(e) =>
+                setUserData({ ...userData, token: e.target.value })
+              }
               className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-600 focus:border-transparent"
             >
-              {SUPPORTED_TOKENS.map(token => (
+              {SUPPORTED_TOKENS.map((token) => (
                 <option key={token.symbol} value={token.symbol}>
                   {token.symbol} - {token.name}
                 </option>
@@ -108,7 +114,9 @@ export function AddUserForm({ onClose, onAdd }: AddUserFormProps) {
             <input
               type="number"
               value={userData.amount}
-              onChange={(e) => setUserData({ ...userData, amount: e.target.value })}
+              onChange={(e) =>
+                setUserData({ ...userData, amount: e.target.value })
+              }
               className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-600 focus:border-transparent"
               placeholder="Enter amount"
               min="0"
@@ -128,5 +136,5 @@ export function AddUserForm({ onClose, onAdd }: AddUserFormProps) {
         </form>
       </div>
     </motion.div>
-  );
+  )
 }

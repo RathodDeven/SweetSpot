@@ -1,7 +1,7 @@
 export interface User {
-  id: string;
-  name: string;
-  address: string;
+  id: string
+  name: string
+  address: string
 }
 
 export const MOCK_USERS: User[] = [
@@ -30,4 +30,4 @@ export const MOCK_USERS: User[] = [
     name: 'Eva Martinez',
     address: '0x2546BcD3c84621e976D8185a91A922aE77ECEc30'
   }
-];
+]

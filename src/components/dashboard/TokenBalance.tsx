@@ -1,31 +1,31 @@
-import React, { useState } from 'react';
-import { motion } from 'framer-motion';
-import { Coins } from 'lucide-react';
-import { UserBalances } from '../../types/contract';
-import { formatEther } from '../../utils/formatters';
-import { DonationSuggestionsModal } from '../donations/DonationSuggestionsModal';
-import toast from 'react-hot-toast';
+import React, { useState } from 'react'
+import { motion } from 'framer-motion'
+import { Coins } from 'lucide-react'
+import { UserBalances } from '../../types/contract'
+import { formatEther } from '../../utils/formatters'
+import { DonationSuggestionsModal } from '../donations/DonationSuggestionsModal'
+import toast from 'react-hot-toast'
 
 interface TokenBalanceProps {
-  balances: UserBalances;
-  onClaim: () => void;
+  balances: UserBalances
+  onClaim: () => void
 }
 
 export function TokenBalance({ balances, onClaim }: TokenBalanceProps) {
-  const [showDonationModal, setShowDonationModal] = useState(false);
-  const [claimedAmount, setClaimedAmount] = useState('');
+  const [showDonationModal, setShowDonationModal] = useState(false)
+  const [claimedAmount, setClaimedAmount] = useState('')
 
   const handleClaim = async () => {
     try {
-      await onClaim();
-      const amount = formatEther(balances.claimableTokens);
-      setClaimedAmount(amount);
-      toast.success('Tokens claimed successfully!');
-      setShowDonationModal(true);
+      await onClaim()
+      const amount = formatEther(balances.claimableTokens)
+      setClaimedAmount(amount)
+      toast.success('Tokens claimed successfully!')
+      setShowDonationModal(true)
     } catch (error) {
-      toast.error('Failed to claim tokens.');
+      toast.error('Failed to claim tokens.')
     }
-  };
+  }
 
   return (
     <>
@@ -39,7 +39,7 @@ export function TokenBalance({ balances, onClaim }: TokenBalanceProps) {
           <h2 className="text-2xl font-bold">Your Balances</h2>
           <Coins className="h-6 w-6 text-purple-600" />
         </div>
-        
+
         <div className="space-y-4">
           <div>
             <p className="text-sm text-gray-600">Claimable Tokens</p>
@@ -47,14 +47,14 @@ export function TokenBalance({ balances, onClaim }: TokenBalanceProps) {
               {formatEther(balances.claimableTokens)} COOKIE
             </p>
           </div>
-          
+
           <div>
             <p className="text-sm text-gray-600">Allowed Amount</p>
             <p className="text-2xl font-bold text-gray-900">
               {formatEther(balances.allowedAmount)} ETH
             </p>
           </div>
-          
+
           <motion.button
             whileHover={{ scale: 1.02 }}
             whileTap={{ scale: 0.98 }}
@@ -73,5 +73,5 @@ export function TokenBalance({ balances, onClaim }: TokenBalanceProps) {
         claimedToken="COOKIE"
       />
     </>
-  );
+  )
 }

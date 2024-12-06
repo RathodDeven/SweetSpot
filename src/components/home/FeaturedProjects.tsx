@@ -1,12 +1,13 @@
-import React from 'react';
-import { motion } from 'framer-motion';
-import { Users, Gift, ExternalLink } from 'lucide-react';
+import React from 'react'
+import { motion } from 'framer-motion'
+import { Users, Gift, ExternalLink } from 'lucide-react'
 
 const FEATURED_PROJECTS = [
   {
     id: '1',
     name: 'DeFi Protocol Alpha',
-    description: 'Innovative DeFi protocol focusing on sustainable yield generation',
+    description:
+      'Innovative DeFi protocol focusing on sustainable yield generation',
     image: 'https://images.unsplash.com/photo-1526304640581-d334cdbbf45e?w=800',
     category: 'DeFi',
     totalDonations: '150.5',
@@ -21,7 +22,7 @@ const FEATURED_PROJECTS = [
     totalDonations: '89.2',
     contributors: 32
   }
-];
+]
 
 export function FeaturedProjects() {
   return (
@@ -38,8 +39,8 @@ export function FeaturedProjects() {
           <div className="absolute inset-0 border-2 border-transparent bg-gradient-to-r from-purple-500 via-pink-500 to-purple-500 mask-border animate-pulse-border rounded-lg" />
           <div className="absolute inset-0 bg-gradient-to-br from-purple-500/10 via-pink-500/10 to-purple-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
           <div className="h-48 sm:h-56 overflow-hidden">
-            <img 
-              src={project.image} 
+            <img
+              src={project.image}
               alt={project.name}
               className="w-full h-full object-cover transform transition-transform duration-500 group-hover:scale-110"
             />
@@ -48,7 +49,9 @@ export function FeaturedProjects() {
           <div className="p-4 sm:p-6 relative">
             <div className="flex items-start justify-between">
               <div>
-                <h3 className="text-lg sm:text-xl font-bold mb-2">{project.name}</h3>
+                <h3 className="text-lg sm:text-xl font-bold mb-2">
+                  {project.name}
+                </h3>
                 <span className="inline-flex items-center px-2 sm:px-3 py-1 rounded-full text-sm font-medium bg-gradient-to-r from-purple-500 to-pink-500 text-white">
                   {project.category}
                 </span>
@@ -62,7 +65,9 @@ export function FeaturedProjects() {
               </motion.button>
             </div>
 
-            <p className="text-gray-600 mb-4 mt-3 text-sm sm:text-base">{project.description}</p>
+            <p className="text-gray-600 mb-4 mt-3 text-sm sm:text-base">
+              {project.description}
+            </p>
 
             <div className="grid grid-cols-2 gap-2 sm:gap-4">
               <div className="flex items-center space-x-1 sm:space-x-2">
@@ -82,5 +87,5 @@ export function FeaturedProjects() {
         </motion.div>
       ))}
     </div>
-  );
+  )
 }

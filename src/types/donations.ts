@@ -1,26 +1,26 @@
-import { Token } from './tokens';
+import { Token } from './tokens'
 
 export interface DonationPlatform {
-  id: string;
-  name: string;
-  description: string;
-  url: string;
-  logo: string;
-  categories: string[];
+  id: string
+  name: string
+  description: string
+  url: string
+  logo: string
+  categories: string[]
   minimumDonation?: {
-    amount: string;
-    token: Token;
-  };
+    amount: string
+    token: Token
+  }
 }
 
 export interface PastDonation {
-  id: string;
-  platform: string;
-  amount: string;
-  token: Token;
-  recipient: string;
-  date: number;
-  txHash: string;
+  id: string
+  platform: string
+  amount: string
+  token: Token
+  recipient: string
+  date: number
+  txHash: string
 }
 
 export const DONATION_PLATFORMS: DonationPlatform[] = [
@@ -64,7 +64,7 @@ export const DONATION_PLATFORMS: DonationPlatform[] = [
     logo: 'https://endaoment.org/logo.svg',
     categories: ['nonprofits', 'daos', 'governance']
   }
-];
+]
 
 // Mock data for demonstration
 export const MOCK_PAST_DONATIONS: PastDonation[] = [
@@ -77,7 +77,8 @@ export const MOCK_PAST_DONATIONS: PastDonation[] = [
       name: 'Ethereum',
       decimals: 18,
       address: null,
-      logoUrl: 'https://raw.githubusercontent.com/spothq/cryptocurrency-icons/master/128/color/eth.png'
+      logoUrl:
+        'https://raw.githubusercontent.com/spothq/cryptocurrency-icons/master/128/color/eth.png'
     },
     recipient: 'Protocol Guild',
     date: Date.now() - 86400000 * 30, // 30 days ago
@@ -92,10 +93,11 @@ export const MOCK_PAST_DONATIONS: PastDonation[] = [
       name: 'USD Coin',
       decimals: 6,
       address: '0x...',
-      logoUrl: 'https://raw.githubusercontent.com/spothq/cryptocurrency-icons/master/128/color/usdc.png'
+      logoUrl:
+        'https://raw.githubusercontent.com/spothq/cryptocurrency-icons/master/128/color/usdc.png'
     },
     recipient: 'Climate Action Fund',
     date: Date.now() - 86400000 * 60, // 60 days ago
     txHash: '0x456...'
   }
-];
+]

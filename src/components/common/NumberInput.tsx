@@ -1,14 +1,14 @@
-import React from 'react';
-import { ChevronUp, ChevronDown } from 'lucide-react';
+import React from 'react'
+import { ChevronUp, ChevronDown } from 'lucide-react'
 
 interface NumberInputProps {
-  value: string;
-  onChange: (value: string) => void;
-  min?: number;
-  max?: number;
-  step?: number;
-  placeholder?: string;
-  className?: string;
+  value: string
+  onChange: (value: string) => void
+  min?: number
+  max?: number
+  step?: number
+  placeholder?: string
+  className?: string
 }
 
 export function NumberInput({
@@ -21,18 +21,18 @@ export function NumberInput({
   className = ''
 }: NumberInputProps) {
   const handleIncrement = () => {
-    const newValue = Number(value || 0) + step;
+    const newValue = Number(value || 0) + step
     if (max === undefined || newValue <= max) {
-      onChange(newValue.toString());
+      onChange(newValue.toString())
     }
-  };
+  }
 
   const handleDecrement = () => {
-    const newValue = Number(value || 0) - step;
+    const newValue = Number(value || 0) - step
     if (min === undefined || newValue >= min) {
-      onChange(newValue.toString());
+      onChange(newValue.toString())
     }
-  };
+  }
 
   return (
     <div className="number-input-wrapper">
@@ -55,5 +55,5 @@ export function NumberInput({
         </button>
       </div>
     </div>
-  );
+  )
 }

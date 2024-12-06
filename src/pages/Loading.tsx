@@ -1,6 +1,6 @@
-import React from 'react';
-import { LoadingTransition } from '../components/LoadingTransition';
+import React from 'react'
+import { LoadingTransition } from '../components/LoadingTransition'
 
 export function Loading() {
-  return <LoadingTransition />;
+  return <LoadingTransition />
 }

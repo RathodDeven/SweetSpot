@@ -1,35 +1,35 @@
-import React, { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { CreditCard, ChevronDown, Wallet } from 'lucide-react';
-import toast from 'react-hot-toast';
-import { Token, SUPPORTED_TOKENS } from '../../types/tokens';
+import React, { useState } from 'react'
+import { motion, AnimatePresence } from 'framer-motion'
+import { CreditCard, ChevronDown, Wallet } from 'lucide-react'
+import toast from 'react-hot-toast'
+import { Token, SUPPORTED_TOKENS } from '../../types/tokens'
 
 export function DepositForm() {
-  const [amount, setAmount] = useState('');
-  const [isLoading, setIsLoading] = useState(false);
-  const [selectedToken, setSelectedToken] = useState<Token>(SUPPORTED_TOKENS[0]);
-  const [isTokenListOpen, setIsTokenListOpen] = useState(false);
+  const [amount, setAmount] = useState('')
+  const [isLoading, setIsLoading] = useState(false)
+  const [selectedToken, setSelectedToken] = useState<Token>(SUPPORTED_TOKENS[0])
+  const [isTokenListOpen, setIsTokenListOpen] = useState(false)
 
   const handleDeposit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setIsLoading(true);
-    
+    e.preventDefault()
+    setIsLoading(true)
+
     try {
       // Simulated deposit
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      toast.success(`Successfully deposited ${amount} ${selectedToken.symbol}!`);
-      setAmount('');
+      await new Promise((resolve) => setTimeout(resolve, 1000))
+      toast.success(`Successfully deposited ${amount} ${selectedToken.symbol}!`)
+      setAmount('')
     } catch (error) {
-      toast.error('Deposit failed. Please try again.');
+      toast.error('Deposit failed. Please try again.')
     } finally {
-      setIsLoading(false);
+      setIsLoading(false)
     }
-  };
+  }
 
   const handleTokenSelect = (token: Token) => {
-    setSelectedToken(token);
-    setIsTokenListOpen(false);
-  };
+    setSelectedToken(token)
+    setIsTokenListOpen(false)
+  }
 
   return (
     <motion.div
@@ -42,7 +42,7 @@ export function DepositForm() {
         <h2 className="text-2xl font-bold">Deposit</h2>
         <CreditCard className="h-6 w-6 text-purple-600" />
       </div>
-      
+
       <form onSubmit={handleDeposit} className="space-y-4">
         <div className="relative">
           <label className="block text-sm font-medium text-gray-700 mb-1">
@@ -61,9 +61,11 @@ export function DepositForm() {
               />
               <span>{selectedToken.symbol}</span>
             </div>
-            <ChevronDown className={`h-5 w-5 transition-transform ${isTokenListOpen ? 'rotate-180' : ''}`} />
+            <ChevronDown
+              className={`h-5 w-5 transition-transform ${isTokenListOpen ? 'rotate-180' : ''}`}
+            />
           </button>
-          
+
           <AnimatePresence>
             {isTokenListOpen && (
               <motion.div
@@ -85,7 +87,9 @@ export function DepositForm() {
                       className="w-6 h-6 rounded-full"
                     />
                     <span>{token.symbol}</span>
-                    <span className="text-sm text-gray-500">- {token.name}</span>
+                    <span className="text-sm text-gray-500">
+                      - {token.name}
+                    </span>
                   </button>
                 ))}
                 <button
@@ -102,7 +106,10 @@ export function DepositForm() {
         </div>
 
         <div>
-          <label htmlFor="amount" className="block text-sm font-medium text-gray-700 mb-1">
+          <label
+            htmlFor="amount"
+            className="block text-sm font-medium text-gray-700 mb-1"
+          >
             Amount
           </label>
           <div className="relative">
@@ -122,7 +129,7 @@ export function DepositForm() {
             </span>
           </div>
         </div>
-        
+
         <motion.button
           whileHover={{ scale: 1.02 }}
           whileTap={{ scale: 0.98 }}
@@ -134,5 +141,5 @@ export function DepositForm() {
         </motion.button>
       </form>
     </motion.div>
-  );
+  )
 }

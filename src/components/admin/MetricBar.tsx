@@ -1,11 +1,11 @@
-import React from 'react';
-import { motion } from 'framer-motion';
-import { LucideIcon } from 'lucide-react';
+import React from 'react'
+import { motion } from 'framer-motion'
+import { LucideIcon } from 'lucide-react'
 
 interface MetricBarProps {
-  value: number;
-  label: string;
-  icon: LucideIcon;
+  value: number
+  label: string
+  icon: LucideIcon
 }
 
 export function MetricBar({ value, label, icon: Icon }: MetricBarProps) {
@@ -22,10 +22,10 @@ export function MetricBar({ value, label, icon: Icon }: MetricBarProps) {
         <motion.div
           initial={{ width: 0 }}
           animate={{ width: `${value}%` }}
-          transition={{ duration: 0.5, ease: "easeOut" }}
+          transition={{ duration: 0.5, ease: 'easeOut' }}
           className="h-full bg-purple-600 rounded-full"
         />
       </div>
     </div>
-  );
+  )
 }

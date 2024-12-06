@@ -1,52 +1,48 @@
-import React, { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { 
-  LayoutDashboard, 
-  Settings, 
-  Users, 
-  Wallet,
-  Star
-} from 'lucide-react';
-import { AdminOverview } from '../components/admin/AdminOverview';
-import { AdminForm } from '../components/admin/AdminForm';
-import { TokenAllocation } from '../components/admin/TokenAllocation';
-import { AdminTreasury } from '../components/admin/AdminTreasury';
-import { UserScores } from '../components/admin/UserScores';
-import { TabNavigation } from '../components/common/TabNavigation';
+import React, { useState } from 'react'
+import { motion, AnimatePresence } from 'framer-motion'
+import { LayoutDashboard, Settings, Users, Wallet, Star } from 'lucide-react'
+import { AdminOverview } from '../components/admin/AdminOverview'
+import { AdminForm } from '../components/admin/AdminForm'
+import { TokenAllocation } from '../components/admin/TokenAllocation'
+import { AdminTreasury } from '../components/admin/AdminTreasury'
+import { UserScores } from '../components/admin/UserScores'
+import { TabNavigation } from '../components/common/TabNavigation'
 
 const tabs = [
   { id: 'overview', label: 'Overview', icon: LayoutDashboard },
   { id: 'round', label: 'Round Settings', icon: Settings },
   { id: 'allocation', label: 'Token Allocation', icon: Users },
   { id: 'treasury', label: 'Treasury', icon: Wallet },
-  { id: 'scores', label: 'Scores', icon: Star },
-];
+  { id: 'scores', label: 'Scores', icon: Star }
+]
 
 export function Admin() {
-  const [activeTab, setActiveTab] = useState('overview');
+  const [activeTab, setActiveTab] = useState('overview')
 
   const TabContent = () => {
     switch (activeTab) {
       case 'overview':
-        return <AdminOverview onTabChange={setActiveTab} />;
+        return <AdminOverview onTabChange={setActiveTab} />
       case 'round':
-        return <AdminForm />;
+        return <AdminForm />
       case 'allocation':
-        return <TokenAllocation />;
+        return <TokenAllocation />
       case 'treasury':
-        return <AdminTreasury />;
+        return <AdminTreasury />
       case 'scores':
-        return <UserScores />;
+        return <UserScores />
       default:
-        return null;
+        return null
     }
-  };
+  }
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div className="mb-8">
         <h1 className="text-3xl font-bold text-gray-900">Admin Panel</h1>
-        <p className="mt-2 text-gray-600">Manage your nCookieJar distribution settings and treasury</p>
+        <p className="mt-2 text-gray-600">
+          Manage your nCookieJar distribution settings and treasury
+        </p>
       </div>
 
       <div className="mb-8">
@@ -69,5 +65,5 @@ export function Admin() {
         </motion.div>
       </AnimatePresence>
     </div>
-  );
+  )
 }

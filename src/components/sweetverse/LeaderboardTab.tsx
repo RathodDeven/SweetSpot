@@ -1,11 +1,13 @@
-import React from 'react';
-import { motion } from 'framer-motion';
-import { Trophy, Medal, Gift, Users } from 'lucide-react';
-import { MOCK_SCORES } from '../../types/scores';
-import { UserAvatar } from '../UserAvatar';
+import React from 'react'
+import { motion } from 'framer-motion'
+import { Trophy, Medal, Gift, Users } from 'lucide-react'
+import { MOCK_SCORES } from '../../types/scores'
+import { UserAvatar } from '../UserAvatar'
 
 export function LeaderboardTab() {
-  const sortedScores = [...MOCK_SCORES].sort((a, b) => b.totalScore - a.totalScore);
+  const sortedScores = [...MOCK_SCORES].sort(
+    (a, b) => b.totalScore - a.totalScore
+  )
 
   return (
     <div className="space-y-6">
@@ -22,7 +24,7 @@ export function LeaderboardTab() {
             <div className="relative z-10">
               <div className="flex items-center space-x-4 mb-4">
                 <div className="relative">
-                  <UserAvatar user={score.user} size="lg" />
+                  {/* <UserAvatar user={score.user} size="lg" /> */}
                   <div className="absolute -top-2 -right-2 w-8 h-8 rounded-full bg-yellow-400 flex items-center justify-center text-white font-bold">
                     {index + 1}
                   </div>
@@ -39,7 +41,9 @@ export function LeaderboardTab() {
               <div className="space-y-2">
                 <div className="flex justify-between text-sm">
                   <span className="text-gray-600">Level {score.level}</span>
-                  <span className="text-purple-600">{score.achievements.length} achievements</span>
+                  <span className="text-purple-600">
+                    {score.achievements.length} achievements
+                  </span>
                 </div>
                 <div className="grid grid-cols-2 gap-2 mt-4">
                   <div className="text-center p-2 bg-gray-50 rounded-lg">
@@ -89,11 +93,13 @@ export function LeaderboardTab() {
             {sortedScores.map((score, index) => (
               <tr key={score.user.id} className="hover:bg-gray-50">
                 <td className="px-6 py-4 whitespace-nowrap">
-                  <div className="text-sm font-medium text-gray-900">#{index + 1}</div>
+                  <div className="text-sm font-medium text-gray-900">
+                    #{index + 1}
+                  </div>
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap">
                   <div className="flex items-center">
-                    <UserAvatar user={score.user} size="sm" />
+                    {/* <UserAvatar user={score.user} size="sm" /> */}
                     <div className="ml-4">
                       <div className="text-sm font-medium text-gray-900">
                         {score.user.name}
@@ -105,7 +111,9 @@ export function LeaderboardTab() {
                   </div>
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap">
-                  <div className="text-sm text-gray-900">{score.totalScore}</div>
+                  <div className="text-sm text-gray-900">
+                    {score.totalScore}
+                  </div>
                   <div className="text-sm text-gray-500">points</div>
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap">
@@ -140,5 +148,5 @@ export function LeaderboardTab() {
         </table>
       </div>
     </div>
-  );
+  )
 }

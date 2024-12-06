@@ -1,20 +1,14 @@
-import React from 'react';
-import { motion } from 'framer-motion';
-import { 
-  Settings, 
-  Users, 
-  Wallet,
-  Info,
-  ArrowRight
-} from 'lucide-react';
-import { AdminStats } from './AdminStats';
-import { RoundsOverview } from './RoundsOverview';
+import React from 'react'
+import { motion } from 'framer-motion'
+import { Settings, Users, Wallet, Info, ArrowRight } from 'lucide-react'
+import { AdminStats } from './AdminStats'
+import { RoundsOverview } from './RoundsOverview'
 
 interface ActionCardProps {
-  icon: React.ReactNode;
-  title: string;
-  description: string;
-  onClick: () => void;
+  icon: React.ReactNode
+  title: string
+  description: string
+  onClick: () => void
 }
 
 function ActionCard({ icon, title, description, onClick }: ActionCardProps) {
@@ -34,15 +28,13 @@ function ActionCard({ icon, title, description, onClick }: ActionCardProps) {
       <h3 className="text-lg font-semibold mb-2 group-hover:text-purple-600 transition-colors">
         {title}
       </h3>
-      <p className="text-gray-600 text-sm">
-        {description}
-      </p>
+      <p className="text-gray-600 text-sm">{description}</p>
     </motion.button>
-  );
+  )
 }
 
 interface AdminOverviewProps {
-  onTabChange: (tab: string) => void;
+  onTabChange: (tab: string) => void
 }
 
 export function AdminOverview({ onTabChange }: AdminOverviewProps) {
@@ -51,21 +43,24 @@ export function AdminOverview({ onTabChange }: AdminOverviewProps) {
       id: 'round',
       icon: <Settings className="h-6 w-6 text-purple-600" />,
       title: 'Round Settings',
-      description: 'Configure distribution round parameters including name, description, and timing'
+      description:
+        'Configure distribution round parameters including name, description, and timing'
     },
     {
       id: 'allocation',
       icon: <Users className="h-6 w-6 text-purple-600" />,
       title: 'Token Allocation',
-      description: 'Manage token allocations for users and set individual distribution amounts'
+      description:
+        'Manage token allocations for users and set individual distribution amounts'
     },
     {
       id: 'treasury',
       icon: <Wallet className="h-6 w-6 text-purple-600" />,
       title: 'Treasury Management',
-      description: 'Handle contract deposits and withdrawals for various supported tokens'
+      description:
+        'Handle contract deposits and withdrawals for various supported tokens'
     }
-  ];
+  ]
 
   return (
     <div className="space-y-8">
@@ -93,5 +88,5 @@ export function AdminOverview({ onTabChange }: AdminOverviewProps) {
         </div>
       </div>
     </div>
-  );
+  )
 }

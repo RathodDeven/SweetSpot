@@ -1,32 +1,37 @@
-import React from 'react';
-import { motion } from 'framer-motion';
-import { Clock, Users, ChevronRight, AlertCircle } from 'lucide-react';
-import { Round, MOCK_ROUNDS } from '../../types/rounds';
-import { formatEther, formatDate } from '../../utils/formatters';
+import React from 'react'
+import { motion } from 'framer-motion'
+import { Clock, Users, ChevronRight, AlertCircle } from 'lucide-react'
+import { Round, MOCK_ROUNDS } from '../../types/rounds'
+import { formatEther, formatDate } from '../../utils/formatters'
 
 function RoundStatusBadge({ status }: { status: Round['status'] }) {
   const getStatusColor = () => {
     switch (status) {
       case 'active':
-        return 'bg-green-100 text-green-800';
+        return 'bg-green-100 text-green-800'
       case 'upcoming':
-        return 'bg-blue-100 text-blue-800';
+        return 'bg-blue-100 text-blue-800'
       case 'completed':
-        return 'bg-gray-100 text-gray-800';
+        return 'bg-gray-100 text-gray-800'
     }
-  };
+  }
 
   return (
-    <span className={`px-3 py-1 rounded-full text-sm font-medium ${getStatusColor()}`}>
+    <span
+      className={`px-3 py-1 rounded-full text-sm font-medium ${getStatusColor()}`}
+    >
       {status.charAt(0).toUpperCase() + status.slice(1)}
     </span>
-  );
+  )
 }
 
 function RoundCard({ round }: { round: Round }) {
-  const progress = parseFloat(round.claimedAmount) / parseFloat(round.totalAllocation.amount) * 100;
-  const timeLeft = Math.max(0, round.endTime - Date.now());
-  const daysLeft = Math.ceil(timeLeft / (1000 * 60 * 60 * 24));
+  const progress =
+    (parseFloat(round.claimedAmount) /
+      parseFloat(round.totalAllocation.amount)) *
+    100
+  const timeLeft = Math.max(0, round.endTime - Date.now())
+  const daysLeft = Math.ceil(timeLeft / (1000 * 60 * 60 * 24))
 
   return (
     <motion.div
@@ -45,7 +50,8 @@ function RoundCard({ round }: { round: Round }) {
         <div className="flex justify-between items-center text-sm">
           <span className="text-gray-600">Total Allocation</span>
           <span className="font-medium">
-            {formatEther(round.totalAllocation.amount)} {round.totalAllocation.token.symbol}
+            {formatEther(round.totalAllocation.amount)}{' '}
+            {round.totalAllocation.token.symbol}
           </span>
         </div>
 
@@ -72,22 +78,24 @@ function RoundCard({ round }: { round: Round }) {
           <div className="flex items-center space-x-2">
             <Clock className="h-5 w-5 text-gray-400" />
             <span className="text-sm text-gray-600">
-              {round.status === 'upcoming' 
+              {round.status === 'upcoming'
                 ? `Starts in ${daysLeft} days`
                 : round.status === 'active'
-                ? `${daysLeft} days left`
-                : 'Completed'}
+                  ? `${daysLeft} days left`
+                  : 'Completed'}
             </span>
           </div>
         </div>
       </div>
     </motion.div>
-  );
+  )
 }
 
 export function RoundsOverview() {
-  const activeRound = MOCK_ROUNDS.find(round => round.status === 'active');
-  const upcomingRounds = MOCK_ROUNDS.filter(round => round.status === 'upcoming');
+  const activeRound = MOCK_ROUNDS.find((round) => round.status === 'active')
+  const upcomingRounds = MOCK_ROUNDS.filter(
+    (round) => round.status === 'upcoming'
+  )
 
   return (
     <div className="space-y-8">
@@ -117,11 +125,11 @@ export function RoundsOverview() {
           </motion.button>
         </div>
         <div className="grid grid-cols-1 gap-6">
-          {upcomingRounds.map(round => (
+          {upcomingRounds.map((round) => (
             <RoundCard key={round.id} round={round} />
           ))}
         </div>
       </div>
     </div>
-  );
+  )
 }

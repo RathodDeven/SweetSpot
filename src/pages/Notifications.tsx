@@ -1,21 +1,21 @@
-import React from 'react';
-import { motion } from 'framer-motion';
-import { Bell, Check, AlertCircle, Info, CheckCircle } from 'lucide-react';
-import { DUMMY_NOTIFICATIONS } from '../types/notifications';
+import React from 'react'
+import { motion } from 'framer-motion'
+import { Bell, Check, AlertCircle, Info, CheckCircle } from 'lucide-react'
+import { DUMMY_NOTIFICATIONS } from '../types/notifications'
 
 export function Notifications() {
   const getIcon = (type: string) => {
     switch (type) {
       case 'success':
-        return <CheckCircle className="h-5 w-5 text-green-500" />;
+        return <CheckCircle className="h-5 w-5 text-green-500" />
       case 'warning':
-        return <AlertCircle className="h-5 w-5 text-yellow-500" />;
+        return <AlertCircle className="h-5 w-5 text-yellow-500" />
       case 'error':
-        return <AlertCircle className="h-5 w-5 text-red-500" />;
+        return <AlertCircle className="h-5 w-5 text-red-500" />
       default:
-        return <Info className="h-5 w-5 text-blue-500" />;
+        return <Info className="h-5 w-5 text-blue-500" />
     }
-  };
+  }
 
   return (
     <div className="max-w-3xl mx-auto">
@@ -55,5 +55,5 @@ export function Notifications() {
         ))}
       </div>
     </div>
-  );
+  )
 }
