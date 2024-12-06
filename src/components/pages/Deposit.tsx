@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Candy, ChevronRight, Gift, Pencil, Check, X } from 'lucide-react'
-import { SUPPORTED_TOKENS } from '../types/tokens'
+import { SUPPORTED_TOKENS } from '../../types/tokens'
 import toast from 'react-hot-toast'
 import { useRouter } from 'next/navigation'
 

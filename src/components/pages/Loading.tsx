@@ -1,5 +1,5 @@
 import React from 'react'
-import { LoadingTransition } from '../components/LoadingTransition'
+import { LoadingTransition } from '../LoadingTransition'
 
 export function Loading() {
   return <LoadingTransition />

@@ -1,7 +1,7 @@
 'use client'
 
 import React from 'react'
-import { Dashboard } from '../../src/pages/Dashboard'
+import { Dashboard } from '../../src/components/pages/Dashboard'
 
 const page = () => {
   return <Dashboard />

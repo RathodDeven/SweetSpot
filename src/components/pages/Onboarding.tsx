@@ -9,7 +9,7 @@ import {
   ArrowLeft
 } from 'lucide-react'
 import { useRouter } from 'next/navigation'
-import { Steps } from '../types/steps'
+import { Steps } from '../../types/steps'
 
 const steps: Steps = [
   {

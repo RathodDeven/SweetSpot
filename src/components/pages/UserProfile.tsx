@@ -12,13 +12,13 @@ import {
   BarChart3,
   Star
 } from 'lucide-react'
-import { formatAddress } from '../utils/formatters'
-import { UserAvatar } from '../components/UserAvatar'
+import { formatAddress } from '../../utils/formatters'
+import { UserAvatar } from '../UserAvatar'
 import {
   MOCK_USER_PROFILE,
   MOCK_ALLOCATION_HISTORY,
   MOCK_FINANCIAL_STATS
-} from '../types/profile'
+} from '../../types/profile'
 
 function MetricCard({
   title,

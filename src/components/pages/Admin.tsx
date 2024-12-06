@@ -1,12 +1,12 @@
 import React, { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { LayoutDashboard, Settings, Users, Wallet, Star } from 'lucide-react'
-import { AdminOverview } from '../components/admin/AdminOverview'
-import { AdminForm } from '../components/admin/AdminForm'
-import { TokenAllocation } from '../components/admin/TokenAllocation'
-import { AdminTreasury } from '../components/admin/AdminTreasury'
-import { UserScores } from '../components/admin/UserScores'
-import { TabNavigation } from '../components/common/TabNavigation'
+import { AdminOverview } from '../admin/AdminOverview'
+import { AdminForm } from '../admin/AdminForm'
+import { TokenAllocation } from '../admin/TokenAllocation'
+import { AdminTreasury } from '../admin/AdminTreasury'
+import { UserScores } from '../admin/UserScores'
+import { TabNavigation } from '../common/TabNavigation'
 
 const tabs = [
   { id: 'overview', label: 'Overview', icon: LayoutDashboard },

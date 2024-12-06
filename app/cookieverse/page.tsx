@@ -1,7 +1,7 @@
 'use client'
 
 import React from 'react'
-import { CookieVerse } from '../../src/pages/CookieVerse'
+import { CookieVerse } from '../../src/components/pages/CookieVerse'
 
 const page = () => {
   return <CookieVerse />

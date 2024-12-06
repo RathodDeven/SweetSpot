@@ -1,10 +1,10 @@
 import React, { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Trophy, Clock, Rocket, Globe2 } from 'lucide-react'
-import { LeaderboardTab } from '../components/sweetverse/LeaderboardTab'
-import { RoundsTab } from '../components/sweetverse/RoundsTab'
-import { ProjectsTab } from '../components/sweetverse/ProjectsTab'
-import { TabNavigation } from '../components/common/TabNavigation'
+import { LeaderboardTab } from '../sweetverse/LeaderboardTab'
+import { RoundsTab } from '../sweetverse/RoundsTab'
+import { ProjectsTab } from '../sweetverse/ProjectsTab'
+import { TabNavigation } from '../common/TabNavigation'
 
 const tabs = [
   { id: 'leaderboard', label: 'Leaderboard', icon: Trophy },

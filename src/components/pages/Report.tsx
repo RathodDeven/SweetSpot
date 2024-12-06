@@ -7,7 +7,7 @@ import {
   SDG_GOALS,
   ImpactCategory,
   ProofType
-} from '../types/impact'
+} from '../../types/impact'
 import {
   ChevronRight,
   Calendar,

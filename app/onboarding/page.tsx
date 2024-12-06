@@ -1,7 +1,7 @@
 'use client'
 
 import React from 'react'
-import { Onboarding } from '../../src/pages/Onboarding'
+import { Onboarding } from '../../src/components/pages/Onboarding'
 
 const page = () => {
   return <Onboarding />

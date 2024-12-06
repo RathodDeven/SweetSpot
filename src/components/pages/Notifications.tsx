@@ -1,7 +1,7 @@
 import React from 'react'
 import { motion } from 'framer-motion'
 import { Bell, Check, AlertCircle, Info, CheckCircle } from 'lucide-react'
-import { DUMMY_NOTIFICATIONS } from '../types/notifications'
+import { DUMMY_NOTIFICATIONS } from '../../types/notifications'
 
 export function Notifications() {
   const getIcon = (type: string) => {

@@ -15,10 +15,10 @@ import {
   Users,
   Brain
 } from 'lucide-react'
-import { MOCK_SCORES } from '../types/scores'
-import { MOCK_ROUNDS, Round } from '../types/rounds'
-import { UserAvatar } from '../components/UserAvatar'
-import { formatEther } from '../utils/formatters'
+import { MOCK_SCORES } from '../../types/scores'
+import { MOCK_ROUNDS, Round } from '../../types/rounds'
+import { UserAvatar } from '../UserAvatar'
+import { formatEther } from '../../utils/formatters'
 
 const tabs = [
   { id: 'leaderboard', label: 'Leaderboard', icon: Trophy },

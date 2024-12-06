@@ -1,10 +1,10 @@
 import React, { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Candy, ArrowRight } from 'lucide-react'
-import { TopContributors } from '../components/leaderboard/TopContributors'
-import { LoadingTransition } from '../components/LoadingTransition'
-import { ElectricEffect } from '../components/effects/ElectricEffect'
-import { FeaturedProjects } from '../components/home/FeaturedProjects'
+import { TopContributors } from '../leaderboard/TopContributors'
+import { LoadingTransition } from '../LoadingTransition'
+import { ElectricEffect } from '../effects/ElectricEffect'
+import { FeaturedProjects } from '../home/FeaturedProjects'
 import { useRouter } from 'next/navigation'
 
 function HeroSection({ onGetStarted }: { onGetStarted: () => void }) {
