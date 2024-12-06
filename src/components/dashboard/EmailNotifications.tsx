@@ -139,7 +139,7 @@ export function EmailNotifications() {
 
           <div className="flex items-center space-x-2 text-sm text-gray-600">
             <AlertCircle className="h-4 w-4" />
-            <span>You'll need to verify your email after saving changes</span>
+            <span>You will need to verify your email after saving changes</span>
           </div>
 
           <div className="flex space-x-4">
