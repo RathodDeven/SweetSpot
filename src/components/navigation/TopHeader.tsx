@@ -1,7 +1,7 @@
 import React from 'react'
 import { ConnectButton } from '@rainbow-me/rainbowkit'
-import { APP_NAME } from '@/utils/config'
-import { useTheme } from '../../wrappers/TailwindThemeProvider'
+import { APP_NAME } from '@/src/utils/config'
+import { useTheme } from '../wrappers/TailwindThemeProvider'
 import { Button } from '@mui/material'
 const TopHeader = () => {
   const { theme, toggleTheme } = useTheme()
