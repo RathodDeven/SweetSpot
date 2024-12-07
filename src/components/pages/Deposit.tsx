@@ -1,9 +1,17 @@
 import React, { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Candy, ChevronRight, Gift, Pencil, Check, X } from 'lucide-react'
-import { SUPPORTED_TOKENS } from '../../types/tokens'
+import { SUPPORTED_TOKENS, Token } from '../../types/tokens'
 import toast from 'react-hot-toast'
 import { useRouter } from 'next/navigation'
+import { useWriteContract } from 'wagmi'
+import {
+  nCookieJarContractABI,
+  nCookieJarContractAddress
+} from '../../contracts/nCookieJar/nCookieJarContractInfo'
+import { Address } from 'viem'
+import { arbitrumSepoliaPublicClient } from '../../utils/viemClient'
+import { valueInWei } from '../../utils/helpers'
 
 interface DepositFormData {
   token: string
@@ -14,6 +22,8 @@ interface DepositFormData {
 
 export function Deposit() {
   const { push } = useRouter()
+
+  const { data: txHash, writeContractAsync } = useWriteContract()
 
   const [showConfirmation, setShowConfirmation] = useState(false)
   const [formData, setFormData] = useState<DepositFormData>({
@@ -34,13 +44,39 @@ export function Deposit() {
       return
     }
 
+    const selectedToken: Token = SUPPORTED_TOKENS.find(
+      (token) => token.symbol === formData.token
+    )!
+
+    const amount = valueInWei(formData.amount, selectedToken.decimals)
+
+    console.log('amount', amount)
+
     try {
-      // Simulated deposit
-      await new Promise((resolve) => setTimeout(resolve, 1000))
+      const tx = await writeContractAsync({
+        abi: nCookieJarContractABI,
+        address: nCookieJarContractAddress as Address,
+        functionName: 'deposit',
+        args: [selectedToken.address, amount],
+        value: selectedToken.symbol === 'ETH' ? amount : undefined
+      })
+
+      console.log('txHash', txHash)
+
+      const txReciept =
+        await arbitrumSepoliaPublicClient.waitForTransactionReceipt({
+          hash: tx,
+          confirmations: 5
+        })
+
+      console.log('txReciept', txReciept)
+
       toast.success('Deposit successful!')
       push('/dashboard')
     } catch (error) {
-      toast.error('Failed to process deposit')
+      console.log('error', error)
+      // @ts-ignore
+      toast.error('Failed to process deposit', String(error))
     }
   }
 

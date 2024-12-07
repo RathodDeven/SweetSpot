@@ -11,7 +11,7 @@ import {
   RainbowKitProvider
 } from '@rainbow-me/rainbowkit'
 import { WagmiProvider, http } from 'wagmi'
-import { mainnet, polygon, optimism, arbitrum, base, zora } from 'wagmi/chains'
+import { arbitrumSepolia } from 'wagmi/chains'
 import { QueryClientProvider, QueryClient } from '@tanstack/react-query'
 import { APP_NAME } from '../../utils/config'
 import {
@@ -24,15 +24,10 @@ import {
 } from '@rainbow-me/rainbowkit/wallets'
 import { useTheme } from './TailwindThemeProvider'
 
-const defaultChains = [mainnet, polygon, optimism, arbitrum, base, zora]
+const defaultChains = [arbitrumSepolia]
 
 const defaultTransports = {
-  [mainnet.id]: http(),
-  [polygon.id]: http(),
-  [optimism.id]: http(),
-  [arbitrum.id]: http(),
-  [base.id]: http(),
-  [zora.id]: http()
+  [arbitrumSepolia.id]: http()
 }
 
 const config = getDefaultConfig({
@@ -72,7 +67,8 @@ const RainbowKitWrapper = ({ children }: { children: React.ReactNode }) => {
             appName: APP_NAME
           }}
           modalSize="compact"
-          theme={theme === 'dark' ? darkTheme() : lightTheme()}
+          // theme={theme === 'dark' ? darkTheme() : lightTheme()}
+          theme={lightTheme()}
         >
           {children}
         </RainbowKitProvider>

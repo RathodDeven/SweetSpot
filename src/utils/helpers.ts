@@ -320,3 +320,7 @@ export const getRemainingTime = (
     return `${diffInMinutes}m`
   }
 }
+
+export const valueInWei = (amount: string, decimals: number): bigint => {
+  return BigInt(parseFloat(amount) * 10 ** decimals)
+}

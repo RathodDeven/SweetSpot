@@ -68,6 +68,20 @@
     scrollbar-width: none; /* Firefox */
   }
 
+  /* Remove default button styles */
+  button {
+    border: none;
+    background: none;
+    padding: 0;
+    cursor: pointer;
+  }
+
+  /* Remove link underline and color */
+  a {
+    text-decoration: none;
+    color: inherit;
+  }
+
   ::-webkit-scrollbar {
     width: 8px;
     border-radius: 20px;
