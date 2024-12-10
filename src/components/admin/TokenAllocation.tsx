@@ -7,7 +7,8 @@ import {
   Check,
   Clock,
   PlusCircle,
-  UserPlus
+  UserPlus,
+  User
 } from 'lucide-react'
 import { MOCK_USERS } from '../../types/users'
 import { formatAddress, formatEther } from '../../utils/formatters'
@@ -16,6 +17,13 @@ import { QuickAllocation } from './QuickAllocation'
 import { ethers } from 'ethers'
 import { SUPPORTED_TOKENS } from '../../types/tokens'
 import toast from 'react-hot-toast'
+import { useWriteContract } from 'wagmi'
+import {
+  nCookieJarContractABI,
+  nCookieJarContractAddress
+} from '../../contracts/nCookieJar/nCookieJarContractInfo'
+import { valueInWei } from '../../utils/helpers'
+import { arbitrumSepoliaPublicClient } from '../../utils/viemClient'
 
 interface Allocation {
   token: string
@@ -54,16 +62,16 @@ export function TokenAllocation() {
   const [quickAllocationUser, setQuickAllocationUser] = useState<
     (typeof MOCK_USERS)[0] | null
   >(null)
+  const { writeContractAsync } = useWriteContract()
   const [allocations, setAllocations] =
     useState<UserAllocation[]>(MOCK_ALLOCATIONS)
   const [newUser, setNewUser] = useState({
-    name: '',
     address: '',
-    token: 'SWEET',
+    token: SUPPORTED_TOKENS[0].symbol,
     amount: ''
   })
 
-  const handleAddUser = (e: React.FormEvent) => {
+  const handleAddUser = async (e: React.FormEvent) => {
     e.preventDefault()
 
     if (!newUser.address.match(/^0x[a-fA-F0-9]{40}$/)) {
@@ -71,24 +79,39 @@ export function TokenAllocation() {
       return
     }
 
-    const newAllocation: UserAllocation = {
-      user: {
-        id: `user-${allocations.length + 1}`,
-        name: newUser.name,
-        address: newUser.address
-      },
-      allocations: [
-        {
-          token: newUser.token,
-          amount: ethers.parseEther(newUser.amount).toString(),
-          claimed: false
-        }
-      ]
-    }
+    try {
+      const selectedToken = SUPPORTED_TOKENS.find(
+        (token) => token.symbol === newUser.token
+      )
 
-    setAllocations([...allocations, newAllocation])
-    setNewUser({ name: '', address: '', token: 'SWEET', amount: '' })
-    toast.success('Sweet Spot member added successfully!')
+      const tx = await writeContractAsync({
+        abi: nCookieJarContractABI,
+        address: nCookieJarContractAddress,
+        functionName: 'setAllowedAmount',
+        args: [
+          newUser.address,
+          selectedToken?.address,
+          valueInWei(newUser.amount, selectedToken?.decimals!)
+        ]
+      })
+
+      await toast.promise(
+        arbitrumSepoliaPublicClient.waitForTransactionReceipt({
+          hash: tx,
+          confirmations: 3
+        }),
+        {
+          error: 'Unable to confirm new allocations',
+          loading: 'Confirming allocations',
+          success: 'Amount Allocated to address ' + newUser.address
+        }
+      )
+
+      setNewUser({ address: '', token: SUPPORTED_TOKENS[0].symbol, amount: '' })
+    } catch (error) {
+      console.error(error)
+      toast.error('An Error Occured')
+    }
   }
 
   return (
@@ -217,14 +240,16 @@ export function TokenAllocation() {
           <div className="border-t border-gray-200 pt-6">
             <div className="flex items-center space-x-3 mb-4">
               <UserPlus className="h-5 w-5 text-purple-600" />
-              <h3 className="text-lg font-semibold">Add New Member</h3>
+              <h3 className="text-lg font-semibold">
+                Allocate Token To New User
+              </h3>
             </div>
 
             <form
               onSubmit={handleAddUser}
               className="grid grid-cols-1 md:grid-cols-2 gap-4"
             >
-              <div>
+              {/* <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">
                   Member Name
                 </label>
@@ -238,7 +263,7 @@ export function TokenAllocation() {
                   placeholder="Enter member name"
                   required
                 />
-              </div>
+              </div> */}
 
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">
@@ -267,7 +292,6 @@ export function TokenAllocation() {
                   }
                   className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-600 focus:border-transparent"
                 >
-                  <option value="SWEET">SWEET - Sweet Spot Token</option>
                   {SUPPORTED_TOKENS.map((token) => (
                     <option key={token.symbol} value={token.symbol}>
                       {token.symbol} - {token.name}
@@ -301,7 +325,7 @@ export function TokenAllocation() {
                   type="submit"
                   className="w-full bg-purple-600 text-white py-3 rounded-lg font-medium hover:bg-purple-700 transition-colors"
                 >
-                  Add Member
+                  Add Allocation
                 </motion.button>
               </div>
             </form>

@@ -68,7 +68,7 @@ export function Navigation() {
             />
 
             <div className="flex items-center space-x-2 ml-4">
-              <div className="relative" ref={notificationRef}>
+              {/* <div className="relative" ref={notificationRef}>
                 <motion.button
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
@@ -84,7 +84,7 @@ export function Navigation() {
                   isOpen={showNotifications}
                   onClose={() => setShowNotifications(false)}
                 />
-              </div>
+              </div> */}
 
               <div className="relative" ref={profileRef}>
                 <motion.button

@@ -27,6 +27,8 @@
   },
   "dependencies": {
     "@apollo/client": "^3.12.2",
+    "@aws-sdk/client-s3": "^3.705.0",
+    "@aws-sdk/lib-storage": "^3.705.0",
     "@ducanh2912/next-pwa": "^10.2.9",
     "@emotion/react": "^11.13.5",
     "@emotion/styled": "^11.13.5",

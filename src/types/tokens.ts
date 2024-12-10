@@ -1,10 +1,11 @@
+import { Address } from 'viem'
 import { ZERO_ADDRESS } from '../utils/contants'
 
 export interface Token {
   symbol: string
   name: string
   decimals: number
-  address: string | null // null for native ETH
+  address: Address | undefined // undefined for native ETH
   logoUrl: string
 }
 
@@ -29,7 +30,7 @@ export const ARBITRUM_SEPOLIA_TOKENS: Token[] = [
     symbol: 'USDC',
     name: 'USD Coin',
     decimals: 6,
-    address: '0x75faf114eafb1BDbe2F0316DF893fd58CE46AA4d', // Replace with actual contract address
+    address: '0x75faf114eafb1BDbe2F0316DF893fd58CE46AA4d',
     logoUrl:
       'https://raw.githubusercontent.com/spothq/cryptocurrency-icons/master/128/color/usdc.png'
   }

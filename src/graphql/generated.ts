@@ -650,7 +650,7 @@ export type Round = {
   createdAt: Scalars['BigInt']['output']
   end: Scalars['BigInt']['output']
   id: Scalars['ID']['output']
-  metadataURI: RoundMetadata
+  metadata: RoundMetadata
   start: Scalars['BigInt']['output']
 }
 
@@ -803,27 +803,27 @@ export type Round_Filter = {
   id_lte?: InputMaybe<Scalars['ID']['input']>
   id_not?: InputMaybe<Scalars['ID']['input']>
   id_not_in?: InputMaybe<Array<Scalars['ID']['input']>>
-  metadataURI?: InputMaybe<Scalars['String']['input']>
-  metadataURI_?: InputMaybe<RoundMetadata_Filter>
-  metadataURI_contains?: InputMaybe<Scalars['String']['input']>
-  metadataURI_contains_nocase?: InputMaybe<Scalars['String']['input']>
-  metadataURI_ends_with?: InputMaybe<Scalars['String']['input']>
-  metadataURI_ends_with_nocase?: InputMaybe<Scalars['String']['input']>
-  metadataURI_gt?: InputMaybe<Scalars['String']['input']>
-  metadataURI_gte?: InputMaybe<Scalars['String']['input']>
-  metadataURI_in?: InputMaybe<Array<Scalars['String']['input']>>
-  metadataURI_lt?: InputMaybe<Scalars['String']['input']>
-  metadataURI_lte?: InputMaybe<Scalars['String']['input']>
-  metadataURI_not?: InputMaybe<Scalars['String']['input']>
-  metadataURI_not_contains?: InputMaybe<Scalars['String']['input']>
-  metadataURI_not_contains_nocase?: InputMaybe<Scalars['String']['input']>
-  metadataURI_not_ends_with?: InputMaybe<Scalars['String']['input']>
-  metadataURI_not_ends_with_nocase?: InputMaybe<Scalars['String']['input']>
-  metadataURI_not_in?: InputMaybe<Array<Scalars['String']['input']>>
-  metadataURI_not_starts_with?: InputMaybe<Scalars['String']['input']>
-  metadataURI_not_starts_with_nocase?: InputMaybe<Scalars['String']['input']>
-  metadataURI_starts_with?: InputMaybe<Scalars['String']['input']>
-  metadataURI_starts_with_nocase?: InputMaybe<Scalars['String']['input']>
+  metadata?: InputMaybe<Scalars['String']['input']>
+  metadata_?: InputMaybe<RoundMetadata_Filter>
+  metadata_contains?: InputMaybe<Scalars['String']['input']>
+  metadata_contains_nocase?: InputMaybe<Scalars['String']['input']>
+  metadata_ends_with?: InputMaybe<Scalars['String']['input']>
+  metadata_ends_with_nocase?: InputMaybe<Scalars['String']['input']>
+  metadata_gt?: InputMaybe<Scalars['String']['input']>
+  metadata_gte?: InputMaybe<Scalars['String']['input']>
+  metadata_in?: InputMaybe<Array<Scalars['String']['input']>>
+  metadata_lt?: InputMaybe<Scalars['String']['input']>
+  metadata_lte?: InputMaybe<Scalars['String']['input']>
+  metadata_not?: InputMaybe<Scalars['String']['input']>
+  metadata_not_contains?: InputMaybe<Scalars['String']['input']>
+  metadata_not_contains_nocase?: InputMaybe<Scalars['String']['input']>
+  metadata_not_ends_with?: InputMaybe<Scalars['String']['input']>
+  metadata_not_ends_with_nocase?: InputMaybe<Scalars['String']['input']>
+  metadata_not_in?: InputMaybe<Array<Scalars['String']['input']>>
+  metadata_not_starts_with?: InputMaybe<Scalars['String']['input']>
+  metadata_not_starts_with_nocase?: InputMaybe<Scalars['String']['input']>
+  metadata_starts_with?: InputMaybe<Scalars['String']['input']>
+  metadata_starts_with_nocase?: InputMaybe<Scalars['String']['input']>
   or?: InputMaybe<Array<InputMaybe<Round_Filter>>>
   start?: InputMaybe<Scalars['BigInt']['input']>
   start_gt?: InputMaybe<Scalars['BigInt']['input']>
@@ -840,12 +840,12 @@ export enum Round_OrderBy {
   CreatedAt = 'createdAt',
   End = 'end',
   Id = 'id',
-  MetadataUri = 'metadataURI',
-  MetadataUriDescription = 'metadataURI__description',
-  MetadataUriExternalUrl = 'metadataURI__external_url',
-  MetadataUriId = 'metadataURI__id',
-  MetadataUriImage = 'metadataURI__image',
-  MetadataUriName = 'metadataURI__name',
+  Metadata = 'metadata',
+  MetadataDescription = 'metadata__description',
+  MetadataExternalUrl = 'metadata__external_url',
+  MetadataId = 'metadata__id',
+  MetadataImage = 'metadata__image',
+  MetadataName = 'metadata__name',
   Start = 'start'
 }
 
@@ -1332,6 +1332,32 @@ export enum _SubgraphErrorPolicy_ {
   Deny = 'deny'
 }
 
+export type CurrentRoundsQueryVariables = Exact<{ [key: string]: never }>
+
+export type CurrentRoundsQuery = {
+  __typename?: 'Query'
+  currentRounds: Array<{
+    __typename?: 'CurrentRound'
+    id: string
+    updatedAt: any
+    round: {
+      __typename?: 'Round'
+      createdAt: any
+      end: any
+      id: string
+      start: any
+      metadata: {
+        __typename?: 'RoundMetadata'
+        description: string
+        external_url?: string | null
+        id: string
+        image?: string | null
+        name: string
+      }
+    }
+  }>
+}
+
 export type GetUsersQueryVariables = Exact<{
   orderBy?: InputMaybe<User_OrderBy>
   orderDirection?: InputMaybe<OrderDirection>
@@ -1348,6 +1374,7 @@ export type GetUsersQuery = {
     createdAt: any
     scores?: Array<{
       __typename?: 'Score'
+      id: string
       scoreType: string
       value: any
     }> | null
@@ -1364,6 +1391,111 @@ export type GetUsersQuery = {
   }>
 }
 
+export type MyQueryQueryVariables = Exact<{ [key: string]: never }>
+
+export type MyQueryQuery = {
+  __typename?: 'Query'
+  scoreTypes: Array<{ __typename?: 'ScoreType'; id: string }>
+}
+
+export type TokenBalancesQueryVariables = Exact<{ [key: string]: never }>
+
+export type TokenBalancesQuery = {
+  __typename?: 'Query'
+  tokenBalances: Array<{ __typename?: 'TokenBalance'; id: string; amount: any }>
+}
+
+export const CurrentRoundsDocument = gql`
+  query CurrentRounds {
+    currentRounds {
+      id
+      updatedAt
+      round {
+        createdAt
+        end
+        id
+        start
+        metadata {
+          description
+          external_url
+          id
+          image
+          name
+        }
+      }
+    }
+  }
+`
+
+/**
+ * __useCurrentRoundsQuery__
+ *
+ * To run a query within a React component, call `useCurrentRoundsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useCurrentRoundsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useCurrentRoundsQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useCurrentRoundsQuery(
+  baseOptions?: Apollo.QueryHookOptions<
+    CurrentRoundsQuery,
+    CurrentRoundsQueryVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useQuery<CurrentRoundsQuery, CurrentRoundsQueryVariables>(
+    CurrentRoundsDocument,
+    options
+  )
+}
+export function useCurrentRoundsLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    CurrentRoundsQuery,
+    CurrentRoundsQueryVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useLazyQuery<CurrentRoundsQuery, CurrentRoundsQueryVariables>(
+    CurrentRoundsDocument,
+    options
+  )
+}
+export function useCurrentRoundsSuspenseQuery(
+  baseOptions?:
+    | Apollo.SkipToken
+    | Apollo.SuspenseQueryHookOptions<
+        CurrentRoundsQuery,
+        CurrentRoundsQueryVariables
+      >
+) {
+  const options =
+    baseOptions === Apollo.skipToken
+      ? baseOptions
+      : { ...defaultOptions, ...baseOptions }
+  return Apollo.useSuspenseQuery<
+    CurrentRoundsQuery,
+    CurrentRoundsQueryVariables
+  >(CurrentRoundsDocument, options)
+}
+export type CurrentRoundsQueryHookResult = ReturnType<
+  typeof useCurrentRoundsQuery
+>
+export type CurrentRoundsLazyQueryHookResult = ReturnType<
+  typeof useCurrentRoundsLazyQuery
+>
+export type CurrentRoundsSuspenseQueryHookResult = ReturnType<
+  typeof useCurrentRoundsSuspenseQuery
+>
+export type CurrentRoundsQueryResult = Apollo.QueryResult<
+  CurrentRoundsQuery,
+  CurrentRoundsQueryVariables
+>
 export const GetUsersDocument = gql`
   query GetUsers(
     $orderBy: User_orderBy
@@ -1381,6 +1513,7 @@ export const GetUsersDocument = gql`
       totalScore
       createdAt
       scores {
+        id
         scoreType
         value
       }
@@ -1460,6 +1593,148 @@ export type GetUsersSuspenseQueryHookResult = ReturnType<
 export type GetUsersQueryResult = Apollo.QueryResult<
   GetUsersQuery,
   GetUsersQueryVariables
+>
+export const MyQueryDocument = gql`
+  query MyQuery {
+    scoreTypes {
+      id
+    }
+  }
+`
+
+/**
+ * __useMyQueryQuery__
+ *
+ * To run a query within a React component, call `useMyQueryQuery` and pass it any options that fit your needs.
+ * When your component renders, `useMyQueryQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useMyQueryQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useMyQueryQuery(
+  baseOptions?: Apollo.QueryHookOptions<MyQueryQuery, MyQueryQueryVariables>
+) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useQuery<MyQueryQuery, MyQueryQueryVariables>(
+    MyQueryDocument,
+    options
+  )
+}
+export function useMyQueryLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<MyQueryQuery, MyQueryQueryVariables>
+) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useLazyQuery<MyQueryQuery, MyQueryQueryVariables>(
+    MyQueryDocument,
+    options
+  )
+}
+export function useMyQuerySuspenseQuery(
+  baseOptions?:
+    | Apollo.SkipToken
+    | Apollo.SuspenseQueryHookOptions<MyQueryQuery, MyQueryQueryVariables>
+) {
+  const options =
+    baseOptions === Apollo.skipToken
+      ? baseOptions
+      : { ...defaultOptions, ...baseOptions }
+  return Apollo.useSuspenseQuery<MyQueryQuery, MyQueryQueryVariables>(
+    MyQueryDocument,
+    options
+  )
+}
+export type MyQueryQueryHookResult = ReturnType<typeof useMyQueryQuery>
+export type MyQueryLazyQueryHookResult = ReturnType<typeof useMyQueryLazyQuery>
+export type MyQuerySuspenseQueryHookResult = ReturnType<
+  typeof useMyQuerySuspenseQuery
+>
+export type MyQueryQueryResult = Apollo.QueryResult<
+  MyQueryQuery,
+  MyQueryQueryVariables
+>
+export const TokenBalancesDocument = gql`
+  query TokenBalances {
+    tokenBalances {
+      id
+      amount
+    }
+  }
+`
+
+/**
+ * __useTokenBalancesQuery__
+ *
+ * To run a query within a React component, call `useTokenBalancesQuery` and pass it any options that fit your needs.
+ * When your component renders, `useTokenBalancesQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useTokenBalancesQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useTokenBalancesQuery(
+  baseOptions?: Apollo.QueryHookOptions<
+    TokenBalancesQuery,
+    TokenBalancesQueryVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useQuery<TokenBalancesQuery, TokenBalancesQueryVariables>(
+    TokenBalancesDocument,
+    options
+  )
+}
+export function useTokenBalancesLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    TokenBalancesQuery,
+    TokenBalancesQueryVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useLazyQuery<TokenBalancesQuery, TokenBalancesQueryVariables>(
+    TokenBalancesDocument,
+    options
+  )
+}
+export function useTokenBalancesSuspenseQuery(
+  baseOptions?:
+    | Apollo.SkipToken
+    | Apollo.SuspenseQueryHookOptions<
+        TokenBalancesQuery,
+        TokenBalancesQueryVariables
+      >
+) {
+  const options =
+    baseOptions === Apollo.skipToken
+      ? baseOptions
+      : { ...defaultOptions, ...baseOptions }
+  return Apollo.useSuspenseQuery<
+    TokenBalancesQuery,
+    TokenBalancesQueryVariables
+  >(TokenBalancesDocument, options)
+}
+export type TokenBalancesQueryHookResult = ReturnType<
+  typeof useTokenBalancesQuery
+>
+export type TokenBalancesLazyQueryHookResult = ReturnType<
+  typeof useTokenBalancesLazyQuery
+>
+export type TokenBalancesSuspenseQueryHookResult = ReturnType<
+  typeof useTokenBalancesSuspenseQuery
+>
+export type TokenBalancesQueryResult = Apollo.QueryResult<
+  TokenBalancesQuery,
+  TokenBalancesQueryVariables
 >
 
 export interface PossibleTypesResultData {

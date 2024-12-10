@@ -3,25 +3,61 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { Upload, ChevronDown, Wallet } from 'lucide-react'
 import toast from 'react-hot-toast'
 import { Token, SUPPORTED_TOKENS } from '../../types/tokens'
+import { useWriteContract } from 'wagmi'
+import {
+  nCookieJarContractABI,
+  nCookieJarContractAddress
+} from '../../contracts/nCookieJar/nCookieJarContractInfo'
+import { valueInWei } from '../../utils/helpers'
+import { arbitrumSepoliaPublicClient } from '../../utils/viemClient'
 
 export function AdminWithdraw() {
-  const [amount, setAmount] = useState('')
+  const [amount, setAmount] = useState('0')
   const [isLoading, setIsLoading] = useState(false)
   const [selectedToken, setSelectedToken] = useState<Token>(SUPPORTED_TOKENS[0])
   const [isTokenListOpen, setIsTokenListOpen] = useState(false)
+
+  const { writeContractAsync } = useWriteContract()
 
   const handleWithdraw = async (e: React.FormEvent) => {
     e.preventDefault()
     setIsLoading(true)
 
     try {
-      // Simulated withdrawal
-      await new Promise((resolve) => setTimeout(resolve, 1000))
+      const tx = await toast.promise(
+        writeContractAsync({
+          abi: nCookieJarContractABI,
+          address: nCookieJarContractAddress,
+          functionName: 'withdraw',
+          args: [
+            selectedToken.address,
+            valueInWei(amount, selectedToken.decimals)
+          ]
+        }),
+        {
+          error: 'Failed to sign withdraw token',
+          loading: 'Withdrawing token...',
+          success: 'Transaction sent!'
+        }
+      )
+
+      await toast.promise(
+        arbitrumSepoliaPublicClient.waitForTransactionReceipt({
+          hash: tx,
+          confirmations: 3
+        }),
+        {
+          error: 'Failed to withdraw token',
+          loading: 'Confirming withdrawal...',
+          success: 'Withdrawal confirmed!'
+        }
+      )
       toast.success(
         `Successfully withdrawn ${amount} ${selectedToken.symbol} from contract!`
       )
-      setAmount('')
+      setAmount('0')
     } catch (error) {
+      console.log('error', error)
       toast.error('Withdrawal failed. Please try again.')
     } finally {
       setIsLoading(false)
@@ -91,14 +127,6 @@ export function AdminWithdraw() {
                     </span>
                   </button>
                 ))}
-                <button
-                  type="button"
-                  onClick={() => setIsTokenListOpen(false)}
-                  className="w-full flex items-center space-x-2 px-3 py-2 hover:bg-purple-50 transition-colors border-t border-gray-200"
-                >
-                  <Wallet className="w-6 h-6" />
-                  <span>Custom ERC20 Token</span>
-                </button>
               </motion.div>
             )}
           </AnimatePresence>
@@ -116,7 +144,7 @@ export function AdminWithdraw() {
               step="0.000001"
               min="0"
               required
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-600 focus:border-transparent"
+              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-600"
               placeholder="0.00"
             />
             <span className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500">

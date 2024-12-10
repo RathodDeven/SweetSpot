@@ -1,7 +1,7 @@
 import React from 'react'
-import { AdminDeposit } from './AdminDeposit'
 import { AdminWithdraw } from './AdminWithdraw'
 import { AdminStats } from './AdminStats'
+import { Deposit } from '../pages/Deposit'
 
 export function AdminTreasury() {
   return (
@@ -11,7 +11,7 @@ export function AdminTreasury() {
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <AdminDeposit />
+        <Deposit />
         <AdminWithdraw />
       </div>
     </div>

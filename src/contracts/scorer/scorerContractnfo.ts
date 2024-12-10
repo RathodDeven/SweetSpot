@@ -1,8 +1,11 @@
-export const scorerContractAddresses = {
+import { Address } from 'viem'
+
+export const scorerContractAddresses: Record<string, Address> = {
   arbitrumSepolia: '0x48c128c6C7c9360898F156cE7039979768DA4134'
 }
 
-export const scorerContractAddress = scorerContractAddresses.arbitrumSepolia
+export const scorerContractAddress: Address =
+  scorerContractAddresses.arbitrumSepolia
 
 export const scorerContractABI = [
   {

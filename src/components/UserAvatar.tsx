@@ -1,11 +1,10 @@
 import React from 'react'
 import { motion } from 'framer-motion'
-import { User as UserIcon } from 'lucide-react'
 import Link from 'next/link'
-import { User } from '../graphql/generated'
+import getStampFyiURL from '../utils/getStampFyiURL'
 
 interface UserAvatarProps {
-  user: User
+  address: string
   size?: 'sm' | 'md' | 'lg'
 }
 
@@ -23,7 +22,7 @@ const glowAnimation = {
   }
 }
 
-export function UserAvatar({ user, size = 'md' }: UserAvatarProps) {
+export function UserAvatar({ address, size = 'md' }: UserAvatarProps) {
   const sizeClasses = {
     sm: 'h-8 w-8',
     md: 'h-10 w-10',
@@ -38,7 +37,8 @@ export function UserAvatar({ user, size = 'md' }: UserAvatarProps) {
         variants={glowAnimation}
         className={`${sizeClasses[size]} bg-purple-100 rounded-full flex items-center justify-center cursor-pointer`}
       >
-        <UserIcon
+        <img
+          src={getStampFyiURL(address)}
           className={`${size === 'sm' ? 'h-4 w-4' : 'h-5 w-5'} text-purple-600`}
         />
       </motion.div>

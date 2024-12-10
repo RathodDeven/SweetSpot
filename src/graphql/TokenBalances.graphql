@@ -1,0 +1,6 @@
+query TokenBalances {
+  tokenBalances {
+    id
+    amount
+  }
+}

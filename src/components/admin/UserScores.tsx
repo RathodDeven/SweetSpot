@@ -14,84 +14,93 @@ import {
   Gift,
   Wallet,
   Plus,
-  Sparkles
+  Sparkles,
+  UserPlus
 } from 'lucide-react'
 import { UserAvatar } from '../UserAvatar'
 import { MOCK_SCORES } from '../../types/scores'
 import { MetricBar } from './MetricBar'
 import toast from 'react-hot-toast'
+import {
+  OrderDirection,
+  useGetUsersQuery,
+  User,
+  User_OrderBy
+} from '../../graphql/generated'
+import { getLevelFromScore } from '../../utils/helpers'
+import SetScore from './SetScore'
 
-const SCORE_CATEGORIES = [
+export const SCORE_CATEGORIES = [
+  // {
+  //   id: 'Humanity',
+  //   label: 'Humanity',
+  //   icon: Heart,
+  //   description: 'Measures empathy and human-centric behavior',
+  //   emoji: '💖'
+  // },
   {
-    id: 'humanity',
-    label: 'Humanity',
-    icon: Heart,
-    description: 'Measures empathy and human-centric behavior',
-    emoji: '💖'
-  },
-  {
-    id: 'trust',
+    id: 'Trust',
     label: 'Trust',
     icon: Shield,
     description: 'Reliability and trustworthiness',
     emoji: '🛡️'
   },
   {
-    id: 'philanthropy',
+    id: 'Philanthropy',
     label: 'Philanthropy',
     icon: Award,
     description: 'Community contribution and giving',
     emoji: '🏆'
-  },
-  {
-    id: 'participation',
-    label: 'Participation',
-    icon: Target,
-    description: 'Active involvement in protocol',
-    emoji: '🎯'
-  },
-  {
-    id: 'consistency',
-    label: 'Consistency',
-    icon: TrendingUp,
-    description: 'Regular engagement',
-    emoji: '📈'
-  },
-  {
-    id: 'community',
-    label: 'Community',
-    icon: Users,
-    description: 'Supporting other members',
-    emoji: '👥'
-  },
-  {
-    id: 'innovation',
-    label: 'Innovation',
-    icon: Brain,
-    description: 'Creative contributions',
-    emoji: '🧠'
-  },
-  {
-    id: 'administration',
-    label: 'Administration',
-    icon: Settings,
-    description: 'Protocol management skills',
-    emoji: '⚙️'
-  },
-  {
-    id: 'cookieGiving',
-    label: 'Cookie Giving',
-    icon: Gift,
-    description: 'Token distribution fairness',
-    emoji: '🎁'
-  },
-  {
-    id: 'cookieHolding',
-    label: 'Cookie Holding',
-    icon: Wallet,
-    description: 'Token holding responsibility',
-    emoji: '💰'
   }
+  // {
+  //   id: 'Participation',
+  //   label: 'Participation',
+  //   icon: Target,
+  //   description: 'Active involvement in protocol',
+  //   emoji: '🎯'
+  // },
+  // {
+  //   id: 'Consistency',
+  //   label: 'Consistency',
+  //   icon: TrendingUp,
+  //   description: 'Regular engagement',
+  //   emoji: '📈'
+  // },
+  // {
+  //   id: 'Community',
+  //   label: 'Community',
+  //   icon: Users,
+  //   description: 'Supporting other members',
+  //   emoji: '👥'
+  // },
+  // {
+  //   id: 'Innovation',
+  //   label: 'Innovation',
+  //   icon: Brain,
+  //   description: 'Creative contributions',
+  //   emoji: '🧠'
+  // },
+  // {
+  //   id: 'Administration',
+  //   label: 'Administration',
+  //   icon: Settings,
+  //   description: 'Protocol management skills',
+  //   emoji: '⚙️'
+  // },
+  // {
+  //   id: 'CookieGiving',
+  //   label: 'Cookie Giving',
+  //   icon: Gift,
+  //   description: 'Token distribution fairness',
+  //   emoji: '🎁'
+  // },
+  // {
+  //   id: 'CookieHolding',
+  //   label: 'Cookie Holding',
+  //   icon: Wallet,
+  //   description: 'Token holding responsibility',
+  //   emoji: '💰'
+  // }
 ]
 
 function ScoreIncrementAnimation({
@@ -114,9 +123,16 @@ function ScoreIncrementAnimation({
   )
 }
 
-function AddScorePopup({ user, onClose }: { user: any; onClose: () => void }) {
+function AddScorePopup({
+  user,
+  onClose
+}: {
+  user?: User
+  onClose: () => void
+}) {
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null)
   const [showAnimation, setShowAnimation] = useState(false)
+  const [userAddress, setUserAddress] = useState(user?.id || '')
 
   const handleScoreIncrease = (categoryId: string) => {
     setShowAnimation(true)
@@ -146,17 +162,37 @@ function AddScorePopup({ user, onClose }: { user: any; onClose: () => void }) {
           <h2 className="text-xl font-bold">Add Score Points</h2>
         </div>
 
-        <div className="mb-4">
-          <div className="flex items-center space-x-3">
-            <UserAvatar user={user} />
-            <div>
-              <h3 className="font-semibold">{user.name}</h3>
-              <p className="text-sm text-gray-600">
-                Select a category to add points
-              </p>
+        {userAddress ? (
+          <div className="mb-4">
+            <div className="flex items-center gap-x-3">
+              <UserAvatar address={userAddress!} />
+              <div>
+                <div className="font-semibold break-words break-all">
+                  {userAddress}
+                </div>
+                <div
+                  className="text-red-500"
+                  onClick={() => {
+                    setUserAddress('')
+                  }}
+                >
+                  Remove
+                </div>
+              </div>
             </div>
           </div>
-        </div>
+        ) : (
+          <>
+            <input
+              type="text"
+              placeholder="Enter User Address"
+              value={userAddress}
+              onChange={(e) => setUserAddress(e.target.value)}
+            />
+          </>
+        )}
+
+        <p className="text-sm text-gray-600">Select a category to add points</p>
 
         <div className="space-y-2">
           {selectedCategory ? (
@@ -171,36 +207,11 @@ function AddScorePopup({ user, onClose }: { user: any; onClose: () => void }) {
               </div>
               {SCORE_CATEGORIES.filter((c) => c.id === selectedCategory).map(
                 (category) => (
-                  <div
+                  <SetScore
                     key={category.id}
-                    className="p-4 bg-purple-50 rounded-lg"
-                  >
-                    <div className="flex items-center space-x-3 mb-4">
-                      <div className="p-2 bg-purple-100 rounded-lg">
-                        <category.icon className="h-6 w-6 text-purple-600" />
-                      </div>
-                      <div>
-                        <h3 className="font-semibold">{category.label}</h3>
-                        <p className="text-sm text-gray-600">
-                          {category.description}
-                        </p>
-                      </div>
-                    </div>
-                    <motion.button
-                      whileHover={{ scale: 1.02 }}
-                      whileTap={{ scale: 0.98 }}
-                      onClick={() => handleScoreIncrease(category.id)}
-                      className="w-full bg-purple-600 text-white py-3 rounded-lg font-medium hover:bg-purple-700 transition-colors relative"
-                    >
-                      Add 5 Points
-                      {showAnimation && (
-                        <ScoreIncrementAnimation
-                          emoji={category.emoji}
-                          onComplete={() => setShowAnimation(false)}
-                        />
-                      )}
-                    </motion.button>
-                  </div>
+                    user={user!}
+                    category={category}
+                  />
                 )
               )}
             </div>
@@ -229,7 +240,7 @@ function AddScorePopup({ user, onClose }: { user: any; onClose: () => void }) {
   )
 }
 
-function ScoreCard({ score }: { score: (typeof MOCK_SCORES)[0] }) {
+function ScoreCard({ user }: { user: User }) {
   const [isExpanded, setIsExpanded] = useState(false)
   const [showAddScore, setShowAddScore] = useState(false)
 
@@ -244,13 +255,13 @@ function ScoreCard({ score }: { score: (typeof MOCK_SCORES)[0] }) {
         <div className="flex items-center justify-between mb-4">
           <div className="flex items-center space-x-4">
             {/* <UserAvatar user={score.user} /> */}
-            <div>
-              <h3 className="text-lg font-semibold">{score.user.name}</h3>
+            <div className="space-y-1">
+              <div className="text-s-text">{user.id}</div>
               <div className="flex items-center space-x-2 text-sm text-gray-600">
                 <Star className="h-4 w-4 text-yellow-500" />
-                <span>Level {score.level}</span>
+                <span>Level {getLevelFromScore(user.totalScore)}</span>
                 <span>•</span>
-                <span>{score.totalScore} points</span>
+                <span>{user.totalScore} points</span>
               </div>
             </div>
           </div>
@@ -286,21 +297,23 @@ function ScoreCard({ score }: { score: (typeof MOCK_SCORES)[0] }) {
               className="space-y-6 mt-4"
             >
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                {Object.entries(score.metrics).map(([key, value]) => {
-                  const category = SCORE_CATEGORIES.find((c) => c.id === key)
+                {user.scores?.map((score) => {
+                  const category = SCORE_CATEGORIES.find(
+                    (c) => c.label === score.scoreType
+                  )
                   if (!category) return null
                   return (
                     <MetricBar
-                      key={key}
+                      key={score.id}
                       label={category.label}
-                      value={value}
+                      value={score.value}
                       icon={category.icon}
                     />
                   )
                 })}
               </div>
 
-              {score.achievements.length > 0 && (
+              {/* {score.achievements.length > 0 && (
                 <div>
                   <h4 className="font-semibold mb-3">Achievements</h4>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
@@ -320,17 +333,14 @@ function ScoreCard({ score }: { score: (typeof MOCK_SCORES)[0] }) {
                     ))}
                   </div>
                 </div>
-              )}
+              )} */}
             </motion.div>
           )}
         </AnimatePresence>
 
         <AnimatePresence>
           {showAddScore && (
-            <AddScorePopup
-              user={score.user}
-              onClose={() => setShowAddScore(false)}
-            />
+            <AddScorePopup user={user} onClose={() => setShowAddScore(false)} />
           )}
         </AnimatePresence>
       </div>
@@ -339,11 +349,18 @@ function ScoreCard({ score }: { score: (typeof MOCK_SCORES)[0] }) {
 }
 
 export function UserScores() {
+  const { data: usersData } = useGetUsersQuery({
+    variables: {
+      orderBy: User_OrderBy.TotalScore,
+      orderDirection: OrderDirection.Desc
+    }
+  })
   return (
     <div className="space-y-6">
       <div className="grid grid-cols-1 gap-6">
-        {MOCK_SCORES.map((score) => (
-          <ScoreCard key={score.user.id} score={score} />
+        {usersData?.users.map((user) => (
+          // @ts-ignore
+          <ScoreCard key={user.id} user={user} />
         ))}
       </div>
     </div>

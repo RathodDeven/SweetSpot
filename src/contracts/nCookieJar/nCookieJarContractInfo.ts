@@ -1,8 +1,10 @@
-export const nCookieJarContractAddresses = {
+import { Address } from 'viem'
+
+export const nCookieJarContractAddresses: Record<string, Address> = {
   arbitrumSepolia: '0xF47c6040536D1A1584e4BEe580d65014E2fC55fE'
 }
 
-export const nCookieJarContractAddress =
+export const nCookieJarContractAddress: Address =
   nCookieJarContractAddresses.arbitrumSepolia
 
 export const nCookieJarContractABI = [

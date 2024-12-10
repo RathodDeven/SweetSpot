@@ -2,6 +2,13 @@ import React, { useState } from 'react'
 import { motion } from 'framer-motion'
 import { Settings, Clock } from 'lucide-react'
 import toast from 'react-hot-toast'
+import { useWriteContract } from 'wagmi'
+import {
+  nCookieJarContractABI,
+  nCookieJarContractAddress
+} from '../../contracts/nCookieJar/nCookieJarContractInfo'
+import uploadToIPFS from '../../utils/uploadToIPFS'
+import { arbitrumSepoliaPublicClient } from '../../utils/viemClient'
 
 interface RoundData {
   name: string
@@ -18,11 +25,54 @@ export function AdminForm() {
     endTime: ''
   })
 
+  const { writeContractAsync } = useWriteContract()
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     try {
-      // Simulated update
-      await new Promise((resolve) => setTimeout(resolve, 1000))
+      const startTimeInEpoch = new Date(roundData.startTime).getTime() / 1000
+      const endTimeInEpoch = new Date(roundData.endTime).getTime() / 1000
+
+      // create a json file
+      const json = JSON.stringify({
+        name: roundData.name,
+        description: roundData.description,
+        image: 'null',
+        external_url: 'https://handprotocol.org'
+      })
+
+      const jsonFile = new File([json], 'round-metadata.json', {
+        type: 'application/json'
+      })
+
+      const { uri } = await uploadToIPFS(jsonFile)
+
+      const tx = await toast.promise(
+        writeContractAsync({
+          abi: nCookieJarContractABI,
+          address: nCookieJarContractAddress,
+          functionName: 'setRound',
+          args: [startTimeInEpoch, endTimeInEpoch, uri]
+        }),
+        {
+          error: 'Failed to set round',
+          loading: 'Setting round...',
+          success: 'Current round updated!'
+        }
+      )
+
+      await toast.promise(
+        arbitrumSepoliaPublicClient.waitForTransactionReceipt({
+          hash: tx,
+          confirmations: 3
+        }),
+        {
+          error: 'Failed to set round',
+          loading: 'Confirming round settings...',
+          success: 'Round settings updated!'
+        }
+      )
+
       toast.success('Round settings updated successfully!')
     } catch (error) {
       toast.error('Failed to update round settings.')
@@ -33,7 +83,7 @@ export function AdminForm() {
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      className="bg-white rounded-lg shadow-md p-6"
+      className="bg-white rounded-lg shadow-md p-6 h-full overflow-y-auto"
     >
       <div className="flex items-center justify-between mb-6">
         <h2 className="text-2xl font-bold">Round Settings</h2>

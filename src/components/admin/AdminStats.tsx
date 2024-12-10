@@ -13,6 +13,9 @@ import {
   DollarSign
 } from 'lucide-react'
 import { formatEther, formatDate } from '../../utils/formatters'
+import { useTokenBalancesQuery } from '../../graphql/generated'
+import { SUPPORTED_TOKENS } from '../../types/tokens'
+import { formatUnits } from 'viem'
 
 // Enhanced mock data
 const MOCK_STATS = {
@@ -128,6 +131,8 @@ export function AdminStats() {
     return `${days}d ${hours}h`
   }
 
+  const { data: tokenBalanceData } = useTokenBalancesQuery()
+
   return (
     <div className="space-y-6">
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -164,35 +169,35 @@ export function AdminStats() {
             <PiggyBank className="h-6 w-6 text-purple-600" />
           </div>
           <div className="space-y-4">
-            {Object.entries(MOCK_STATS.treasuryBalance).map(
-              ([token, amount]) => (
+            {tokenBalanceData?.tokenBalances.map((tokenBalance) => {
+              const token = SUPPORTED_TOKENS.find(
+                (token) =>
+                  token.address?.toLowerCase() === tokenBalance.id.toLowerCase()
+              )
+              if (!token) return null
+              return (
                 <div
-                  key={token}
+                  key={tokenBalance.id}
                   className="flex justify-between items-center p-3 bg-gray-50 rounded-lg"
                 >
                   <div className="flex items-center space-x-3">
                     <div className="p-2 bg-purple-100 rounded-full">
                       <img
-                        src={`https://raw.githubusercontent.com/spothq/cryptocurrency-icons/master/128/color/${token.toLowerCase()}.png`}
-                        alt={token}
+                        src={`https://raw.githubusercontent.com/spothq/cryptocurrency-icons/master/128/color/${token.symbol.toLowerCase()}.png`}
+                        alt={token?.address}
                         className="w-6 h-6"
                       />
                     </div>
-                    <span className="font-medium">{token}</span>
+                    <span className="font-medium">{token?.symbol}</span>
                   </div>
                   <div className="text-right">
                     <p className="font-bold">
-                      {token === 'USDC'
-                        ? (parseInt(amount) / 1e6).toLocaleString()
-                        : formatEther(amount)}
-                    </p>
-                    <p className="text-sm text-gray-500">
-                      ${(token === 'ETH' ? 3000 : 1).toLocaleString()}
+                      {formatUnits(tokenBalance.amount, token?.decimals)}
                     </p>
                   </div>
                 </div>
               )
-            )}
+            })}
           </div>
 
           <div className="mt-6 pt-6 border-t border-gray-100">

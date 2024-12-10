@@ -321,6 +321,36 @@ export const getRemainingTime = (
   }
 }
 
-export const valueInWei = (amount: string, decimals: number): bigint => {
-  return BigInt(parseFloat(amount) * 10 ** decimals)
+export const valueInWei = (
+  amount: string | number,
+  decimals: number
+): bigint => {
+  if (typeof amount === 'number') {
+    return BigInt(amount * 10 ** decimals)
+  }
+
+  return BigInt(parseFloat(amount || '0') * 10 ** decimals)
+}
+
+export const getLevelFromScore = (score: number): number => {
+  // 1-10 score => level 1
+  // 11-20 score => level 2
+  // 21-30 score => level 3
+  // 31-40 score => level 4
+  // 41-50 score => level 5
+
+  if (score === 0) {
+    return 0
+  }
+  if (score === 1) {
+    return 1
+  }
+  let level = 0
+  for (let i = 1; i <= 5; i++) {
+    if (score <= i * 10) {
+      level = i
+      break
+    }
+  }
+  return level
 }

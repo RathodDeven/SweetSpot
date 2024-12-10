@@ -14,16 +14,6 @@ export function Dashboard() {
   const [showApplication, setShowApplication] = useState(false)
   const { push } = useRouter()
 
-  const handleClaim = async () => {
-    try {
-      // Simulated claim
-      await new Promise((resolve) => setTimeout(resolve, 1000))
-      toast.success('Tokens claimed successfully!')
-    } catch (error) {
-      toast.error('Failed to claim tokens.')
-    }
-  }
-
   return (
     <div className="max-w-4xl mx-auto px-6 py-8 space-y-6">
       <div className="flex justify-between items-center">
@@ -40,11 +30,8 @@ export function Dashboard() {
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <RoundInfo details={MOCK_DASHBOARD_DATA.roundDetails} />
-        <TokenBalance
-          balances={MOCK_DASHBOARD_DATA.balances}
-          onClaim={handleClaim}
-        />
+        <RoundInfo />
+        <TokenBalance balances={MOCK_DASHBOARD_DATA.balances} />
       </div>
 
       <ImpactScoop />

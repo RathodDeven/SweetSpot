@@ -5,24 +5,45 @@ import { UserBalances } from '../../types/contract'
 import { formatEther } from '../../utils/formatters'
 import { DonationSuggestionsModal } from '../donations/DonationSuggestionsModal'
 import toast from 'react-hot-toast'
+import { useWriteContract } from 'wagmi'
+import {
+  nCookieJarContractABI,
+  nCookieJarContractAddress
+} from '../../contracts/nCookieJar/nCookieJarContractInfo'
+import { SUPPORTED_TOKENS } from '../../types/tokens'
+import { arbitrumSepoliaPublicClient } from '../../utils/viemClient'
 
 interface TokenBalanceProps {
   balances: UserBalances
-  onClaim: () => void
 }
 
-export function TokenBalance({ balances, onClaim }: TokenBalanceProps) {
+export function TokenBalance({ balances }: TokenBalanceProps) {
   const [showDonationModal, setShowDonationModal] = useState(false)
   const [claimedAmount, setClaimedAmount] = useState('')
+  const { writeContractAsync } = useWriteContract()
 
   const handleClaim = async () => {
     try {
-      await onClaim()
-      const amount = formatEther(balances.claimableTokens)
-      setClaimedAmount(amount)
-      toast.success('Tokens claimed successfully!')
-      setShowDonationModal(true)
+      const tx = await writeContractAsync({
+        abi: nCookieJarContractABI,
+        address: nCookieJarContractAddress,
+        functionName: 'claim',
+        args: [SUPPORTED_TOKENS[0].address]
+      })
+
+      await toast.promise(
+        arbitrumSepoliaPublicClient.waitForTransactionReceipt({
+          hash: tx,
+          confirmations: 3
+        }),
+        {
+          error: 'Error Claiming token',
+          loading: 'Claiming Tokens',
+          success: 'Claimed Allocated Tokens'
+        }
+      )
     } catch (error) {
+      console.error(error)
       toast.error('Failed to claim tokens.')
     }
   }

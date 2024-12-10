@@ -68,6 +68,8 @@
     scrollbar-width: none; /* Firefox */
   }
 
+  /* here we are removing default styling added by nextjs */
+
   /* Remove default button styles */
   button {
     border: none;
@@ -80,6 +82,23 @@
   a {
     text-decoration: none;
     color: inherit;
+  }
+
+  /* Remove default styles for inputs */
+  input {
+    padding: 0;
+    background: none;
+    outline: none;
+    font-family: inherit;
+    font-size: inherit;
+  }
+
+  textarea {
+    padding: 0;
+    background: none;
+    outline: none;
+    font-family: inherit;
+    font-size: inherit;
   }
 
   ::-webkit-scrollbar {
