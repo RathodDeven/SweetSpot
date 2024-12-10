@@ -60,7 +60,7 @@ export function LeaderboardCard({
       <div className="flex items-center justify-between relative z-10">
         <div className="flex items-center space-x-4">
           <div className="relative">
-            <UserAvatar user={user} size="sm" />
+            {/* <UserAvatar user={user} size="sm" /> */}
             <div
               className={`absolute -top-1 -right-1 w-5 h-5 rounded-full bg-gradient-to-br ${rankColor || 'from-purple-500 to-purple-700'} flex items-center justify-center text-white text-xs font-bold shadow-lg`}
             >
