@@ -1,3 +1,4 @@
+import { ZERO_ADDRESS } from '../utils/contants'
 import { Token } from './tokens'
 
 export interface DonationPlatform {
@@ -76,7 +77,7 @@ export const MOCK_PAST_DONATIONS: PastDonation[] = [
       symbol: 'ETH',
       name: 'Ethereum',
       decimals: 18,
-      address: null,
+      address: ZERO_ADDRESS,
       logoUrl:
         'https://raw.githubusercontent.com/spothq/cryptocurrency-icons/master/128/color/eth.png'
     },
