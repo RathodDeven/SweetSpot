@@ -5,7 +5,7 @@ export interface Token {
   symbol: string
   name: string
   decimals: number
-  address: Address | undefined // undefined for native ETH
+  address: Address // undefined for native ETH
   logoUrl: string
 }
 
@@ -45,3 +45,12 @@ export const ARBITRUM_SEPOLIA_TOKENS: Token[] = [
 ]
 
 export const SUPPORTED_TOKENS: Token[] = ARBITRUM_SEPOLIA_TOKENS
+
+export const SUPPORTED_TOKENS_MAP: Record<Address, Token> =
+  SUPPORTED_TOKENS.reduce(
+    (acc, token) => {
+      acc[token.address] = token
+      return acc
+    },
+    {} as Record<Address, Token>
+  ) // Explicitly cast as Record<Address, Token>

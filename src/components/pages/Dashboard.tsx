@@ -1,13 +1,13 @@
 import React, { useState } from 'react'
 import { RoundInfo } from '../dashboard/RoundInfo'
 import { TokenBalance } from '../dashboard/TokenBalance'
-import { EmailNotifications } from '../dashboard/EmailNotifications'
-import { ImpactScoop } from '../dashboard/ImpactScoop'
+// import { EmailNotifications } from '../dashboard/EmailNotifications'
+// import { ImpactScoop } from '../dashboard/ImpactScoop'
 import { ApplicationModal } from '../dashboard/ApplicationModal'
 import { motion } from 'framer-motion'
 import { Candy } from 'lucide-react'
-import toast from 'react-hot-toast'
-import { MOCK_DASHBOARD_DATA } from '../../types/dashboard'
+// import toast from 'react-hot-toast'
+// import { MOCK_DASHBOARD_DATA } from '../../types/dashboard'
 import { useRouter } from 'next/navigation'
 
 export function Dashboard() {
@@ -15,7 +15,7 @@ export function Dashboard() {
   const { push } = useRouter()
 
   return (
-    <div className="max-w-4xl mx-auto px-6 py-8 space-y-6">
+    <div className="max-w-4xl mx-auto px-6 py-8 space-y-6 h-fit min-h-screen">
       <div className="flex justify-between items-center">
         <h1 className="text-3xl font-bold text-gray-900">Dashboard</h1>
         <motion.button
@@ -31,12 +31,14 @@ export function Dashboard() {
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <RoundInfo />
-        <TokenBalance balances={MOCK_DASHBOARD_DATA.balances} />
+        <TokenBalance />
       </div>
 
-      <ImpactScoop />
+      {/* todo history for this round here */}
 
-      <EmailNotifications />
+      {/* <ImpactScoop />
+
+      <EmailNotifications /> */}
 
       <div className="mt-12 pt-8 border-t border-gray-200">
         <div className="text-center">

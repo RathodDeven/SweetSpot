@@ -1168,6 +1168,13 @@ export type TokenBalance = {
   amount: Scalars['BigInt']['output']
   id: Scalars['ID']['output']
   token: Scalars['String']['output']
+  type: TokenBalanceType
+}
+
+export enum TokenBalanceType {
+  Allocated = 'ALLOCATED',
+  Claimed = 'CLAIMED',
+  Total = 'TOTAL'
 }
 
 export type TokenBalance_Filter = {
@@ -1211,12 +1218,17 @@ export type TokenBalance_Filter = {
   token_not_starts_with_nocase?: InputMaybe<Scalars['String']['input']>
   token_starts_with?: InputMaybe<Scalars['String']['input']>
   token_starts_with_nocase?: InputMaybe<Scalars['String']['input']>
+  type?: InputMaybe<TokenBalanceType>
+  type_in?: InputMaybe<Array<TokenBalanceType>>
+  type_not?: InputMaybe<TokenBalanceType>
+  type_not_in?: InputMaybe<Array<TokenBalanceType>>
 }
 
 export enum TokenBalance_OrderBy {
   Amount = 'amount',
   Id = 'id',
-  Token = 'token'
+  Token = 'token',
+  Type = 'type'
 }
 
 export type User = {
@@ -1332,6 +1344,23 @@ export enum _SubgraphErrorPolicy_ {
   Deny = 'deny'
 }
 
+export type AllocatedTokensQueryVariables = Exact<{
+  where?: InputMaybe<AllocatedToken_Filter>
+}>
+
+export type AllocatedTokensQuery = {
+  __typename?: 'Query'
+  allocatedTokens: Array<{
+    __typename?: 'AllocatedToken'
+    amount: any
+    claimedAmount: any
+    claimedTimeStamp?: any | null
+    id: string
+    timestamp: any
+    token: string
+  }>
+}
+
 export type CurrentRoundsQueryVariables = Exact<{ [key: string]: never }>
 
 export type CurrentRoundsQuery = {
@@ -1405,6 +1434,89 @@ export type TokenBalancesQuery = {
   tokenBalances: Array<{ __typename?: 'TokenBalance'; id: string; amount: any }>
 }
 
+export const AllocatedTokensDocument = gql`
+  query AllocatedTokens($where: AllocatedToken_filter) {
+    allocatedTokens(where: $where) {
+      amount
+      claimedAmount
+      claimedTimeStamp
+      id
+      timestamp
+      token
+    }
+  }
+`
+
+/**
+ * __useAllocatedTokensQuery__
+ *
+ * To run a query within a React component, call `useAllocatedTokensQuery` and pass it any options that fit your needs.
+ * When your component renders, `useAllocatedTokensQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useAllocatedTokensQuery({
+ *   variables: {
+ *      where: // value for 'where'
+ *   },
+ * });
+ */
+export function useAllocatedTokensQuery(
+  baseOptions?: Apollo.QueryHookOptions<
+    AllocatedTokensQuery,
+    AllocatedTokensQueryVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useQuery<AllocatedTokensQuery, AllocatedTokensQueryVariables>(
+    AllocatedTokensDocument,
+    options
+  )
+}
+export function useAllocatedTokensLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    AllocatedTokensQuery,
+    AllocatedTokensQueryVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useLazyQuery<
+    AllocatedTokensQuery,
+    AllocatedTokensQueryVariables
+  >(AllocatedTokensDocument, options)
+}
+export function useAllocatedTokensSuspenseQuery(
+  baseOptions?:
+    | Apollo.SkipToken
+    | Apollo.SuspenseQueryHookOptions<
+        AllocatedTokensQuery,
+        AllocatedTokensQueryVariables
+      >
+) {
+  const options =
+    baseOptions === Apollo.skipToken
+      ? baseOptions
+      : { ...defaultOptions, ...baseOptions }
+  return Apollo.useSuspenseQuery<
+    AllocatedTokensQuery,
+    AllocatedTokensQueryVariables
+  >(AllocatedTokensDocument, options)
+}
+export type AllocatedTokensQueryHookResult = ReturnType<
+  typeof useAllocatedTokensQuery
+>
+export type AllocatedTokensLazyQueryHookResult = ReturnType<
+  typeof useAllocatedTokensLazyQuery
+>
+export type AllocatedTokensSuspenseQueryHookResult = ReturnType<
+  typeof useAllocatedTokensSuspenseQuery
+>
+export type AllocatedTokensQueryResult = Apollo.QueryResult<
+  AllocatedTokensQuery,
+  AllocatedTokensQueryVariables
+>
 export const CurrentRoundsDocument = gql`
   query CurrentRounds {
     currentRounds {

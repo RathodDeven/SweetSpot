@@ -5,22 +5,46 @@ import { UserBalances } from '../../types/contract'
 import { formatEther } from '../../utils/formatters'
 import { DonationSuggestionsModal } from '../donations/DonationSuggestionsModal'
 import toast from 'react-hot-toast'
-import { useWriteContract } from 'wagmi'
+import { useAccount, useWriteContract } from 'wagmi'
 import {
   nCookieJarContractABI,
   nCookieJarContractAddress
 } from '../../contracts/nCookieJar/nCookieJarContractInfo'
-import { SUPPORTED_TOKENS } from '../../types/tokens'
+import { SUPPORTED_TOKENS, SUPPORTED_TOKENS_MAP } from '../../types/tokens'
 import { arbitrumSepoliaPublicClient } from '../../utils/viemClient'
+import {
+  useAllocatedTokensQuery,
+  useCurrentRoundsQuery
+} from '../../graphql/generated'
+import { Address } from 'viem'
 
-interface TokenBalanceProps {
-  balances: UserBalances
-}
+export function TokenBalance() {
+  const { address } = useAccount()
+  const { data } = useCurrentRoundsQuery()
+  const currentRound = data?.currentRounds[0]
 
-export function TokenBalance({ balances }: TokenBalanceProps) {
+  const isRoundYetToStart = Date.now() < currentRound?.round.start * 1000
+  const isRoundFinished = Date.now() > currentRound?.round.end * 1000
+  const isRoundActive = !isRoundFinished && !isRoundYetToStart
+
   const [showDonationModal, setShowDonationModal] = useState(false)
   const [claimedAmount, setClaimedAmount] = useState('')
   const { writeContractAsync } = useWriteContract()
+
+  const { data: allocatedTokens } = useAllocatedTokensQuery({
+    variables: {
+      where: {
+        user: address,
+        round: currentRound?.round?.id
+      }
+    },
+    skip: !address || !currentRound?.round?.id
+  })
+
+  const unclaimedTokens = allocatedTokens?.allocatedTokens?.filter((token) => {
+    // check if claimedAmount is less than amount
+    return Number(token?.amount) > Number(token?.claimedAmount)
+  })
 
   const handleClaim = async () => {
     try {
@@ -57,32 +81,47 @@ export function TokenBalance({ balances }: TokenBalanceProps) {
         className="bg-white rounded-lg shadow-md p-6"
       >
         <div className="flex items-center justify-between mb-6">
-          <h2 className="text-2xl font-bold">Your Balances</h2>
+          <h2 className="text-2xl font-bold">Claimable Tokens</h2>
           <Coins className="h-6 w-6 text-purple-600" />
         </div>
 
         <div className="space-y-4">
-          <div>
-            <p className="text-sm text-gray-600">Claimable Tokens</p>
-            <p className="text-2xl font-bold text-purple-600">
-              {formatEther(balances.claimableTokens)} COOKIE
-            </p>
-          </div>
+          {unclaimedTokens?.length ? (
+            unclaimedTokens?.map((token) => {
+              const tokenInfo = SUPPORTED_TOKENS_MAP[token?.id as Address]
+              const unCliamedAmountInWei =
+                Number(token?.amount) - Number(token?.claimedAmount)
+              const unCliamedAmount = formatEther(String(unCliamedAmountInWei))
 
-          <div>
-            <p className="text-sm text-gray-600">Allowed Amount</p>
-            <p className="text-2xl font-bold text-gray-900">
-              {formatEther(balances.allowedAmount)} ETH
-            </p>
-          </div>
+              return (
+                <div className="between-row">
+                  <img src={tokenInfo.logoUrl} alt="" className="h-8 w-8" />
+                  <div className="font-semibold">
+                    {`${unCliamedAmount} ${tokenInfo.symbol}`}
+                  </div>
+                </div>
+              )
+            })
+          ) : (
+            <div className="text-gray-600">
+              No tokens to claim for this round.
+            </div>
+          )}
 
           <motion.button
             whileHover={{ scale: 1.02 }}
             whileTap={{ scale: 0.98 }}
             onClick={handleClaim}
-            className="w-full bg-purple-600 text-white py-3 rounded-lg font-medium hover:bg-purple-700 transition-colors"
+            disabled={!unclaimedTokens?.length || !isRoundActive}
+            className="w-full bg-purple-600 text-white py-3 rounded-lg font-medium hover:bg-purple-700 transition-colors disabled:bg-purple-300"
           >
-            Claim Tokens
+            {isRoundActive && unclaimedTokens?.length
+              ? 'Claim Tokens'
+              : isRoundYetToStart
+                ? 'Round Not Started'
+                : isRoundFinished
+                  ? 'Round Finished'
+                  : 'No Tokens to Claim'}
           </motion.button>
         </div>
       </motion.div>
