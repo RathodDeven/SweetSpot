@@ -107,7 +107,7 @@ export function TokenBalance() {
               )
 
               return (
-                <div className="between-row">
+                <div className="between-row" key={token?.id}>
                   <div className="start-center-row gap-x-2">
                     <img src={tokenInfo.logoUrl} alt="" className="h-8 w-8" />
                     <div>{tokenInfo?.symbol} </div>
