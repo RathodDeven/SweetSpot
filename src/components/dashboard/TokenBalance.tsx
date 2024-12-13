@@ -10,13 +10,15 @@ import {
   nCookieJarContractABI,
   nCookieJarContractAddress
 } from '../../contracts/nCookieJar/nCookieJarContractInfo'
-import { SUPPORTED_TOKENS, SUPPORTED_TOKENS_MAP } from '../../types/tokens'
+import { getSupportedToken, SUPPORTED_TOKENS } from '../../types/tokens'
 import { arbitrumSepoliaPublicClient } from '../../utils/viemClient'
 import {
   useAllocatedTokensQuery,
   useCurrentRoundsQuery
 } from '../../graphql/generated'
 import { Address } from 'viem'
+import { useApolloClient } from '@apollo/client'
+import { formatUnits } from 'ethers'
 
 export function TokenBalance() {
   const { address } = useAccount()
@@ -31,10 +33,12 @@ export function TokenBalance() {
   const [claimedAmount, setClaimedAmount] = useState('')
   const { writeContractAsync } = useWriteContract()
 
+  const client = useApolloClient()
+
   const { data: allocatedTokens } = useAllocatedTokensQuery({
     variables: {
       where: {
-        user: address,
+        user: address?.toLowerCase(),
         round: currentRound?.round?.id
       }
     },
@@ -48,18 +52,24 @@ export function TokenBalance() {
 
   const handleClaim = async () => {
     try {
-      const tx = await writeContractAsync({
-        abi: nCookieJarContractABI,
-        address: nCookieJarContractAddress,
-        functionName: 'claim',
-        args: [SUPPORTED_TOKENS[0].address]
-      })
-
       await toast.promise(
-        arbitrumSepoliaPublicClient.waitForTransactionReceipt({
-          hash: tx,
-          confirmations: 3
-        }),
+        (async () => {
+          const tx = await writeContractAsync({
+            abi: nCookieJarContractABI,
+            address: nCookieJarContractAddress,
+            functionName: 'claim',
+            args: [unclaimedTokens?.[0]?.token]
+          })
+
+          await arbitrumSepoliaPublicClient.waitForTransactionReceipt({
+            hash: tx,
+            confirmations: 6
+          })
+
+          await client.refetchQueries({
+            include: ['AllocatedTokens']
+          })
+        })(),
         {
           error: 'Error Claiming token',
           loading: 'Claiming Tokens',
@@ -88,17 +98,21 @@ export function TokenBalance() {
         <div className="space-y-4">
           {unclaimedTokens?.length ? (
             unclaimedTokens?.map((token) => {
-              const tokenInfo = SUPPORTED_TOKENS_MAP[token?.id as Address]
+              const tokenInfo = getSupportedToken(token?.token as Address)!
               const unCliamedAmountInWei =
                 Number(token?.amount) - Number(token?.claimedAmount)
-              const unCliamedAmount = formatEther(String(unCliamedAmountInWei))
+              const unCliamedAmount = formatUnits(
+                String(unCliamedAmountInWei),
+                tokenInfo?.decimals
+              )
 
               return (
                 <div className="between-row">
-                  <img src={tokenInfo.logoUrl} alt="" className="h-8 w-8" />
-                  <div className="font-semibold">
-                    {`${unCliamedAmount} ${tokenInfo.symbol}`}
+                  <div className="start-center-row gap-x-2">
+                    <img src={tokenInfo.logoUrl} alt="" className="h-8 w-8" />
+                    <div>{tokenInfo?.symbol} </div>
                   </div>
+                  <div className="font-semibold">{unCliamedAmount}</div>
                 </div>
               )
             })
@@ -116,7 +130,7 @@ export function TokenBalance() {
             className="w-full bg-purple-600 text-white py-3 rounded-lg font-medium hover:bg-purple-700 transition-colors disabled:bg-purple-300"
           >
             {isRoundActive && unclaimedTokens?.length
-              ? 'Claim Tokens'
+              ? `Claim ${getSupportedToken(unclaimedTokens?.[0]?.token as Address)?.symbol} Tokens `
               : isRoundYetToStart
                 ? 'Round Not Started'
                 : isRoundFinished

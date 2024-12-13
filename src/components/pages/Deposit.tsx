@@ -19,6 +19,7 @@ import { Address, erc20Abi, formatUnits } from 'viem'
 import { arbitrumSepoliaPublicClient } from '../../utils/viemClient'
 import { valueInWei } from '../../utils/helpers'
 import { clsx } from 'clsx'
+import { useApolloClient } from '@apollo/client'
 
 interface DepositFormData {
   token: string
@@ -36,6 +37,7 @@ export function Deposit() {
     address: address
   })
   const { data: txHash, writeContractAsync } = useWriteContract()
+  const client = useApolloClient()
 
   const [showConfirmation, setShowConfirmation] = useState(false)
   const [formData, setFormData] = useState<DepositFormData>({
@@ -143,17 +145,14 @@ export function Deposit() {
         }
       )
 
-      console.log('txHash', txHash)
+      await arbitrumSepoliaPublicClient.waitForTransactionReceipt({
+        hash: tx,
+        confirmations: 5
+      })
 
-      const txReciept =
-        await arbitrumSepoliaPublicClient.waitForTransactionReceipt({
-          hash: tx,
-          confirmations: 3
-        })
-
-      console.log('txReciept', txReciept)
-
-      toast.success('Deposit successful!')
+      await client.refetchQueries({
+        include: ['TokenBalances']
+      })
       push('/dashboard')
     } catch (error) {
       console.log('error', error)

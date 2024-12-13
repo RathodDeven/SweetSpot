@@ -1,30 +1,40 @@
 import React, { useState } from 'react'
-import { motion, AnimatePresence } from 'framer-motion'
+import { motion } from 'framer-motion'
 import { Coins, X } from 'lucide-react'
 import toast from 'react-hot-toast'
 import { SUPPORTED_TOKENS } from '../../types/tokens'
-import { User } from '../../types/users'
 import { formatAddress } from '../../utils/formatters'
+import { Address } from 'viem'
+import useEns from '../../hooks/useEns'
 
 interface QuickAllocationProps {
-  user: User | null
+  userAddress: Address | null
+  handleAllocate: (
+    recipientAddress: Address,
+    tokenAddress: Address,
+    amount: string
+  ) => void
   onClose: () => void
 }
 
-export function QuickAllocation({ user, onClose }: QuickAllocationProps) {
+export function QuickAllocation({
+  userAddress,
+  handleAllocate,
+  onClose
+}: QuickAllocationProps) {
   const [amount, setAmount] = useState('')
   const [selectedToken, setSelectedToken] = useState(SUPPORTED_TOKENS[0])
 
-  if (!user) return null
+  const { ensName } = useEns({
+    address: userAddress
+  })
+
+  if (!userAddress) return null
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     try {
-      // Simulated allocation
-      await new Promise((resolve) => setTimeout(resolve, 1000))
-      toast.success(
-        `Successfully allocated ${amount} ${selectedToken.symbol} to ${user.name}`
-      )
+      await handleAllocate(userAddress, selectedToken.address, amount)
       onClose()
     } catch (error) {
       toast.error('Failed to allocate tokens')
@@ -59,9 +69,9 @@ export function QuickAllocation({ user, onClose }: QuickAllocationProps) {
         <div className="mb-6">
           <h3 className="font-medium mb-2">Allocating to:</h3>
           <div className="flex items-center space-x-2 text-gray-600">
-            <span>{user.name}</span>
+            <span>{ensName}</span>
             <span className="text-gray-400">
-              ({formatAddress(user.address)})
+              ({formatAddress(userAddress)})
             </span>
           </div>
         </div>

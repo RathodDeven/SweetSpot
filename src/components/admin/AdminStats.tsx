@@ -13,9 +13,12 @@ import {
   DollarSign
 } from 'lucide-react'
 import { formatEther, formatDate } from '../../utils/formatters'
-import { useTokenBalancesQuery } from '../../graphql/generated'
-import { SUPPORTED_TOKENS } from '../../types/tokens'
-import { formatUnits } from 'viem'
+import {
+  TokenBalanceType,
+  useTokenBalancesQuery
+} from '../../graphql/generated'
+import { getSupportedToken, SUPPORTED_TOKENS } from '../../types/tokens'
+import { Address, formatUnits } from 'viem'
 
 // Enhanced mock data
 const MOCK_STATS = {
@@ -131,7 +134,13 @@ export function AdminStats() {
     return `${days}d ${hours}h`
   }
 
-  const { data: tokenBalanceData } = useTokenBalancesQuery()
+  const { data: tokenBalanceData } = useTokenBalancesQuery({
+    variables: {
+      where: {
+        type: TokenBalanceType.Total
+      }
+    }
+  })
 
   return (
     <div className="space-y-6">
@@ -170,10 +179,7 @@ export function AdminStats() {
           </div>
           <div className="space-y-4">
             {tokenBalanceData?.tokenBalances.map((tokenBalance) => {
-              const token = SUPPORTED_TOKENS.find(
-                (token) =>
-                  token.address?.toLowerCase() === tokenBalance.id.toLowerCase()
-              )
+              const token = getSupportedToken(tokenBalance?.token as Address)
               if (!token) return null
               return (
                 <div
@@ -183,7 +189,7 @@ export function AdminStats() {
                   <div className="flex items-center space-x-3">
                     <div className="p-2 bg-purple-100 rounded-full">
                       <img
-                        src={`https://raw.githubusercontent.com/spothq/cryptocurrency-icons/master/128/color/${token.symbol.toLowerCase()}.png`}
+                        src={token.logoUrl}
                         alt={token?.address}
                         className="w-6 h-6"
                       />

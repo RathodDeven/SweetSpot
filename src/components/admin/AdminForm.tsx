@@ -47,33 +47,31 @@ export function AdminForm() {
 
       const { uri } = await uploadToIPFS(jsonFile)
 
-      const tx = await toast.promise(
-        writeContractAsync({
-          abi: nCookieJarContractABI,
-          address: nCookieJarContractAddress,
-          functionName: 'setRound',
-          args: [startTimeInEpoch, endTimeInEpoch, uri]
-        }),
+      await toast.promise(
+        (async () => {
+          const tx = await writeContractAsync({
+            abi: nCookieJarContractABI,
+            address: nCookieJarContractAddress,
+            functionName: 'setRound',
+            args: [startTimeInEpoch, endTimeInEpoch, uri]
+          })
+
+          if (!tx) {
+            toast.error('Failed to sign the transaction')
+            throw new Error('Failed to set round')
+          }
+
+          await arbitrumSepoliaPublicClient.waitForTransactionReceipt({
+            hash: tx,
+            confirmations: 3
+          })
+        })(),
         {
           error: 'Failed to set round',
           loading: 'Setting round...',
           success: 'Current round updated!'
         }
       )
-
-      await toast.promise(
-        arbitrumSepoliaPublicClient.waitForTransactionReceipt({
-          hash: tx,
-          confirmations: 3
-        }),
-        {
-          error: 'Failed to set round',
-          loading: 'Confirming round settings...',
-          success: 'Round settings updated!'
-        }
-      )
-
-      toast.success('Round settings updated successfully!')
     } catch (error) {
       toast.error('Failed to update round settings.')
     }
@@ -166,7 +164,7 @@ export function AdminForm() {
           type="submit"
           className="w-full bg-purple-600 text-white py-3 rounded-lg font-medium hover:bg-purple-700 transition-colors"
         >
-          Update Round Settings
+          Update Round
         </motion.button>
       </form>
     </motion.div>

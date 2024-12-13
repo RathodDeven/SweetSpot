@@ -46,11 +46,8 @@ export const ARBITRUM_SEPOLIA_TOKENS: Token[] = [
 
 export const SUPPORTED_TOKENS: Token[] = ARBITRUM_SEPOLIA_TOKENS
 
-export const SUPPORTED_TOKENS_MAP: Record<Address, Token> =
-  SUPPORTED_TOKENS.reduce(
-    (acc, token) => {
-      acc[token.address] = token
-      return acc
-    },
-    {} as Record<Address, Token>
-  ) // Explicitly cast as Record<Address, Token>
+export const getSupportedToken = (address: Address) => {
+  return SUPPORTED_TOKENS.find(
+    (token) => token.address.toLowerCase() === address.toLowerCase()
+  )
+}

@@ -7,15 +7,12 @@ import {
   Check,
   Clock,
   PlusCircle,
-  UserPlus,
-  User
+  UserPlus
 } from 'lucide-react'
-import { MOCK_USERS } from '../../types/users'
-import { formatAddress, formatEther } from '../../utils/formatters'
 import { UserAvatar } from '../UserAvatar'
 import { QuickAllocation } from './QuickAllocation'
 import { ethers } from 'ethers'
-import { SUPPORTED_TOKENS } from '../../types/tokens'
+import { getSupportedToken, SUPPORTED_TOKENS } from '../../types/tokens'
 import toast from 'react-hot-toast'
 import { useWriteContract } from 'wagmi'
 import {
@@ -24,47 +21,38 @@ import {
 } from '../../contracts/nCookieJar/nCookieJarContractInfo'
 import { valueInWei } from '../../utils/helpers'
 import { arbitrumSepoliaPublicClient } from '../../utils/viemClient'
-
-interface Allocation {
-  token: string
-  amount: string
-  claimed: boolean
-}
-
-interface UserAllocation {
-  user: {
-    id: string
-    name: string
-    address: string
-  }
-  allocations: Allocation[]
-}
-
-const MOCK_ALLOCATIONS: UserAllocation[] = [
-  {
-    user: MOCK_USERS[0],
-    allocations: [
-      { token: 'SWEET', amount: '1000000000000000000000', claimed: true },
-      { token: 'ETH', amount: '100000000000000000', claimed: false }
-    ]
-  },
-  {
-    user: MOCK_USERS[1],
-    allocations: [
-      { token: 'SWEET', amount: '2000000000000000000000', claimed: false },
-      { token: 'USDGLO', amount: '5000000000000000000000', claimed: true }
-    ]
-  }
-]
+import {
+  CurrentRoundAllocatedTokensDocument,
+  useCurrentRoundAllocatedTokensQuery
+} from '../../graphql/generated'
+import EnsName from '../common/EnsName'
+import { Address } from 'viem'
+import { useApolloClient } from '@apollo/client'
+import clsx from 'clsx'
 
 export function TokenAllocation() {
   const [showExisting, setShowExisting] = useState(true)
-  const [quickAllocationUser, setQuickAllocationUser] = useState<
-    (typeof MOCK_USERS)[0] | null
-  >(null)
+  const [quickAllocationUser, setQuickAllocationUser] =
+    useState<Address | null>(null)
   const { writeContractAsync } = useWriteContract()
-  const [allocations, setAllocations] =
-    useState<UserAllocation[]>(MOCK_ALLOCATIONS)
+  const { data: currentRound } = useCurrentRoundAllocatedTokensQuery()
+  const [hoveredUser, setHoveredUser] = useState<Address | null>(null)
+
+  const client = useApolloClient()
+
+  const allocatedTokens =
+    currentRound?.currentRounds?.[0]?.round?.allocatedTokens
+  const groupedAllocatedTokens = allocatedTokens?.reduce<
+    Record<string, typeof allocatedTokens>
+  >((acc, token) => {
+    const userId = token.user.id
+    if (!acc[userId]) {
+      acc[userId] = []
+    }
+    acc[userId].push(token)
+    return acc
+  }, {})
+
   const [newUser, setNewUser] = useState({
     address: '',
     token: SUPPORTED_TOKENS[0].symbol,
@@ -74,40 +62,58 @@ export function TokenAllocation() {
   const handleAddUser = async (e: React.FormEvent) => {
     e.preventDefault()
 
-    if (!newUser.address.match(/^0x[a-fA-F0-9]{40}$/)) {
+    await handleAllocate(
+      newUser.address as Address,
+      newUser.token as Address,
+      newUser.amount
+    )
+
+    setNewUser({
+      address: '',
+      token: SUPPORTED_TOKENS[0].symbol,
+      amount: ''
+    })
+  }
+
+  const handleAllocate = async (
+    recipientAddress: Address,
+    tokenAddress: Address,
+    amount: string
+  ) => {
+    if (!recipientAddress.match(/^0x[a-fA-F0-9]{40}$/)) {
       toast.error('Please enter a valid Ethereum address')
       return
     }
 
     try {
-      const selectedToken = SUPPORTED_TOKENS.find(
-        (token) => token.symbol === newUser.token
-      )
+      const selectedToken = getSupportedToken(tokenAddress)
 
       const tx = await writeContractAsync({
         abi: nCookieJarContractABI,
         address: nCookieJarContractAddress,
         functionName: 'setAllowedAmount',
         args: [
-          newUser.address,
+          recipientAddress,
           selectedToken?.address,
-          valueInWei(newUser.amount, selectedToken?.decimals!)
+          valueInWei(amount, selectedToken?.decimals!)
         ]
       })
 
       await toast.promise(
         arbitrumSepoliaPublicClient.waitForTransactionReceipt({
           hash: tx,
-          confirmations: 3
+          confirmations: 5
         }),
         {
           error: 'Unable to confirm new allocations',
           loading: 'Confirming allocations',
-          success: 'Amount Allocated to address ' + newUser.address
+          success: 'Amount Allocated to address ' + recipientAddress
         }
       )
 
-      setNewUser({ address: '', token: SUPPORTED_TOKENS[0].symbol, amount: '' })
+      await client.refetchQueries({
+        include: ['CurrentRoundAllocatedTokens']
+      })
     } catch (error) {
       console.error(error)
       toast.error('An Error Occured')
@@ -115,7 +121,7 @@ export function TokenAllocation() {
   }
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-8 py-8">
       <div className="flex justify-between items-center">
         <h2 className="text-2xl font-bold">Sweet Spot Allocation</h2>
       </div>
@@ -132,9 +138,9 @@ export function TokenAllocation() {
           </div>
 
           <div className="overflow-x-auto mb-8">
-            <table className="min-w-full divide-y divide-gray-200">
+            <table className="min-w-full divide-y divide-gray-400">
               <thead>
-                <tr>
+                <tr className="bg-gray-50">
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                     Member
                   </th>
@@ -152,87 +158,124 @@ export function TokenAllocation() {
                   </th>
                 </tr>
               </thead>
-              <tbody className="bg-white divide-y divide-gray-200">
-                {allocations.map((userAllocation, userIndex) =>
-                  userAllocation.allocations.map(
-                    (allocation, allocationIndex) => (
-                      <tr
-                        key={`${userAllocation.user.id}-${allocation.token}`}
-                        className="hover:bg-gray-50"
-                      >
-                        {allocationIndex === 0 && (
-                          <td
-                            className="px-6 py-4 whitespace-nowrap"
-                            rowSpan={userAllocation.allocations.length}
-                          >
-                            <div className="flex items-center">
-                              {/* <UserAvatar user={userAllocation.user} /> */}
-                              <div className="ml-4">
-                                <div className="text-sm font-medium text-gray-900">
-                                  {userAllocation.user.name}
-                                </div>
-                                <div className="text-sm text-gray-500">
-                                  {formatAddress(userAllocation.user.address)}
-                                </div>
-                              </div>
-                            </div>
-                          </td>
-                        )}
-                        <td className="px-6 py-4 whitespace-nowrap">
-                          <div className="text-sm text-gray-900">
-                            {allocation.token}
-                          </div>
-                        </td>
-                        <td className="px-6 py-4 whitespace-nowrap">
-                          <div className="text-sm text-gray-900">
-                            {formatEther(allocation.amount)}
-                          </div>
-                        </td>
-                        <td className="px-6 py-4 whitespace-nowrap">
-                          <span
-                            className={`inline-flex items-center px-3 py-1 rounded-full text-sm font-medium ${
-                              allocation.claimed
-                                ? 'bg-green-100 text-green-800'
-                                : 'bg-yellow-100 text-yellow-800'
-                            }`}
-                          >
-                            {allocation.claimed ? (
-                              <>
-                                <Check className="h-4 w-4 mr-1" />
-                                Claimed
-                              </>
-                            ) : (
-                              <>
-                                <Clock className="h-4 w-4 mr-1" />
-                                Pending
-                              </>
-                            )}
-                          </span>
-                        </td>
-                        {allocationIndex === 0 && (
-                          <td
-                            className="px-6 py-4 whitespace-nowrap"
-                            rowSpan={userAllocation.allocations.length}
-                          >
-                            <motion.button
-                              whileHover={{ scale: 1.05 }}
-                              whileTap={{ scale: 0.95 }}
-                              onClick={() =>
-                                setQuickAllocationUser(userAllocation.user)
-                              }
-                              className="flex items-center space-x-1 text-purple-600 hover:text-purple-700"
+              <tbody className="bg-white divide-y divide-gray-400">
+                {groupedAllocatedTokens &&
+                  Object.entries(groupedAllocatedTokens).map(
+                    (userAllocatedTokens) => {
+                      const userAllocations = userAllocatedTokens[1]
+                      const userAddress = userAllocatedTokens[0] as Address
+                      return userAllocations.map(
+                        (allocation, allocationIndex) => {
+                          const isClaimed =
+                            allocation.claimedAmount === allocation.amount
+                          return (
+                            <tr
+                              key={`${allocation?.id}`}
+                              className={clsx(
+                                hoveredUser === userAddress && 'bg-gray-100'
+                              )}
+                              onMouseEnter={() => setHoveredUser(userAddress)}
+                              onMouseLeave={() => setHoveredUser(null)}
                             >
-                              <PlusCircle className="h-4 w-4" />
-                              <span className="text-sm font-medium">
-                                Add Tokens
-                              </span>
-                            </motion.button>
-                          </td>
-                        )}
-                      </tr>
-                    )
-                  )
-                )}
+                              {allocationIndex === 0 && (
+                                <td
+                                  className="px-6 py-4 whitespace-nowrap"
+                                  rowSpan={userAllocations.length}
+                                >
+                                  <div className="flex items-center">
+                                    <UserAvatar address={userAddress} />
+                                    <div className="ml-4">
+                                      <div className="text-sm font-medium text-gray-900">
+                                        {
+                                          <EnsName
+                                            address={userAddress as Address}
+                                            className="text-sm font-medium text-gray-900"
+                                          />
+                                        }
+                                      </div>
+                                      <div className="text-sm text-gray-500">
+                                        {userAddress}
+                                      </div>
+                                    </div>
+                                  </div>
+                                </td>
+                              )}
+                              <td className="px-6 py-4 whitespace-nowrap">
+                                <div className="start-center-row gap-x-2">
+                                  <img
+                                    src={
+                                      getSupportedToken(
+                                        allocation.token as Address
+                                      )?.logoUrl
+                                    }
+                                    className="w-6 h-6"
+                                  />
+                                  <div className="text-sm text-gray-900">
+                                    {
+                                      getSupportedToken(
+                                        allocation.token as Address
+                                      )?.symbol
+                                    }
+                                  </div>
+                                </div>
+                              </td>
+                              <td className="px-6 py-4 whitespace-nowrap">
+                                <div className="text-sm text-gray-900">
+                                  {ethers.formatUnits(
+                                    allocation.amount,
+                                    getSupportedToken(
+                                      allocation.token as Address
+                                    )?.decimals
+                                  )}
+                                </div>
+                              </td>
+                              <td className="px-6 py-4 whitespace-nowrap">
+                                <span
+                                  className={`inline-flex items-center px-3 py-1 rounded-full text-sm font-medium ${
+                                    isClaimed
+                                      ? 'bg-green-100 text-green-800'
+                                      : 'bg-yellow-100 text-yellow-800'
+                                  }`}
+                                >
+                                  {isClaimed ? (
+                                    <>
+                                      <Check className="h-4 w-4 mr-1" />
+                                      Claimed
+                                    </>
+                                  ) : (
+                                    <>
+                                      <Clock className="h-4 w-4 mr-1" />
+                                      Pending
+                                    </>
+                                  )}
+                                </span>
+                              </td>
+                              {allocationIndex === 0 && (
+                                <td
+                                  className="px-6 py-4 whitespace-nowrap"
+                                  rowSpan={userAllocations.length}
+                                >
+                                  <motion.button
+                                    whileHover={{ scale: 1.05 }}
+                                    whileTap={{ scale: 0.95 }}
+                                    onClick={() =>
+                                      setQuickAllocationUser(userAddress)
+                                    }
+                                    className="flex items-center space-x-1 text-purple-600 hover:text-purple-700"
+                                  >
+                                    <PlusCircle className="h-4 w-4" />
+                                    <span className="text-sm font-medium">
+                                      Add Tokens
+                                    </span>
+                                  </motion.button>
+                                </td>
+                              )}
+                            </tr>
+                          )
+                        }
+                      )
+                    }
+                  )}
               </tbody>
             </table>
           </div>
@@ -353,8 +396,9 @@ export function TokenAllocation() {
       </motion.button>
 
       <QuickAllocation
-        user={quickAllocationUser}
+        userAddress={quickAllocationUser}
         onClose={() => setQuickAllocationUser(null)}
+        handleAllocate={handleAllocate}
       />
     </div>
   )

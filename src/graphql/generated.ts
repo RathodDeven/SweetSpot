@@ -1387,6 +1387,36 @@ export type CurrentRoundsQuery = {
   }>
 }
 
+export type CurrentRoundAllocatedTokensQueryVariables = Exact<{
+  [key: string]: never
+}>
+
+export type CurrentRoundAllocatedTokensQuery = {
+  __typename?: 'Query'
+  currentRounds: Array<{
+    __typename?: 'CurrentRound'
+    id: string
+    updatedAt: any
+    round: {
+      __typename?: 'Round'
+      id: string
+      createdAt: any
+      end: any
+      start: any
+      allocatedTokens?: Array<{
+        __typename?: 'AllocatedToken'
+        amount: any
+        claimedAmount: any
+        claimedTimeStamp?: any | null
+        id: string
+        timestamp: any
+        token: string
+        user: { __typename?: 'User'; id: string }
+      }> | null
+    }
+  }>
+}
+
 export type GetUsersQueryVariables = Exact<{
   orderBy?: InputMaybe<User_OrderBy>
   orderDirection?: InputMaybe<OrderDirection>
@@ -1420,18 +1450,26 @@ export type GetUsersQuery = {
   }>
 }
 
-export type MyQueryQueryVariables = Exact<{ [key: string]: never }>
+export type ScoreTypesQueryVariables = Exact<{ [key: string]: never }>
 
-export type MyQueryQuery = {
+export type ScoreTypesQuery = {
   __typename?: 'Query'
   scoreTypes: Array<{ __typename?: 'ScoreType'; id: string }>
 }
 
-export type TokenBalancesQueryVariables = Exact<{ [key: string]: never }>
+export type TokenBalancesQueryVariables = Exact<{
+  where?: InputMaybe<TokenBalance_Filter>
+}>
 
 export type TokenBalancesQuery = {
   __typename?: 'Query'
-  tokenBalances: Array<{ __typename?: 'TokenBalance'; id: string; amount: any }>
+  tokenBalances: Array<{
+    __typename?: 'TokenBalance'
+    type: TokenBalanceType
+    token: string
+    id: string
+    amount: any
+  }>
 }
 
 export const AllocatedTokensDocument = gql`
@@ -1608,6 +1646,101 @@ export type CurrentRoundsQueryResult = Apollo.QueryResult<
   CurrentRoundsQuery,
   CurrentRoundsQueryVariables
 >
+export const CurrentRoundAllocatedTokensDocument = gql`
+  query CurrentRoundAllocatedTokens {
+    currentRounds {
+      id
+      updatedAt
+      round {
+        id
+        createdAt
+        end
+        start
+        allocatedTokens {
+          amount
+          claimedAmount
+          claimedTimeStamp
+          id
+          timestamp
+          token
+          user {
+            id
+          }
+        }
+      }
+    }
+  }
+`
+
+/**
+ * __useCurrentRoundAllocatedTokensQuery__
+ *
+ * To run a query within a React component, call `useCurrentRoundAllocatedTokensQuery` and pass it any options that fit your needs.
+ * When your component renders, `useCurrentRoundAllocatedTokensQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useCurrentRoundAllocatedTokensQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useCurrentRoundAllocatedTokensQuery(
+  baseOptions?: Apollo.QueryHookOptions<
+    CurrentRoundAllocatedTokensQuery,
+    CurrentRoundAllocatedTokensQueryVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useQuery<
+    CurrentRoundAllocatedTokensQuery,
+    CurrentRoundAllocatedTokensQueryVariables
+  >(CurrentRoundAllocatedTokensDocument, options)
+}
+export function useCurrentRoundAllocatedTokensLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    CurrentRoundAllocatedTokensQuery,
+    CurrentRoundAllocatedTokensQueryVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useLazyQuery<
+    CurrentRoundAllocatedTokensQuery,
+    CurrentRoundAllocatedTokensQueryVariables
+  >(CurrentRoundAllocatedTokensDocument, options)
+}
+export function useCurrentRoundAllocatedTokensSuspenseQuery(
+  baseOptions?:
+    | Apollo.SkipToken
+    | Apollo.SuspenseQueryHookOptions<
+        CurrentRoundAllocatedTokensQuery,
+        CurrentRoundAllocatedTokensQueryVariables
+      >
+) {
+  const options =
+    baseOptions === Apollo.skipToken
+      ? baseOptions
+      : { ...defaultOptions, ...baseOptions }
+  return Apollo.useSuspenseQuery<
+    CurrentRoundAllocatedTokensQuery,
+    CurrentRoundAllocatedTokensQueryVariables
+  >(CurrentRoundAllocatedTokensDocument, options)
+}
+export type CurrentRoundAllocatedTokensQueryHookResult = ReturnType<
+  typeof useCurrentRoundAllocatedTokensQuery
+>
+export type CurrentRoundAllocatedTokensLazyQueryHookResult = ReturnType<
+  typeof useCurrentRoundAllocatedTokensLazyQuery
+>
+export type CurrentRoundAllocatedTokensSuspenseQueryHookResult = ReturnType<
+  typeof useCurrentRoundAllocatedTokensSuspenseQuery
+>
+export type CurrentRoundAllocatedTokensQueryResult = Apollo.QueryResult<
+  CurrentRoundAllocatedTokensQuery,
+  CurrentRoundAllocatedTokensQueryVariables
+>
 export const GetUsersDocument = gql`
   query GetUsers(
     $orderBy: User_orderBy
@@ -1706,8 +1839,8 @@ export type GetUsersQueryResult = Apollo.QueryResult<
   GetUsersQuery,
   GetUsersQueryVariables
 >
-export const MyQueryDocument = gql`
-  query MyQuery {
+export const ScoreTypesDocument = gql`
+  query ScoreTypes {
     scoreTypes {
       id
     }
@@ -1715,64 +1848,74 @@ export const MyQueryDocument = gql`
 `
 
 /**
- * __useMyQueryQuery__
+ * __useScoreTypesQuery__
  *
- * To run a query within a React component, call `useMyQueryQuery` and pass it any options that fit your needs.
- * When your component renders, `useMyQueryQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * To run a query within a React component, call `useScoreTypesQuery` and pass it any options that fit your needs.
+ * When your component renders, `useScoreTypesQuery` returns an object from Apollo Client that contains loading, error, and data properties
  * you can use to render your UI.
  *
  * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
  *
  * @example
- * const { data, loading, error } = useMyQueryQuery({
+ * const { data, loading, error } = useScoreTypesQuery({
  *   variables: {
  *   },
  * });
  */
-export function useMyQueryQuery(
-  baseOptions?: Apollo.QueryHookOptions<MyQueryQuery, MyQueryQueryVariables>
+export function useScoreTypesQuery(
+  baseOptions?: Apollo.QueryHookOptions<
+    ScoreTypesQuery,
+    ScoreTypesQueryVariables
+  >
 ) {
   const options = { ...defaultOptions, ...baseOptions }
-  return Apollo.useQuery<MyQueryQuery, MyQueryQueryVariables>(
-    MyQueryDocument,
+  return Apollo.useQuery<ScoreTypesQuery, ScoreTypesQueryVariables>(
+    ScoreTypesDocument,
     options
   )
 }
-export function useMyQueryLazyQuery(
-  baseOptions?: Apollo.LazyQueryHookOptions<MyQueryQuery, MyQueryQueryVariables>
+export function useScoreTypesLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    ScoreTypesQuery,
+    ScoreTypesQueryVariables
+  >
 ) {
   const options = { ...defaultOptions, ...baseOptions }
-  return Apollo.useLazyQuery<MyQueryQuery, MyQueryQueryVariables>(
-    MyQueryDocument,
+  return Apollo.useLazyQuery<ScoreTypesQuery, ScoreTypesQueryVariables>(
+    ScoreTypesDocument,
     options
   )
 }
-export function useMyQuerySuspenseQuery(
+export function useScoreTypesSuspenseQuery(
   baseOptions?:
     | Apollo.SkipToken
-    | Apollo.SuspenseQueryHookOptions<MyQueryQuery, MyQueryQueryVariables>
+    | Apollo.SuspenseQueryHookOptions<ScoreTypesQuery, ScoreTypesQueryVariables>
 ) {
   const options =
     baseOptions === Apollo.skipToken
       ? baseOptions
       : { ...defaultOptions, ...baseOptions }
-  return Apollo.useSuspenseQuery<MyQueryQuery, MyQueryQueryVariables>(
-    MyQueryDocument,
+  return Apollo.useSuspenseQuery<ScoreTypesQuery, ScoreTypesQueryVariables>(
+    ScoreTypesDocument,
     options
   )
 }
-export type MyQueryQueryHookResult = ReturnType<typeof useMyQueryQuery>
-export type MyQueryLazyQueryHookResult = ReturnType<typeof useMyQueryLazyQuery>
-export type MyQuerySuspenseQueryHookResult = ReturnType<
-  typeof useMyQuerySuspenseQuery
+export type ScoreTypesQueryHookResult = ReturnType<typeof useScoreTypesQuery>
+export type ScoreTypesLazyQueryHookResult = ReturnType<
+  typeof useScoreTypesLazyQuery
 >
-export type MyQueryQueryResult = Apollo.QueryResult<
-  MyQueryQuery,
-  MyQueryQueryVariables
+export type ScoreTypesSuspenseQueryHookResult = ReturnType<
+  typeof useScoreTypesSuspenseQuery
+>
+export type ScoreTypesQueryResult = Apollo.QueryResult<
+  ScoreTypesQuery,
+  ScoreTypesQueryVariables
 >
 export const TokenBalancesDocument = gql`
-  query TokenBalances {
-    tokenBalances {
+  query TokenBalances($where: TokenBalance_filter) {
+    tokenBalances(where: $where) {
+      type
+      token
       id
       amount
     }
@@ -1791,6 +1934,7 @@ export const TokenBalancesDocument = gql`
  * @example
  * const { data, loading, error } = useTokenBalancesQuery({
  *   variables: {
+ *      where: // value for 'where'
  *   },
  * });
  */
