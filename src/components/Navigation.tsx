@@ -18,6 +18,7 @@ import { useClickOutside } from '../hooks/useClickOutside'
 import Link from 'next/link'
 import { useAccount } from 'wagmi'
 import { ConnectButton } from '@rainbow-me/rainbowkit'
+import { useAdminQuery } from '../graphql/generated'
 
 export function Navigation() {
   const { address } = useAccount()
@@ -25,6 +26,16 @@ export function Navigation() {
   const [showNotifications, setShowNotifications] = useState(false)
   const [showProfile, setShowProfile] = useState(false)
   const { isVisible } = useScrollDirection()
+  const { data: adminData } = useAdminQuery({
+    variables: {
+      address: address?.toLowerCase()!
+    },
+    skip: !address
+  })
+
+  console.log('adminData', adminData)
+
+  const isAdmin = adminData?.admin?.id
 
   const notificationRef = React.useRef(null)
   const profileRef = React.useRef(null)
@@ -51,24 +62,28 @@ export function Navigation() {
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center space-x-4">
             <NavLink to="/" icon={<Home className="h-5 w-5" />} text="Home" />
-            <NavLink
-              to="/dashboard"
-              icon={<LayoutDashboard className="h-5 w-5" />}
-              text="Dashboard"
-            />
+
             <NavLink
               to="/cookieverse"
               icon={<Globe2 className="h-5 w-5" />}
               text="Sweet Verse"
             />
-            <NavLink
-              to="/admin"
-              icon={<Settings className="h-5 w-5" />}
-              text="Admin"
-            />
 
-            <div className="flex items-center space-x-2 ml-4">
-              {/* <div className="relative" ref={notificationRef}>
+            <NavLink
+              to="/dashboard"
+              icon={<LayoutDashboard className="h-5 w-5" />}
+              text="Dashboard"
+            />
+            {isAdmin && (
+              <NavLink
+                to="/admin"
+                icon={<Settings className="h-5 w-5" />}
+                text="Admin"
+              />
+            )}
+            {address && (
+              <div className="flex items-center space-x-2 ml-4">
+                {/* <div className="relative" ref={notificationRef}>
                 <motion.button
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
@@ -86,22 +101,23 @@ export function Navigation() {
                 />
               </div> */}
 
-              <div className="relative" ref={profileRef}>
-                <motion.button
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                  onClick={() => setShowProfile(!showProfile)}
-                  className="p-2 text-gray-600 hover:text-purple-600 transition-colors bg-transparent border-none"
-                >
-                  <User className="h-6 w-6" />
-                </motion.button>
-                <ProfileDropdown
-                  isOpen={showProfile}
-                  onClose={() => setShowProfile(false)}
-                  address={address}
-                />
+                <div className="relative" ref={profileRef}>
+                  <motion.button
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                    onClick={() => setShowProfile(!showProfile)}
+                    className="p-2 text-gray-600 hover:text-purple-600 transition-colors bg-transparent border-none"
+                  >
+                    <User className="h-6 w-6" />
+                  </motion.button>
+                  <ProfileDropdown
+                    isOpen={showProfile}
+                    onClose={() => setShowProfile(false)}
+                    address={address}
+                  />
+                </div>
               </div>
-            </div>
+            )}
 
             <ConnectButton />
           </div>
@@ -126,21 +142,23 @@ export function Navigation() {
               />
             </div>
 
-            <div className="relative" ref={profileRef}>
-              <motion.button
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                onClick={() => setShowProfile(!showProfile)}
-                className="p-2 text-gray-600 hover:text-purple-600 transition-colors"
-              >
-                <User className="h-6 w-6" />
-              </motion.button>
-              <ProfileDropdown
-                isOpen={showProfile}
-                onClose={() => setShowProfile(false)}
-                address={address}
-              />
-            </div>
+            {address && (
+              <div className="relative" ref={profileRef}>
+                <motion.button
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  onClick={() => setShowProfile(!showProfile)}
+                  className="p-2 text-gray-600 hover:text-purple-600 transition-colors"
+                >
+                  <User className="h-6 w-6" />
+                </motion.button>
+                <ProfileDropdown
+                  isOpen={showProfile}
+                  onClose={() => setShowProfile(false)}
+                  address={address}
+                />
+              </div>
+            )}
 
             <button
               onClick={toggleMenu}

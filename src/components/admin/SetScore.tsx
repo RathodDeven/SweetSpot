@@ -9,41 +9,51 @@ import {
   scorerContractAddress
 } from '../../contracts/scorer/scorerContractnfo'
 import { arbitrumSepoliaPublicClient } from '../../utils/viemClient'
+import { useApolloClient } from '@apollo/client'
+import { Address } from 'viem'
 
 const SetScore = ({
-  user,
-  category
+  userAddress,
+  userScore = 0,
+  category,
+  onClose
 }: {
-  user: User
+  userAddress?: Address
+  userScore?: number
   category: (typeof SCORE_CATEGORIES)[0]
+  onClose?: () => void
 }) => {
-  const userScore = user?.scores?.find(
-    (score) => score.scoreType === category.id
-  )
-  const [score, setScore] = useState<number>(userScore?.value || 0)
+  const [score, setScore] = useState<number>(userScore || 0)
 
   const { writeContractAsync } = useWriteContract()
+  const client = useApolloClient()
 
   const handleSetNewScore = async () => {
     try {
-      const tx = await writeContractAsync({
-        abi: scorerContractABI,
-        address: scorerContractAddress,
-        functionName: 'setScore',
-        args: [user.id, userScore?.scoreType, score]
-      })
-
       await toast.promise(
-        arbitrumSepoliaPublicClient.waitForTransactionReceipt({
-          hash: tx,
-          confirmations: 3
-        }),
+        (async () => {
+          const tx = await writeContractAsync({
+            abi: scorerContractABI,
+            address: scorerContractAddress,
+            functionName: 'setScore',
+            args: [userAddress, category?.id, score]
+          })
+          await arbitrumSepoliaPublicClient.waitForTransactionReceipt({
+            hash: tx,
+            confirmations: 5
+          })
+
+          await client.refetchQueries({
+            include: ['GetUsers']
+          })
+        })(),
         {
           error: 'Unable to confirm transaction',
           loading: 'Updating New Score',
           success: 'New Score Updated'
         }
       )
+      onClose?.()
     } catch (error) {
       console.error(error)
       toast.error('Failed to set new score')
@@ -66,6 +76,7 @@ const SetScore = ({
         onChange={(e) => {
           setScore(parseInt(e.target.value))
         }}
+        className="border border-gray-300 rounded-md px-3 py-2 mb-4 w-full"
         value={score}
         placeholder="Score"
       />

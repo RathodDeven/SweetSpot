@@ -2,11 +2,15 @@ import React from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { User, Settings, LogOut, Heart, Star } from 'lucide-react'
 import Link from 'next/link'
+import { formatAddress } from '../../utils/formatters'
+import { Address } from 'viem'
+import { UserAvatar } from '../UserAvatar'
+import { useDisconnect } from 'wagmi'
 
 interface ProfileDropdownProps {
   isOpen: boolean
   onClose: () => void
-  address?: `0x${string}`
+  address: Address
 }
 
 export function ProfileDropdown({
@@ -14,11 +18,12 @@ export function ProfileDropdown({
   onClose,
   address
 }: ProfileDropdownProps) {
+  const { disconnect } = useDisconnect()
   const menuItems = [
-    { icon: User, label: 'Profile', path: '/profile' },
-    { icon: Settings, label: 'Settings', path: '/settings' },
-    { icon: Heart, label: 'Favorites', path: '/favorites' },
-    { icon: Star, label: 'Achievements', path: '/achievements' }
+    { icon: User, label: 'Profile', path: `/profile/${address}` }
+    // { icon: Settings, label: 'Settings', path: '/settings' },
+    // { icon: Heart, label: 'Favorites', path: '/favorites' },
+    // { icon: Star, label: 'Achievements', path: '/achievements' }
   ]
 
   return (
@@ -34,15 +39,13 @@ export function ProfileDropdown({
           <div className="p-4 border-b border-gray-100 bg-gradient-to-r from-purple-50 to-pink-50">
             <div className="flex items-center space-x-3">
               <div className="p-2 bg-purple-100 rounded-full">
-                <User className="h-6 w-6 text-purple-600" />
+                <UserAvatar address={address} />
               </div>
               <div>
                 <h3 className="font-semibold text-gray-900">
-                  {address
-                    ? `${address.slice(0, 6)}...${address.slice(-4)}`
-                    : 'Guest'}
+                  {formatAddress(address)}
                 </h3>
-                <p className="text-sm text-gray-600">Cookie Holder</p>
+                {/* <p className="text-sm text-gray-600">Cookie Holder</p> */}
               </div>
             </div>
           </div>
@@ -61,7 +64,10 @@ export function ProfileDropdown({
             ))}
 
             <button
-              onClick={onClose}
+              onClick={() => {
+                disconnect()
+                onClose()
+              }}
               className="w-full flex items-center space-x-3 px-4 py-3 hover:bg-red-50 transition-colors text-red-600"
             >
               <LogOut className="h-5 w-5" />

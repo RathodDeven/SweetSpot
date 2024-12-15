@@ -1344,6 +1344,15 @@ export enum _SubgraphErrorPolicy_ {
   Deny = 'deny'
 }
 
+export type AdminQueryVariables = Exact<{
+  address: Scalars['ID']['input']
+}>
+
+export type AdminQuery = {
+  __typename?: 'Query'
+  admin?: { __typename?: 'Admin'; appointedAt: any; id: string } | null
+}
+
 export type AllocatedTokensQueryVariables = Exact<{
   where?: InputMaybe<AllocatedToken_Filter>
 }>
@@ -1450,6 +1459,30 @@ export type GetUsersQuery = {
   }>
 }
 
+export type RoundsQueryVariables = Exact<{
+  orderBy?: InputMaybe<Round_OrderBy>
+  orderDirection?: InputMaybe<OrderDirection>
+}>
+
+export type RoundsQuery = {
+  __typename?: 'Query'
+  rounds: Array<{
+    __typename?: 'Round'
+    createdAt: any
+    end: any
+    id: string
+    start: any
+    metadata: {
+      __typename?: 'RoundMetadata'
+      description: string
+      id: string
+      image?: string | null
+      name: string
+      external_url?: string | null
+    }
+  }>
+}
+
 export type ScoreTypesQueryVariables = Exact<{ [key: string]: never }>
 
 export type ScoreTypesQuery = {
@@ -1472,6 +1505,102 @@ export type TokenBalancesQuery = {
   }>
 }
 
+export type UserQueryVariables = Exact<{
+  id: Scalars['ID']['input']
+}>
+
+export type UserQuery = {
+  __typename?: 'Query'
+  user?: {
+    __typename?: 'User'
+    createdAt: any
+    id: string
+    totalScore: any
+    allocatedTokens?: Array<{
+      __typename?: 'AllocatedToken'
+      amount: any
+      claimedAmount: any
+      claimedTimeStamp?: any | null
+      timestamp: any
+      id: string
+      token: string
+      round: { __typename?: 'Round'; end: any }
+    }> | null
+    scores?: Array<{
+      __typename?: 'Score'
+      scoreType: string
+      value: any
+    }> | null
+  } | null
+}
+
+export const AdminDocument = gql`
+  query Admin($address: ID!) {
+    admin(id: $address) {
+      appointedAt
+      id
+    }
+  }
+`
+
+/**
+ * __useAdminQuery__
+ *
+ * To run a query within a React component, call `useAdminQuery` and pass it any options that fit your needs.
+ * When your component renders, `useAdminQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useAdminQuery({
+ *   variables: {
+ *      address: // value for 'address'
+ *   },
+ * });
+ */
+export function useAdminQuery(
+  baseOptions: Apollo.QueryHookOptions<AdminQuery, AdminQueryVariables> &
+    ({ variables: AdminQueryVariables; skip?: boolean } | { skip: boolean })
+) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useQuery<AdminQuery, AdminQueryVariables>(
+    AdminDocument,
+    options
+  )
+}
+export function useAdminLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<AdminQuery, AdminQueryVariables>
+) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useLazyQuery<AdminQuery, AdminQueryVariables>(
+    AdminDocument,
+    options
+  )
+}
+export function useAdminSuspenseQuery(
+  baseOptions?:
+    | Apollo.SkipToken
+    | Apollo.SuspenseQueryHookOptions<AdminQuery, AdminQueryVariables>
+) {
+  const options =
+    baseOptions === Apollo.skipToken
+      ? baseOptions
+      : { ...defaultOptions, ...baseOptions }
+  return Apollo.useSuspenseQuery<AdminQuery, AdminQueryVariables>(
+    AdminDocument,
+    options
+  )
+}
+export type AdminQueryHookResult = ReturnType<typeof useAdminQuery>
+export type AdminLazyQueryHookResult = ReturnType<typeof useAdminLazyQuery>
+export type AdminSuspenseQueryHookResult = ReturnType<
+  typeof useAdminSuspenseQuery
+>
+export type AdminQueryResult = Apollo.QueryResult<
+  AdminQuery,
+  AdminQueryVariables
+>
 export const AllocatedTokensDocument = gql`
   query AllocatedTokens($where: AllocatedToken_filter) {
     allocatedTokens(where: $where) {
@@ -1839,6 +1968,82 @@ export type GetUsersQueryResult = Apollo.QueryResult<
   GetUsersQuery,
   GetUsersQueryVariables
 >
+export const RoundsDocument = gql`
+  query Rounds($orderBy: Round_orderBy, $orderDirection: OrderDirection) {
+    rounds(orderBy: $orderBy, orderDirection: $orderDirection) {
+      createdAt
+      end
+      id
+      start
+      metadata {
+        description
+        id
+        image
+        name
+        external_url
+      }
+    }
+  }
+`
+
+/**
+ * __useRoundsQuery__
+ *
+ * To run a query within a React component, call `useRoundsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useRoundsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useRoundsQuery({
+ *   variables: {
+ *      orderBy: // value for 'orderBy'
+ *      orderDirection: // value for 'orderDirection'
+ *   },
+ * });
+ */
+export function useRoundsQuery(
+  baseOptions?: Apollo.QueryHookOptions<RoundsQuery, RoundsQueryVariables>
+) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useQuery<RoundsQuery, RoundsQueryVariables>(
+    RoundsDocument,
+    options
+  )
+}
+export function useRoundsLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<RoundsQuery, RoundsQueryVariables>
+) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useLazyQuery<RoundsQuery, RoundsQueryVariables>(
+    RoundsDocument,
+    options
+  )
+}
+export function useRoundsSuspenseQuery(
+  baseOptions?:
+    | Apollo.SkipToken
+    | Apollo.SuspenseQueryHookOptions<RoundsQuery, RoundsQueryVariables>
+) {
+  const options =
+    baseOptions === Apollo.skipToken
+      ? baseOptions
+      : { ...defaultOptions, ...baseOptions }
+  return Apollo.useSuspenseQuery<RoundsQuery, RoundsQueryVariables>(
+    RoundsDocument,
+    options
+  )
+}
+export type RoundsQueryHookResult = ReturnType<typeof useRoundsQuery>
+export type RoundsLazyQueryHookResult = ReturnType<typeof useRoundsLazyQuery>
+export type RoundsSuspenseQueryHookResult = ReturnType<
+  typeof useRoundsSuspenseQuery
+>
+export type RoundsQueryResult = Apollo.QueryResult<
+  RoundsQuery,
+  RoundsQueryVariables
+>
 export const ScoreTypesDocument = gql`
   query ScoreTypes {
     scoreTypes {
@@ -1992,6 +2197,83 @@ export type TokenBalancesQueryResult = Apollo.QueryResult<
   TokenBalancesQuery,
   TokenBalancesQueryVariables
 >
+export const UserDocument = gql`
+  query User($id: ID!) {
+    user(id: $id) {
+      createdAt
+      id
+      totalScore
+      allocatedTokens {
+        amount
+        claimedAmount
+        claimedTimeStamp
+        timestamp
+        id
+        token
+        round {
+          end
+        }
+      }
+      scores {
+        scoreType
+        value
+      }
+    }
+  }
+`
+
+/**
+ * __useUserQuery__
+ *
+ * To run a query within a React component, call `useUserQuery` and pass it any options that fit your needs.
+ * When your component renders, `useUserQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useUserQuery({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useUserQuery(
+  baseOptions: Apollo.QueryHookOptions<UserQuery, UserQueryVariables> &
+    ({ variables: UserQueryVariables; skip?: boolean } | { skip: boolean })
+) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useQuery<UserQuery, UserQueryVariables>(UserDocument, options)
+}
+export function useUserLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<UserQuery, UserQueryVariables>
+) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useLazyQuery<UserQuery, UserQueryVariables>(
+    UserDocument,
+    options
+  )
+}
+export function useUserSuspenseQuery(
+  baseOptions?:
+    | Apollo.SkipToken
+    | Apollo.SuspenseQueryHookOptions<UserQuery, UserQueryVariables>
+) {
+  const options =
+    baseOptions === Apollo.skipToken
+      ? baseOptions
+      : { ...defaultOptions, ...baseOptions }
+  return Apollo.useSuspenseQuery<UserQuery, UserQueryVariables>(
+    UserDocument,
+    options
+  )
+}
+export type UserQueryHookResult = ReturnType<typeof useUserQuery>
+export type UserLazyQueryHookResult = ReturnType<typeof useUserLazyQuery>
+export type UserSuspenseQueryHookResult = ReturnType<
+  typeof useUserSuspenseQuery
+>
+export type UserQueryResult = Apollo.QueryResult<UserQuery, UserQueryVariables>
 
 export interface PossibleTypesResultData {
   possibleTypes: {

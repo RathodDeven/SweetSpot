@@ -1,3 +1,4 @@
+'use client'
 import React, { useState } from 'react'
 import { motion } from 'framer-motion'
 import {
@@ -12,13 +13,21 @@ import {
   BarChart3,
   Star
 } from 'lucide-react'
-import { formatAddress } from '../../utils/formatters'
+import {
+  formatAddress,
+  formatDate,
+  formatShortDate
+} from '../../utils/formatters'
 import { UserAvatar } from '../UserAvatar'
 import {
-  MOCK_USER_PROFILE,
   MOCK_ALLOCATION_HISTORY,
   MOCK_FINANCIAL_STATS
 } from '../../types/profile'
+import { useAccount } from 'wagmi'
+import useEns from '../../hooks/useEns'
+import { Address, formatUnits } from 'viem'
+import { AllocatedToken, User, useUserQuery } from '../../graphql/generated'
+import { getSupportedToken } from '../../types/tokens'
 
 function MetricCard({
   title,
@@ -58,60 +67,85 @@ function MetricCard({
   )
 }
 
-function AllocationHistoryTable() {
+function AllocationHistoryTable({
+  allocations
+}: {
+  allocations: AllocatedToken[]
+}) {
   const [currentPage, setCurrentPage] = useState(1)
-  const [sortConfig, setSortConfig] = useState({
-    key: 'date',
-    direction: 'desc'
-  })
-  const [filter, setFilter] = useState('all')
+  // const [sortConfig, setSortConfig] = useState({
+  //   key: 'date',
+  //   direction: 'desc'
+  // })
+  const [filter, setFilter] = useState<
+    'all' | 'claimed' | 'pending' | 'expired'
+  >('all')
 
   const itemsPerPage = 10
-  const filteredData = MOCK_ALLOCATION_HISTORY.filter(
-    (item) => filter === 'all' || item.status === filter
+  const filteredData = allocations.filter(
+    (item) =>
+      filter === 'all' ||
+      (filter === 'claimed' && item.claimedAmount === item.amount) ||
+      (filter === 'pending' &&
+        Number(item.round.end) * 1000 > Date.now() &&
+        item.claimedAmount < item.amount) ||
+      (filter === 'expired' &&
+        Number(item.round.end) * 1000 < Date.now() &&
+        item.claimedAmount < item.amount)
   )
 
-  const handleSort = (key: string) => {
-    setSortConfig((prev) => ({
-      key,
-      direction: prev.key === key && prev.direction === 'asc' ? 'desc' : 'asc'
-    }))
-  }
+  // const handleSort = (key: string) => {
+  //   setSortConfig((prev) => ({
+  //     key,
+  //     direction: prev.key === key && prev.direction === 'asc' ? 'desc' : 'asc'
+  //   }))
+  // }
 
   // Mobile card view for each allocation
-  const MobileAllocationCard = ({
-    item
-  }: {
-    item: (typeof MOCK_ALLOCATION_HISTORY)[0]
-  }) => (
-    <div className="bg-white p-4 rounded-lg shadow-sm border border-gray-100">
-      <div className="flex justify-between items-start mb-3">
-        <div>
-          <span className="text-sm text-gray-500">
-            {item.date.toLocaleDateString()}
+  const MobileAllocationCard = ({ item }: { item: AllocatedToken }) => {
+    const isClaimed = item.claimedAmount === item.amount
+    const isExpired = Number(item.round.end) * 1000 < Date.now() && !isClaimed
+    const isPending = Number(item.round.end) * 1000 > Date.now() && !isClaimed
+    const status = isClaimed ? 'Claimed' : isPending ? 'Pending' : 'Expired'
+    return (
+      <div className="bg-white p-4 rounded-lg shadow-sm border border-gray-100">
+        <div className="flex justify-between items-start mb-3">
+          <div>
+            <span className="text-sm text-gray-500">
+              {formatShortDate(item.timestamp)}
+            </span>
+            <div className="font-medium">
+              {getSupportedToken(item.token as Address)?.symbol}
+            </div>
+          </div>
+          <span
+            className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
+              isClaimed
+                ? 'bg-green-100 text-green-800'
+                : isPending
+                  ? 'bg-blue-100 text-blue-800'
+                  : 'bg-yellow-100 text-yellow-800'
+            }`}
+          >
+            {status}
           </span>
-          <div className="font-medium">{item.token}</div>
         </div>
-        <span
-          className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
-            item.status === 'claimed'
-              ? 'bg-green-100 text-green-800'
-              : 'bg-yellow-100 text-yellow-800'
-          }`}
-        >
-          {item.status.charAt(0).toUpperCase() + item.status.slice(1)}
-        </span>
+        <div className="flex justify-between items-center text-sm">
+          <span className="text-gray-600">Amount</span>
+          <span className="font-medium">
+            {formatUnits(
+              item.amount,
+              getSupportedToken(item.token as Address)?.decimals!
+            )}
+          </span>
+        </div>
+        {/* <div className="flex justify-between items-center text-sm mt-1">
+          <span className="text-gray-600">Value</span>
+          <span className="font-medium">${item.usdValue.toLocaleString()}</span>
+        </div> */}
       </div>
-      <div className="flex justify-between items-center text-sm">
-        <span className="text-gray-600">Amount</span>
-        <span className="font-medium">{item.amount}</span>
-      </div>
-      <div className="flex justify-between items-center text-sm mt-1">
-        <span className="text-gray-600">Value</span>
-        <span className="font-medium">${item.usdValue.toLocaleString()}</span>
-      </div>
-    </div>
-  )
+    )
+  }
 
   return (
     <div className="bg-white rounded-lg shadow-md overflow-hidden">
@@ -120,12 +154,14 @@ function AllocationHistoryTable() {
           <h2 className="text-xl font-bold">Allocation History</h2>
           <select
             value={filter}
+            // @ts-ignore
             onChange={(e) => setFilter(e.target.value)}
             className="w-full sm:w-auto px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-600 focus:border-transparent"
           >
             <option value="all">All</option>
             <option value="claimed">Claimed</option>
             <option value="pending">Pending</option>
+            <option value="expired">Expired</option>
           </select>
         </div>
       </div>
@@ -133,11 +169,12 @@ function AllocationHistoryTable() {
       {/* Mobile View */}
       <div className="block sm:hidden">
         <div className="divide-y divide-gray-100">
-          {filteredData.map((item) => (
-            <div key={item.id} className="p-4">
-              <MobileAllocationCard item={item} />
-            </div>
-          ))}
+          {filteredData?.length > 0 &&
+            filteredData.map((item) => (
+              <div key={item.id} className="p-4">
+                <MobileAllocationCard item={item} />
+              </div>
+            ))}
         </div>
       </div>
 
@@ -156,37 +193,53 @@ function AllocationHistoryTable() {
                 Amount
               </th>
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                USD Value
-              </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                 Status
               </th>
             </tr>
           </thead>
           <tbody className="bg-white divide-y divide-gray-200">
-            {filteredData.map((item) => (
-              <tr key={item.id} className="hover:bg-gray-50">
-                <td className="px-6 py-4 whitespace-nowrap">
-                  {item.date.toLocaleDateString()}
-                </td>
-                <td className="px-6 py-4 whitespace-nowrap">{item.token}</td>
-                <td className="px-6 py-4 whitespace-nowrap">{item.amount}</td>
-                <td className="px-6 py-4 whitespace-nowrap">
-                  ${item.usdValue.toLocaleString()}
-                </td>
-                <td className="px-6 py-4 whitespace-nowrap">
-                  <span
-                    className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
-                      item.status === 'claimed'
-                        ? 'bg-green-100 text-green-800'
-                        : 'bg-yellow-100 text-yellow-800'
-                    }`}
-                  >
-                    {item.status.charAt(0).toUpperCase() + item.status.slice(1)}
-                  </span>
-                </td>
-              </tr>
-            ))}
+            {filteredData.map((item) => {
+              const isClaimed = item.claimedAmount === item.amount
+              const isPending =
+                Number(item.round.end) * 1000 > Date.now() && !isClaimed
+              const isExpired =
+                Number(item.round.end) * 1000 < Date.now() && !isClaimed
+              const status = isClaimed
+                ? 'Claimed'
+                : isPending
+                  ? 'Pending'
+                  : 'Expired'
+
+              return (
+                <tr key={item.id} className="hover:bg-gray-50">
+                  <td className="px-6 py-4 whitespace-nowrap">
+                    {`${formatShortDate(item.timestamp)}${isClaimed ? ' (✅ ' + formatShortDate(item.claimedTimeStamp) + ')' : ''}`}
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap">
+                    {getSupportedToken(item.token as Address)?.symbol}
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap">
+                    {formatUnits(
+                      item.amount,
+                      getSupportedToken(item.token as Address)?.decimals!
+                    )}
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap">
+                    <span
+                      className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
+                        isClaimed
+                          ? 'bg-green-100 text-green-800'
+                          : isPending
+                            ? 'bg-blue-100 text-blue-800'
+                            : 'bg-yellow-100 text-yellow-800'
+                      }`}
+                    >
+                      {status}
+                    </span>
+                  </td>
+                </tr>
+              )
+            })}
           </tbody>
         </table>
       </div>
@@ -220,57 +273,63 @@ function AllocationHistoryTable() {
   )
 }
 
-export function UserProfile() {
+export function UserProfile({ address }: { address: Address }) {
+  const { address: connectedAddress } = useAccount()
+  const { ensName } = useEns({ address })
+  const { data } = useUserQuery({
+    variables: {
+      id: address.toLowerCase()
+    }
+  })
+
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8 space-y-6">
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8 space-y-6 min-h-screen h-fit overflow-y-auto">
       {/* Profile Overview */}
       <div className="bg-white rounded-lg shadow-md p-4 sm:p-6">
         <div className="flex flex-col sm:flex-row items-center sm:items-start gap-6">
-          {/* <UserAvatar
-            user={{
-              id: '1',
-              name: MOCK_USER_PROFILE.name,
-              address: MOCK_USER_PROFILE.address
-            }}
-            size="lg"
-          /> */}
+          <UserAvatar address={address} size="lg" />
           <div className="flex-1 text-center sm:text-left">
             <div className="flex flex-col sm:flex-row items-center gap-2">
-              <h1 className="text-2xl font-bold">{MOCK_USER_PROFILE.name}</h1>
-              {MOCK_USER_PROFILE.verified && (
+              <h1 className="text-2xl font-bold">
+                {ensName ?? formatAddress(address as Address)}
+              </h1>
+              {data?.user?.totalScore > 0 && (
                 <Shield className="h-5 w-5 text-blue-500" />
               )}
             </div>
             <div className="flex flex-col sm:flex-row items-center gap-4 mt-2">
               <div className="flex items-center space-x-2 text-gray-600">
                 <Wallet className="h-4 w-4" />
-                <span className="text-sm">
-                  {formatAddress(MOCK_USER_PROFILE.address)}
-                </span>
+                <span className="text-sm">{address}</span>
               </div>
-              <div className="flex items-center space-x-2 text-gray-600">
-                <Clock className="h-4 w-4" />
-                <span className="text-sm">
-                  Member since{' '}
-                  {MOCK_USER_PROFILE.createdAt.toLocaleDateString()}
-                </span>
-              </div>
+
+              {data?.user && (
+                <div className="flex items-center space-x-2 text-gray-600">
+                  <Clock className="h-4 w-4" />
+                  <span className="text-sm">
+                    Member since {formatDate(Number(data?.user?.createdAt))}
+                  </span>
+                </div>
+              )}
             </div>
-            <p className="mt-4 text-gray-700">{MOCK_USER_PROFILE.bio}</p>
           </div>
           <div className="text-center">
             <div className="inline-flex items-center justify-center w-20 h-20 rounded-full bg-purple-100">
               <div className="text-2xl font-bold text-purple-600">
-                {MOCK_USER_PROFILE.reputation}
+                {
+                  data?.user?.scores?.find(
+                    (score) => score.scoreType === 'Trust'
+                  )?.value
+                }
               </div>
             </div>
-            <div className="mt-2 text-sm text-gray-600">Reputation Score</div>
+            <div className="mt-2 text-sm text-gray-600">Trust Score</div>
           </div>
         </div>
       </div>
 
       {/* Financial Statistics */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+      {/* <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         <MetricCard
           title="Total Claimed"
           value={`$${MOCK_FINANCIAL_STATS.totalClaimed.usdValue.toLocaleString()}`}
@@ -283,19 +342,17 @@ export function UserProfile() {
           icon={Activity}
           trend={{ positive: true, value: 5.2 }}
         />
-        {/* <MetricCard
-          title="Total Transactions"
-          value={MOCK_FINANCIAL_STATS.totalTransactions}
-          icon={BarChart3}
-          trend={{ positive: true, value: 8.7 }}
-        /> */}
-      </div>
+      </div> */}
 
       {/* Allocation History */}
-      <AllocationHistoryTable />
+      {data?.user?.allocatedTokens &&
+        data?.user?.allocatedTokens?.length > 0 && (
+          // @ts-ignore
+          <AllocationHistoryTable allocations={data?.user?.allocatedTokens} />
+        )}
 
       {/* Additional Metrics */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+      {/* <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <div className="bg-white rounded-lg shadow-md p-6">
           <h2 className="text-xl font-bold mb-4">Transaction Metrics</h2>
           <div className="space-y-4">
@@ -343,7 +400,7 @@ export function UserProfile() {
             </div>
           </div>
         </div>
-      </div>
+      </div> */}
     </div>
   )
 }

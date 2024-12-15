@@ -30,7 +30,7 @@ export function UserAvatar({ address, size = 'md' }: UserAvatarProps) {
   }
 
   return (
-    <Link href={'/profile'} className="no-underline">
+    <Link href={`/profile/${address}`} className="no-underline">
       <motion.div
         initial="initial"
         whileHover="hover"

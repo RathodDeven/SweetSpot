@@ -29,6 +29,7 @@ import {
 } from '../../graphql/generated'
 import { getLevelFromScore } from '../../utils/helpers'
 import SetScore from './SetScore'
+import { Address } from 'viem'
 
 export const SCORE_CATEGORIES = [
   // {
@@ -44,14 +45,14 @@ export const SCORE_CATEGORIES = [
     icon: Shield,
     description: 'Reliability and trustworthiness',
     emoji: '🛡️'
-  },
-  {
-    id: 'Philanthropy',
-    label: 'Philanthropy',
-    icon: Award,
-    description: 'Community contribution and giving',
-    emoji: '🏆'
   }
+  // {
+  //   id: 'Philanthropy',
+  //   label: 'Philanthropy',
+  //   icon: Award,
+  //   description: 'Community contribution and giving',
+  //   emoji: '🏆'
+  // }
   // {
   //   id: 'Participation',
   //   label: 'Participation',
@@ -127,7 +128,7 @@ function AddScorePopup({
   user,
   onClose
 }: {
-  user?: User
+  user: User | null
   onClose: () => void
 }) {
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null)
@@ -185,8 +186,9 @@ function AddScorePopup({
           <>
             <input
               type="text"
-              placeholder="Enter User Address"
+              placeholder="Enter Wallet Address"
               value={userAddress}
+              className="border border-gray-300 rounded-md px-3 py-2 mb-4 w-full"
               onChange={(e) => setUserAddress(e.target.value)}
             />
           </>
@@ -195,7 +197,7 @@ function AddScorePopup({
         <p className="text-sm text-gray-600">Select a category to add points</p>
 
         <div className="space-y-2">
-          {selectedCategory ? (
+          {selectedCategory && userAddress ? (
             <div>
               <div className="flex items-center justify-between mb-4">
                 <button
@@ -209,8 +211,9 @@ function AddScorePopup({
                 (category) => (
                   <SetScore
                     key={category.id}
-                    user={user!}
+                    userAddress={userAddress as Address}
                     category={category}
+                    onClose={onClose}
                   />
                 )
               )}
@@ -240,9 +243,14 @@ function AddScorePopup({
   )
 }
 
-function ScoreCard({ user }: { user: User }) {
+function ScoreCard({
+  user,
+  setAddScoreUser
+}: {
+  user: User
+  setAddScoreUser: React.Dispatch<React.SetStateAction<User | null | undefined>>
+}) {
   const [isExpanded, setIsExpanded] = useState(false)
-  const [showAddScore, setShowAddScore] = useState(false)
 
   return (
     <motion.div
@@ -269,7 +277,7 @@ function ScoreCard({ user }: { user: User }) {
             <motion.button
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
-              onClick={() => setShowAddScore(true)}
+              onClick={() => setAddScoreUser(user)}
               className="flex items-center space-x-1 bg-purple-600 text-white px-3 py-1 rounded-lg text-sm"
             >
               <Plus className="h-4 w-4" />
@@ -337,18 +345,13 @@ function ScoreCard({ user }: { user: User }) {
             </motion.div>
           )}
         </AnimatePresence>
-
-        <AnimatePresence>
-          {showAddScore && (
-            <AddScorePopup user={user} onClose={() => setShowAddScore(false)} />
-          )}
-        </AnimatePresence>
       </div>
     </motion.div>
   )
 }
 
 export function UserScores() {
+  const [addScoreUser, setAddScoreUser] = useState<User | null | undefined>()
   const { data: usersData } = useGetUsersQuery({
     variables: {
       orderBy: User_OrderBy.TotalScore,
@@ -359,10 +362,35 @@ export function UserScores() {
     <div className="space-y-6">
       <div className="grid grid-cols-1 gap-6">
         {usersData?.users.map((user) => (
-          // @ts-ignore
-          <ScoreCard key={user.id} user={user} />
+          <ScoreCard
+            key={user.id}
+            // @ts-ignore
+            user={user}
+            setAddScoreUser={setAddScoreUser}
+          />
         ))}
       </div>
+
+      <div className="flex items-center justify-center">
+        <motion.button
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
+          onClick={() => setAddScoreUser(null)}
+          className="flex items-center space-x-1 bg-purple-600 text-white px-3 py-1 rounded-lg text-sm"
+        >
+          <Plus className="h-4 w-4" />
+          <span>Add New User & Score</span>
+        </motion.button>
+      </div>
+
+      <AnimatePresence>
+        {addScoreUser !== undefined && (
+          <AddScorePopup
+            user={addScoreUser}
+            onClose={() => setAddScoreUser(undefined)}
+          />
+        )}
+      </AnimatePresence>
     </div>
   )
 }

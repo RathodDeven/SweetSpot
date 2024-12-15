@@ -7,13 +7,13 @@ import { ProjectsTab } from '../sweetverse/ProjectsTab'
 import { TabNavigation } from '../common/TabNavigation'
 
 const tabs = [
-  { id: 'leaderboard', label: 'Leaderboard', icon: Trophy },
+  // { id: 'leaderboard', label: 'Leaderboard', icon: Trophy },
   { id: 'rounds', label: 'Rounds', icon: Clock },
   { id: 'projects', label: 'Projects', icon: Rocket }
 ]
 
 export function CookieVerse() {
-  const [activeTab, setActiveTab] = useState('leaderboard')
+  const [activeTab, setActiveTab] = useState('rounds')
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -43,7 +43,7 @@ export function CookieVerse() {
           exit={{ opacity: 0, y: -20 }}
           transition={{ duration: 0.2 }}
         >
-          {activeTab === 'leaderboard' && <LeaderboardTab />}
+          {/* {activeTab === 'leaderboard' && <LeaderboardTab />} */}
           {activeTab === 'rounds' && <RoundsTab />}
           {activeTab === 'projects' && <ProjectsTab />}
         </motion.div>
