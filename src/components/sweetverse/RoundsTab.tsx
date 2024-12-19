@@ -14,14 +14,14 @@ import getIPFSLink from '../../utils/getIPFSLink'
 import Link from 'next/link'
 import { timeAgo, timeToGo } from '../../utils/helpers'
 
-function RoundCard({ round }: { round: Round }) {
+export function RoundCard({ round }: { round: Round }) {
   // const progress =
   //   (parseFloat(round.claimedAmount) /
   //     parseFloat(round.totalAllocation.amount)) *
   //   100
   const timeLeft = Math.max(0, Number(round.end) * 1000 - Date.now())
   const totalTime = Number(round.end) * 1000 - Number(round.start) * 1000
-  const progress = (timeLeft / totalTime) * 100
+  const progress = 100 - (timeLeft / totalTime) * 100
   const daysLeft = Math.ceil(timeLeft / (1000 * 60 * 60 * 24))
 
   const isActive =
@@ -40,7 +40,7 @@ function RoundCard({ round }: { round: Round }) {
         <div className="flex flex-col">
           <div className="flex items-center space-x-2">
             <div className="start-center-row gap-x-2">
-              {round?.metadata?.image && (
+              {round?.metadata?.image && round?.metadata?.image !== 'null' && (
                 <img
                   src={getIPFSLink(round?.metadata?.image)}
                   alt={round?.metadata?.image}

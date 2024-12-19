@@ -16,7 +16,7 @@ export function CookieVerse() {
   const [activeTab, setActiveTab] = useState('rounds')
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 min-h-screen h-fit">
       <div className="mb-8">
         <div className="flex items-center space-x-3">
           <Globe2 className="h-8 w-8 text-purple-600" />
