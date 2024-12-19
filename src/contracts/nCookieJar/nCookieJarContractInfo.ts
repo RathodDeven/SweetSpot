@@ -1,65 +1,35 @@
 import { Address } from 'viem'
 
 export const nCookieJarContractAddresses: Record<string, Address> = {
-  arbitrumSepolia: '0xF47c6040536D1A1584e4BEe580d65014E2fC55fE'
+  arbitrumSepolia: '0xF47c6040536D1A1584e4BEe580d65014E2fC55fE',
+  celoAlfajores: '0xa6e35CCf2950c637AF0F06e162A3991f50CE210f'
 }
 
 export const nCookieJarContractAddress: Address =
-  nCookieJarContractAddresses.arbitrumSepolia
+  nCookieJarContractAddresses.celoAlfajores
 
 export const nCookieJarContractABI = [
+  { inputs: [], name: 'InvalidInitialization', type: 'error' },
+  { inputs: [], name: 'NotInitializing', type: 'error' },
   {
-    inputs: [],
-    name: 'InvalidInitialization',
-    type: 'error'
-  },
-  {
-    inputs: [],
-    name: 'NotInitializing',
-    type: 'error'
-  },
-  {
-    inputs: [
-      {
-        internalType: 'address',
-        name: 'owner',
-        type: 'address'
-      }
-    ],
+    inputs: [{ internalType: 'address', name: 'owner', type: 'address' }],
     name: 'OwnableInvalidOwner',
     type: 'error'
   },
   {
-    inputs: [
-      {
-        internalType: 'address',
-        name: 'account',
-        type: 'address'
-      }
-    ],
+    inputs: [{ internalType: 'address', name: 'account', type: 'address' }],
     name: 'OwnableUnauthorizedAccount',
     type: 'error'
   },
   {
-    inputs: [
-      {
-        internalType: 'address',
-        name: 'token',
-        type: 'address'
-      }
-    ],
+    inputs: [{ internalType: 'address', name: 'token', type: 'address' }],
     name: 'SafeERC20FailedOperation',
     type: 'error'
   },
   {
     anonymous: false,
     inputs: [
-      {
-        indexed: true,
-        internalType: 'address',
-        name: 'user',
-        type: 'address'
-      },
+      { indexed: true, internalType: 'address', name: 'user', type: 'address' },
       {
         indexed: true,
         internalType: 'address',
@@ -167,12 +137,7 @@ export const nCookieJarContractABI = [
         name: 'start',
         type: 'uint256'
       },
-      {
-        indexed: false,
-        internalType: 'uint256',
-        name: 'end',
-        type: 'uint256'
-      },
+      { indexed: false, internalType: 'uint256', name: 'end', type: 'uint256' },
       {
         indexed: false,
         internalType: 'string',
@@ -211,48 +176,22 @@ export const nCookieJarContractABI = [
   {
     inputs: [],
     name: 'ETHER',
-    outputs: [
-      {
-        internalType: 'address',
-        name: '',
-        type: 'address'
-      }
-    ],
+    outputs: [{ internalType: 'address', name: '', type: 'address' }],
     stateMutability: 'view',
     type: 'function'
   },
   {
     inputs: [
-      {
-        internalType: 'address',
-        name: '',
-        type: 'address'
-      },
-      {
-        internalType: 'address',
-        name: '',
-        type: 'address'
-      }
+      { internalType: 'address', name: '', type: 'address' },
+      { internalType: 'address', name: '', type: 'address' }
     ],
     name: 'allowedAmounts',
-    outputs: [
-      {
-        internalType: 'uint256',
-        name: '',
-        type: 'uint256'
-      }
-    ],
+    outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
     stateMutability: 'view',
     type: 'function'
   },
   {
-    inputs: [
-      {
-        internalType: 'address',
-        name: 'token',
-        type: 'address'
-      }
-    ],
+    inputs: [{ internalType: 'address', name: 'token', type: 'address' }],
     name: 'claim',
     outputs: [],
     stateMutability: 'nonpayable',
@@ -262,37 +201,17 @@ export const nCookieJarContractABI = [
     inputs: [],
     name: 'currentRound',
     outputs: [
-      {
-        internalType: 'uint256',
-        name: 'start',
-        type: 'uint256'
-      },
-      {
-        internalType: 'uint256',
-        name: 'end',
-        type: 'uint256'
-      },
-      {
-        internalType: 'string',
-        name: 'metadataURI',
-        type: 'string'
-      }
+      { internalType: 'uint256', name: 'start', type: 'uint256' },
+      { internalType: 'uint256', name: 'end', type: 'uint256' },
+      { internalType: 'string', name: 'metadataURI', type: 'string' }
     ],
     stateMutability: 'view',
     type: 'function'
   },
   {
     inputs: [
-      {
-        internalType: 'address',
-        name: 'token',
-        type: 'address'
-      },
-      {
-        internalType: 'uint256',
-        name: 'amount',
-        type: 'uint256'
-      }
+      { internalType: 'address', name: 'token', type: 'address' },
+      { internalType: 'uint256', name: 'amount', type: 'uint256' }
     ],
     name: 'deposit',
     outputs: [],
@@ -301,16 +220,8 @@ export const nCookieJarContractABI = [
   },
   {
     inputs: [
-      {
-        internalType: 'address',
-        name: '_scorer',
-        type: 'address'
-      },
-      {
-        internalType: 'address',
-        name: 'owner',
-        type: 'address'
-      }
+      { internalType: 'address', name: '_scorer', type: 'address' },
+      { internalType: 'address', name: 'owner', type: 'address' }
     ],
     name: 'initialize',
     outputs: [],
@@ -320,13 +231,7 @@ export const nCookieJarContractABI = [
   {
     inputs: [],
     name: 'owner',
-    outputs: [
-      {
-        internalType: 'address',
-        name: '',
-        type: 'address'
-      }
-    ],
+    outputs: [{ internalType: 'address', name: '', type: 'address' }],
     stateMutability: 'view',
     type: 'function'
   },
@@ -340,33 +245,15 @@ export const nCookieJarContractABI = [
   {
     inputs: [],
     name: 'scorer',
-    outputs: [
-      {
-        internalType: 'contract IScorer',
-        name: '',
-        type: 'address'
-      }
-    ],
+    outputs: [{ internalType: 'contract IScorer', name: '', type: 'address' }],
     stateMutability: 'view',
     type: 'function'
   },
   {
     inputs: [
-      {
-        internalType: 'address',
-        name: 'user',
-        type: 'address'
-      },
-      {
-        internalType: 'address',
-        name: 'token',
-        type: 'address'
-      },
-      {
-        internalType: 'uint256',
-        name: 'amount',
-        type: 'uint256'
-      }
+      { internalType: 'address', name: 'user', type: 'address' },
+      { internalType: 'address', name: 'token', type: 'address' },
+      { internalType: 'uint256', name: 'amount', type: 'uint256' }
     ],
     name: 'setAllowedAmount',
     outputs: [],
@@ -375,21 +262,9 @@ export const nCookieJarContractABI = [
   },
   {
     inputs: [
-      {
-        internalType: 'uint256',
-        name: 'start',
-        type: 'uint256'
-      },
-      {
-        internalType: 'uint256',
-        name: 'end',
-        type: 'uint256'
-      },
-      {
-        internalType: 'string',
-        name: 'metadataURI',
-        type: 'string'
-      }
+      { internalType: 'uint256', name: 'start', type: 'uint256' },
+      { internalType: 'uint256', name: 'end', type: 'uint256' },
+      { internalType: 'string', name: 'metadataURI', type: 'string' }
     ],
     name: 'setRound',
     outputs: [],
@@ -397,32 +272,14 @@ export const nCookieJarContractABI = [
     type: 'function'
   },
   {
-    inputs: [
-      {
-        internalType: 'address',
-        name: '',
-        type: 'address'
-      }
-    ],
+    inputs: [{ internalType: 'address', name: '', type: 'address' }],
     name: 'totalBalances',
-    outputs: [
-      {
-        internalType: 'uint256',
-        name: '',
-        type: 'uint256'
-      }
-    ],
+    outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
     stateMutability: 'view',
     type: 'function'
   },
   {
-    inputs: [
-      {
-        internalType: 'address',
-        name: 'newOwner',
-        type: 'address'
-      }
-    ],
+    inputs: [{ internalType: 'address', name: 'newOwner', type: 'address' }],
     name: 'transferOwnership',
     outputs: [],
     stateMutability: 'nonpayable',
@@ -430,24 +287,13 @@ export const nCookieJarContractABI = [
   },
   {
     inputs: [
-      {
-        internalType: 'address',
-        name: 'token',
-        type: 'address'
-      },
-      {
-        internalType: 'uint256',
-        name: 'amount',
-        type: 'uint256'
-      }
+      { internalType: 'address', name: 'token', type: 'address' },
+      { internalType: 'uint256', name: 'amount', type: 'uint256' }
     ],
     name: 'withdraw',
     outputs: [],
     stateMutability: 'nonpayable',
     type: 'function'
   },
-  {
-    stateMutability: 'payable',
-    type: 'receive'
-  }
+  { stateMutability: 'payable', type: 'receive' }
 ]

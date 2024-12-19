@@ -11,7 +11,7 @@ import {
   RainbowKitProvider
 } from '@rainbow-me/rainbowkit'
 import { WagmiProvider, http } from 'wagmi'
-import { arbitrumSepolia } from 'wagmi/chains'
+import { celoAlfajores } from 'wagmi/chains'
 import { QueryClientProvider, QueryClient } from '@tanstack/react-query'
 import { APP_NAME } from '../../utils/config'
 import {
@@ -24,10 +24,10 @@ import {
 } from '@rainbow-me/rainbowkit/wallets'
 import { useTheme } from './TailwindThemeProvider'
 
-const defaultChains = [arbitrumSepolia]
+const defaultChains = [celoAlfajores]
 
 const defaultTransports = {
-  [arbitrumSepolia.id]: http()
+  [celoAlfajores.id]: http()
 }
 
 const config = getDefaultConfig({

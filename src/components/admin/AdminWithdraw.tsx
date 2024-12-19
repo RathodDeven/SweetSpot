@@ -9,7 +9,7 @@ import {
   nCookieJarContractAddress
 } from '../../contracts/nCookieJar/nCookieJarContractInfo'
 import { valueInWei } from '../../utils/helpers'
-import { arbitrumSepoliaPublicClient } from '../../utils/viemClient'
+import { viemPublicClient } from '../../utils/viemClient'
 
 export function AdminWithdraw() {
   const [amount, setAmount] = useState('0')
@@ -42,7 +42,7 @@ export function AdminWithdraw() {
       )
 
       await toast.promise(
-        arbitrumSepoliaPublicClient.waitForTransactionReceipt({
+        viemPublicClient.waitForTransactionReceipt({
           hash: tx,
           confirmations: 3
         }),

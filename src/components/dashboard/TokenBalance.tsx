@@ -11,7 +11,7 @@ import {
   nCookieJarContractAddress
 } from '../../contracts/nCookieJar/nCookieJarContractInfo'
 import { getSupportedToken, SUPPORTED_TOKENS } from '../../types/tokens'
-import { arbitrumSepoliaPublicClient } from '../../utils/viemClient'
+import { viemPublicClient } from '../../utils/viemClient'
 import {
   useAllocatedTokensQuery,
   useCurrentRoundsQuery
@@ -61,7 +61,7 @@ export function TokenBalance() {
             args: [unclaimedTokens?.[0]?.token]
           })
 
-          await arbitrumSepoliaPublicClient.waitForTransactionReceipt({
+          await viemPublicClient.waitForTransactionReceipt({
             hash: tx,
             confirmations: 6
           })

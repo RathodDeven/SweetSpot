@@ -8,7 +8,7 @@ import {
   nCookieJarContractAddress
 } from '../../contracts/nCookieJar/nCookieJarContractInfo'
 import uploadToIPFS from '../../utils/uploadToIPFS'
-import { arbitrumSepoliaPublicClient } from '../../utils/viemClient'
+import { viemPublicClient } from '../../utils/viemClient'
 
 interface RoundData {
   name: string
@@ -61,7 +61,7 @@ export function AdminForm() {
             throw new Error('Failed to set round')
           }
 
-          await arbitrumSepoliaPublicClient.waitForTransactionReceipt({
+          await viemPublicClient.waitForTransactionReceipt({
             hash: tx,
             confirmations: 3
           })

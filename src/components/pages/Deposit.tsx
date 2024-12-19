@@ -16,7 +16,7 @@ import {
   nCookieJarContractAddresses
 } from '../../contracts/nCookieJar/nCookieJarContractInfo'
 import { Address, erc20Abi, formatUnits } from 'viem'
-import { arbitrumSepoliaPublicClient } from '../../utils/viemClient'
+import { viemPublicClient } from '../../utils/viemClient'
 import { valueInWei } from '../../utils/helpers'
 import { clsx } from 'clsx'
 import { useApolloClient } from '@apollo/client'
@@ -105,10 +105,7 @@ export function Deposit() {
             abi: erc20Abi,
             address: selectedToken.address!,
             functionName: 'approve',
-            args: [
-              nCookieJarContractAddresses.arbitrumSepolia as Address,
-              amountBigInt
-            ]
+            args: [nCookieJarContractAddress as Address, amountBigInt]
           }),
           {
             error: 'Failed to sign approve token',
@@ -118,7 +115,7 @@ export function Deposit() {
         )
 
         await toast.promise(
-          arbitrumSepoliaPublicClient.waitForTransactionReceipt({
+          viemPublicClient.waitForTransactionReceipt({
             hash: approveTx,
             confirmations: 3
           }),
@@ -145,7 +142,7 @@ export function Deposit() {
         }
       )
 
-      await arbitrumSepoliaPublicClient.waitForTransactionReceipt({
+      await viemPublicClient.waitForTransactionReceipt({
         hash: tx,
         confirmations: 5
       })

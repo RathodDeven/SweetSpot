@@ -8,7 +8,7 @@ import {
   scorerContractABI,
   scorerContractAddress
 } from '../../contracts/scorer/scorerContractnfo'
-import { arbitrumSepoliaPublicClient } from '../../utils/viemClient'
+import { viemPublicClient } from '../../utils/viemClient'
 import { useApolloClient } from '@apollo/client'
 import { Address } from 'viem'
 
@@ -38,7 +38,7 @@ const SetScore = ({
             functionName: 'setScore',
             args: [userAddress, category?.id, score]
           })
-          await arbitrumSepoliaPublicClient.waitForTransactionReceipt({
+          await viemPublicClient.waitForTransactionReceipt({
             hash: tx,
             confirmations: 5
           })

@@ -20,7 +20,7 @@ import {
   nCookieJarContractAddress
 } from '../../contracts/nCookieJar/nCookieJarContractInfo'
 import { valueInWei } from '../../utils/helpers'
-import { arbitrumSepoliaPublicClient } from '../../utils/viemClient'
+import { viemPublicClient } from '../../utils/viemClient'
 import {
   CurrentRoundAllocatedTokensDocument,
   useCurrentRoundAllocatedTokensQuery
@@ -100,7 +100,7 @@ export function TokenAllocation() {
       })
 
       await toast.promise(
-        arbitrumSepoliaPublicClient.waitForTransactionReceipt({
+        viemPublicClient.waitForTransactionReceipt({
           hash: tx,
           confirmations: 5
         }),
