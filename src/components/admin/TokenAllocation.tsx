@@ -64,7 +64,7 @@ export function TokenAllocation() {
 
     await handleAllocate(
       newUser.address as Address,
-      newUser.token as Address,
+      newUser.token,
       newUser.amount
     )
 
@@ -77,16 +77,19 @@ export function TokenAllocation() {
 
   const handleAllocate = async (
     recipientAddress: Address,
-    tokenAddress: Address,
+    tokenSymbol: string,
     amount: string
   ) => {
+    console.log('amount', amount)
     if (!recipientAddress.match(/^0x[a-fA-F0-9]{40}$/)) {
       toast.error('Please enter a valid Ethereum address')
       return
     }
 
     try {
-      const selectedToken = getSupportedToken(tokenAddress)
+      const selectedToken = SUPPORTED_TOKENS.find(
+        (token) => token.symbol === tokenSymbol
+      )
 
       const tx = await writeContractAsync({
         abi: nCookieJarContractABI,

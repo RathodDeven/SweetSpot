@@ -11,7 +11,7 @@ interface QuickAllocationProps {
   userAddress: Address | null
   handleAllocate: (
     recipientAddress: Address,
-    tokenAddress: Address,
+    tokenSymbol: string,
     amount: string
   ) => void
   onClose: () => void
@@ -34,7 +34,7 @@ export function QuickAllocation({
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     try {
-      await handleAllocate(userAddress, selectedToken.address, amount)
+      await handleAllocate(userAddress, selectedToken.symbol, amount)
       onClose()
     } catch (error) {
       toast.error('Failed to allocate tokens')

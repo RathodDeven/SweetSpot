@@ -47,11 +47,10 @@ export const ARBITRUM_SEPOLIA_TOKENS: Token[] = [
 export const CELO_ALFAJORES_TOKENS: Token[] = [
   {
     symbol: 'CELO',
-    name: 'CELO Token',
+    name: 'CELO ',
     decimals: 18,
     address: '0xF194afDf50B03e69Bd7D057c1Aa9e10c9954E4C9',
-    logoUrl:
-      'https://raw.githubusercontent.com/spothq/cryptocurrency-icons/master/128/color/eth.png'
+    logoUrl: 'https://avatars.githubusercontent.com/u/37552875?s=200&v=4'
   },
   // {
   //   symbol: 'USDGLO',
