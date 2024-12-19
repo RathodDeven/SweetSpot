@@ -65,32 +65,6 @@ export const scorerContractABI = [
     anonymous: false,
     inputs: [
       {
-        indexed: true,
-        internalType: 'address',
-        name: 'admin',
-        type: 'address'
-      }
-    ],
-    name: 'AdminAdded',
-    type: 'event'
-  },
-  {
-    anonymous: false,
-    inputs: [
-      {
-        indexed: true,
-        internalType: 'address',
-        name: 'admin',
-        type: 'address'
-      }
-    ],
-    name: 'AdminRemoved',
-    type: 'event'
-  },
-  {
-    anonymous: false,
-    inputs: [
-      {
         indexed: false,
         internalType: 'uint64',
         name: 'version',
