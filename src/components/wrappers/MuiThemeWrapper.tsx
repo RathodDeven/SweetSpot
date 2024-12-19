@@ -51,7 +51,8 @@ export default function MuiThemeWrapper({
   const { theme } = useTheme()
   return (
     <StyledEngineProvider injectFirst={false}>
-      <ThemeProvider theme={theme === 'light' ? lightTheme : darkTheme}>
+      {/* <ThemeProvider theme={theme === 'light' ? lightTheme : darkTheme}> */}
+      <ThemeProvider theme={lightTheme}>
         <CssBaseline />
         {children}
       </ThemeProvider>

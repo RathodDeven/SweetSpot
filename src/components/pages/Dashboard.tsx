@@ -9,10 +9,13 @@ import { Candy } from 'lucide-react'
 // import toast from 'react-hot-toast'
 // import { MOCK_DASHBOARD_DATA } from '../../types/dashboard'
 import { useRouter } from 'next/navigation'
+import ModalWrapper from '../common/ModalWrapper'
+import { Deposit } from './Deposit'
 
 export function Dashboard() {
   const [showApplication, setShowApplication] = useState(false)
   const { push } = useRouter()
+  const [open, setOpen] = useState(false)
 
   return (
     <div className="max-w-4xl mx-auto px-6 py-8 space-y-6 h-fit min-h-screen">
@@ -21,13 +24,24 @@ export function Dashboard() {
         <motion.button
           whileHover={{ scale: 1.02 }}
           whileTap={{ scale: 0.98 }}
-          onClick={() => push('/deposit')}
+          onClick={() => setOpen(true)}
           className="flex items-center space-x-2 bg-purple-600 text-white px-4 py-2 rounded-lg"
         >
           <Candy className="h-5 w-5" />
           <span>Make a Deposit</span>
         </motion.button>
       </div>
+
+      <ModalWrapper
+        onClose={() => setOpen(false)}
+        onOpen={() => setOpen(true)}
+        open={open}
+        title="Make a Deposit"
+        Icon={<Candy className="h-5 w-5" />}
+        classname="w-[600px]"
+      >
+        <Deposit onClose={() => setOpen(false)} />
+      </ModalWrapper>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <RoundInfo />

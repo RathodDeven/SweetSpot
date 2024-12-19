@@ -47,7 +47,7 @@ export const ARBITRUM_SEPOLIA_TOKENS: Token[] = [
 export const CELO_ALFAJORES_TOKENS: Token[] = [
   {
     symbol: 'CELO',
-    name: 'Ethereum',
+    name: 'CELO Token',
     decimals: 18,
     address: '0xF194afDf50B03e69Bd7D057c1Aa9e10c9954E4C9',
     logoUrl:

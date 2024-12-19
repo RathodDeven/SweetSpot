@@ -28,14 +28,13 @@ interface DepositFormData {
   message?: string
 }
 
-export function Deposit() {
-  const { push } = useRouter()
-
+export function Deposit({ onClose }: { onClose?: () => void }) {
   const { address } = useAccount()
 
   const { data: ethBalance } = useBalance({
     address: address
   })
+
   const { data: txHash, writeContractAsync } = useWriteContract()
   const client = useApolloClient()
 
@@ -52,7 +51,10 @@ export function Deposit() {
 
   const { data: allowanceData, isFetching } = useReadContract({
     abi: erc20Abi,
-    address: selectedToken.symbol === 'ETH' ? undefined : selectedToken.address,
+    address:
+      selectedToken.symbol === SUPPORTED_TOKENS[0].symbol
+        ? undefined
+        : selectedToken.address,
     functionName: 'allowance'
   })
 
@@ -76,7 +78,7 @@ export function Deposit() {
     : 0
 
   const hasSufficientBalance =
-    selectedToken.symbol === 'ETH'
+    selectedToken.symbol === SUPPORTED_TOKENS[0].symbol
       ? ethBalance?.value && ethBalance?.value >= amountBigInt
       : parseFloat(balance || '0') >= parseFloat(formData.amount)
 
@@ -99,7 +101,10 @@ export function Deposit() {
 
     try {
       // check allowance if not eth, and approve if needed
-      if (selectedToken.symbol !== 'ETH' && !hasAllowance) {
+      if (
+        selectedToken.symbol !== SUPPORTED_TOKENS[0].symbol &&
+        !hasAllowance
+      ) {
         const approveTx = await toast.promise(
           writeContractAsync({
             abi: erc20Abi,
@@ -133,7 +138,10 @@ export function Deposit() {
           address: nCookieJarContractAddress as Address,
           functionName: 'deposit',
           args: [selectedToken.address, amountBigInt],
-          value: selectedToken.symbol === 'ETH' ? amountBigInt : undefined
+          value:
+            selectedToken.symbol === SUPPORTED_TOKENS[0].symbol
+              ? amountBigInt
+              : undefined
         }),
         {
           error: '',
@@ -150,7 +158,7 @@ export function Deposit() {
       await client.refetchQueries({
         include: ['TokenBalances']
       })
-      push('/dashboard')
+      onClose?.()
     } catch (error) {
       console.log('error', error)
       // @ts-ignore
@@ -292,8 +300,11 @@ export function Deposit() {
                   required
                 />
               </div>
-
               <div>
+                <div className="font-medium text-black">{`Balance : ${selectedToken?.symbol === SUPPORTED_TOKENS[0]?.symbol && ethBalance ? formatUnits(ethBalance?.value, ethBalance?.decimals) : balance} ${selectedToken?.symbol}`}</div>
+              </div>
+
+              {/* <div>
                 <label className="flex items-center space-x-2">
                   <input
                     type="checkbox"
@@ -310,7 +321,7 @@ export function Deposit() {
                     Make this a Custom Sweet (+33.33%)
                   </span>
                 </label>
-              </div>
+              </div> */}
 
               {formData.isCustom && (
                 <div>

@@ -105,7 +105,9 @@ export function Onboarding() {
     if (currentStep === steps.length - 1) {
       // Redirect based on user selections
       const path =
-        selections.purpose === 'baker' ? '/deposit' : '/dashboard?action=claim'
+        selections.purpose === 'baker'
+          ? '/dashboard'
+          : '/dashboard?action=claim'
       push(path)
       return
     }

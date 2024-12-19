@@ -33,8 +33,6 @@ export function Navigation() {
     skip: !address
   })
 
-  console.log('adminData', adminData)
-
   const isAdmin = adminData?.admin?.id
 
   const notificationRef = React.useRef(null)
