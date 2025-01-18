@@ -4,8 +4,8 @@
   "display": "standalone",
   "scope": "/",
   "start_url": "/",
-  "name": "PROJECT_NAME",
-  "short_name": "PROJECT_NAME",
+  "name": "SweetSpot",
+  "short_name": "SweetSpot",
   "icons": [
     {
       "src": "/vercel.svg",

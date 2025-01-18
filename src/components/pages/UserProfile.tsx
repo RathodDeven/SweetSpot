@@ -1,5 +1,5 @@
 'use client'
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
 import {
   Wallet,
@@ -28,6 +28,16 @@ import useEns from '../../hooks/useEns'
 import { Address, formatUnits } from 'viem'
 import { AllocatedToken, User, useUserQuery } from '../../graphql/generated'
 import { getSupportedToken } from '../../types/tokens'
+import {
+  extractPassportScore,
+  getPassportScore
+} from '../../api/gitcoinPassport'
+
+type PassportScoreState = {
+  score: number | null
+  isLoading: boolean
+  error: string | null
+}
 
 function MetricCard({
   title,
@@ -282,6 +292,37 @@ export function UserProfile({ address }: { address: Address }) {
     }
   })
 
+  const [passportScore, setPassportScore] = useState<PassportScoreState>({
+    score: null,
+    isLoading: false,
+    error: null
+  })
+
+  useEffect(() => {
+    const fetchPassportScore = async () => {
+      if (!address) return
+
+      setPassportScore((prev) => ({ ...prev, isLoading: true }))
+      try {
+        const response = await getPassportScore(address)
+        setPassportScore({
+          score: extractPassportScore(response),
+          isLoading: false,
+          error: null
+        })
+      } catch (error) {
+        setPassportScore({
+          score: null,
+          isLoading: false,
+          error:
+            error instanceof Error ? error.message : 'Failed to fetch score'
+        })
+      }
+    }
+
+    fetchPassportScore()
+  }, [address])
+
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8 space-y-6 min-h-screen h-fit overflow-y-auto">
       {/* Profile Overview */}
@@ -313,17 +354,34 @@ export function UserProfile({ address }: { address: Address }) {
               )}
             </div>
           </div>
-          <div className="text-center">
-            <div className="inline-flex items-center justify-center w-20 h-20 rounded-full bg-purple-100">
-              <div className="text-2xl font-bold text-purple-600">
-                {
-                  data?.user?.scores?.find(
-                    (score) => score.scoreType === 'Trust'
-                  )?.value
-                }
+          <div className="text-center flex gap-4 justify-center">
+            <div>
+              <div className="inline-flex items-center justify-center w-20 h-20 rounded-full bg-purple-100">
+                <div className="text-2xl font-bold text-purple-600">
+                  {
+                    data?.user?.scores?.find(
+                      (score) => score.scoreType === 'Trust'
+                    )?.value
+                  }
+                </div>
               </div>
+              <div className="mt-2 text-sm text-gray-600">Trust Score</div>
             </div>
-            <div className="mt-2 text-sm text-gray-600">Trust Score</div>
+
+            <div>
+              <div className="inline-flex items-center justify-center w-20 h-20 rounded-full bg-green-100">
+                <div className="text-2xl font-bold text-green-600">
+                  {passportScore.isLoading ? (
+                    <span className="text-base">Loading...</span>
+                  ) : passportScore.error ? (
+                    <span className="text-base text-red-500">Error</span>
+                  ) : (
+                    passportScore.score
+                  )}
+                </div>
+              </div>
+              <div className="mt-2 text-sm text-gray-600">Passport Score</div>
+            </div>
           </div>
         </div>
       </div>
