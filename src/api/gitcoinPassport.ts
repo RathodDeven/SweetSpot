@@ -26,10 +26,6 @@ export async function getPassportScore(
     throw new Error('Passport API key is not configured')
   }
 
-  console.log('walletAddress', walletAddress)
-  console.log('PASSPORT_API_URL', PASSPORT_API_URL)
-  console.log('PASSPORT_API_KEY', PASSPORT_API_KEY)
-
   try {
     const response = await fetch(
       `${PASSPORT_API_URL}/passport/analysis/${walletAddress}`,
@@ -42,15 +38,12 @@ export async function getPassportScore(
       }
     )
 
-    console.log('response', response)
-
     if (!response.ok) {
       throw new Error(`API request failed with status ${response.status}`)
     }
 
     const data = await response.json()
 
-    console.log('data', data)
     return data as PassportScoreResponse
   } catch (error) {
     throw new Error(
