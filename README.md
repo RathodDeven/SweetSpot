@@ -26,7 +26,7 @@ cp sample.env .env
 4. Configure the following environment variables in `.env`:
 
 - `NEXT_PUBLIC_RAINBOW_KIT_PROJECT_ID`: Get from [WalletConnect Cloud](https://cloud.walletconnect.com/)
-- `NEXT_PUBLIC_STS_TOKEN_URL`: Your STS token URL
+- `NEXT_PUBLIC_STS_TOKEN_URL`: Get from [4EVERLAND STS API](https://docs.4everland.org/storage/bucket/4ever-security-token-service-api)
 - `NEXT_PUBLIC_PASSPORT_SCORER_API_KEY`: Get from [Gitcoin Passport](https://developer.passport.xyz/)
 
 5. Start the development server
