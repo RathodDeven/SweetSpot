@@ -9,25 +9,79 @@ export const scorerContractAddress: Address =
   scorerContractAddresses.celoAlfajores
 
 export const scorerContractABI = [
-  { inputs: [], name: 'AccessControlBadConfirmation', type: 'error' },
+  {
+    inputs: [],
+    name: 'AccessControlBadConfirmation',
+    type: 'error'
+  },
   {
     inputs: [
-      { internalType: 'address', name: 'account', type: 'address' },
-      { internalType: 'bytes32', name: 'neededRole', type: 'bytes32' }
+      {
+        internalType: 'address',
+        name: 'account',
+        type: 'address'
+      },
+      {
+        internalType: 'bytes32',
+        name: 'neededRole',
+        type: 'bytes32'
+      }
     ],
     name: 'AccessControlUnauthorizedAccount',
     type: 'error'
   },
-  { inputs: [], name: 'InvalidInitialization', type: 'error' },
-  { inputs: [], name: 'NotInitializing', type: 'error' },
   {
-    inputs: [{ internalType: 'address', name: 'owner', type: 'address' }],
+    inputs: [
+      {
+        internalType: 'string',
+        name: 'scoreType',
+        type: 'string'
+      }
+    ],
+    name: 'DuplicateScoreType',
+    type: 'error'
+  },
+  {
+    inputs: [],
+    name: 'InvalidInitialization',
+    type: 'error'
+  },
+  {
+    inputs: [],
+    name: 'NotInitializing',
+    type: 'error'
+  },
+  {
+    inputs: [
+      {
+        internalType: 'address',
+        name: 'owner',
+        type: 'address'
+      }
+    ],
     name: 'OwnableInvalidOwner',
     type: 'error'
   },
   {
-    inputs: [{ internalType: 'address', name: 'account', type: 'address' }],
+    inputs: [
+      {
+        internalType: 'address',
+        name: 'account',
+        type: 'address'
+      }
+    ],
     name: 'OwnableUnauthorizedAccount',
+    type: 'error'
+  },
+  {
+    inputs: [
+      {
+        internalType: 'string',
+        name: 'scoreType',
+        type: 'string'
+      }
+    ],
+    name: 'ScoreTypeNotFound',
     type: 'error'
   },
   {
@@ -65,7 +119,12 @@ export const scorerContractABI = [
   {
     anonymous: false,
     inputs: [
-      { indexed: true, internalType: 'bytes32', name: 'role', type: 'bytes32' },
+      {
+        indexed: true,
+        internalType: 'bytes32',
+        name: 'role',
+        type: 'bytes32'
+      },
       {
         indexed: true,
         internalType: 'bytes32',
@@ -85,7 +144,12 @@ export const scorerContractABI = [
   {
     anonymous: false,
     inputs: [
-      { indexed: true, internalType: 'bytes32', name: 'role', type: 'bytes32' },
+      {
+        indexed: true,
+        internalType: 'bytes32',
+        name: 'role',
+        type: 'bytes32'
+      },
       {
         indexed: true,
         internalType: 'address',
@@ -105,7 +169,12 @@ export const scorerContractABI = [
   {
     anonymous: false,
     inputs: [
-      { indexed: true, internalType: 'bytes32', name: 'role', type: 'bytes32' },
+      {
+        indexed: true,
+        internalType: 'bytes32',
+        name: 'role',
+        type: 'bytes32'
+      },
       {
         indexed: true,
         internalType: 'address',
@@ -151,7 +220,12 @@ export const scorerContractABI = [
   {
     anonymous: false,
     inputs: [
-      { indexed: true, internalType: 'address', name: 'user', type: 'address' },
+      {
+        indexed: true,
+        internalType: 'address',
+        name: 'user',
+        type: 'address'
+      },
       {
         indexed: false,
         internalType: 'string',
@@ -177,42 +251,86 @@ export const scorerContractABI = [
   {
     inputs: [],
     name: 'ADMIN_ROLE',
-    outputs: [{ internalType: 'bytes32', name: '', type: 'bytes32' }],
+    outputs: [
+      {
+        internalType: 'bytes32',
+        name: '',
+        type: 'bytes32'
+      }
+    ],
     stateMutability: 'view',
     type: 'function'
   },
   {
     inputs: [],
     name: 'DEFAULT_ADMIN_ROLE',
-    outputs: [{ internalType: 'bytes32', name: '', type: 'bytes32' }],
+    outputs: [
+      {
+        internalType: 'bytes32',
+        name: '',
+        type: 'bytes32'
+      }
+    ],
     stateMutability: 'view',
     type: 'function'
   },
   {
-    inputs: [{ internalType: 'address', name: 'admin', type: 'address' }],
+    inputs: [
+      {
+        internalType: 'address',
+        name: 'admin',
+        type: 'address'
+      }
+    ],
     name: 'addAdmin',
     outputs: [],
     stateMutability: 'nonpayable',
     type: 'function'
   },
   {
-    inputs: [{ internalType: 'string', name: 'scoreType', type: 'string' }],
+    inputs: [
+      {
+        internalType: 'string',
+        name: 'scoreType',
+        type: 'string'
+      }
+    ],
     name: 'addScoreType',
     outputs: [],
     stateMutability: 'nonpayable',
     type: 'function'
   },
   {
-    inputs: [{ internalType: 'bytes32', name: 'role', type: 'bytes32' }],
+    inputs: [
+      {
+        internalType: 'bytes32',
+        name: 'role',
+        type: 'bytes32'
+      }
+    ],
     name: 'getRoleAdmin',
-    outputs: [{ internalType: 'bytes32', name: '', type: 'bytes32' }],
+    outputs: [
+      {
+        internalType: 'bytes32',
+        name: '',
+        type: 'bytes32'
+      }
+    ],
     stateMutability: 'view',
     type: 'function'
   },
   {
     inputs: [
-      { internalType: 'bytes32', name: 'role', type: 'bytes32' },
-      { internalType: 'address', name: 'account', type: 'address' }
+      {
+        internalType: 'bytes32',
+        name: 'role',
+        type: 'bytes32'
+      },
+      {
+        internalType: 'address',
+        name: 'account',
+        type: 'address'
+      }
     ],
     name: 'grantRole',
     outputs: [],
@@ -221,44 +339,94 @@ export const scorerContractABI = [
   },
   {
     inputs: [
-      { internalType: 'bytes32', name: 'role', type: 'bytes32' },
-      { internalType: 'address', name: 'account', type: 'address' }
+      {
+        internalType: 'bytes32',
+        name: 'role',
+        type: 'bytes32'
+      },
+      {
+        internalType: 'address',
+        name: 'account',
+        type: 'address'
+      }
     ],
     name: 'hasRole',
-    outputs: [{ internalType: 'bool', name: '', type: 'bool' }],
+    outputs: [
+      {
+        internalType: 'bool',
+        name: '',
+        type: 'bool'
+      }
+    ],
     stateMutability: 'view',
     type: 'function'
   },
   {
-    inputs: [{ internalType: 'address', name: 'owner', type: 'address' }],
+    inputs: [
+      {
+        internalType: 'address',
+        name: 'owner',
+        type: 'address'
+      }
+    ],
     name: 'initialize',
     outputs: [],
     stateMutability: 'nonpayable',
     type: 'function'
   },
   {
-    inputs: [{ internalType: 'address', name: 'admin', type: 'address' }],
+    inputs: [
+      {
+        internalType: 'address',
+        name: 'admin',
+        type: 'address'
+      }
+    ],
     name: 'isAdmin',
-    outputs: [{ internalType: 'bool', name: '', type: 'bool' }],
+    outputs: [
+      {
+        internalType: 'bool',
+        name: '',
+        type: 'bool'
+      }
+    ],
     stateMutability: 'view',
     type: 'function'
   },
   {
     inputs: [],
     name: 'owner',
-    outputs: [{ internalType: 'address', name: '', type: 'address' }],
+    outputs: [
+      {
+        internalType: 'address',
+        name: '',
+        type: 'address'
+      }
+    ],
     stateMutability: 'view',
     type: 'function'
   },
   {
-    inputs: [{ internalType: 'address', name: 'admin', type: 'address' }],
+    inputs: [
+      {
+        internalType: 'address',
+        name: 'admin',
+        type: 'address'
+      }
+    ],
     name: 'removeAdmin',
     outputs: [],
     stateMutability: 'nonpayable',
     type: 'function'
   },
   {
-    inputs: [{ internalType: 'string', name: 'scoreType', type: 'string' }],
+    inputs: [
+      {
+        internalType: 'string',
+        name: 'scoreType',
+        type: 'string'
+      }
+    ],
     name: 'removeScoreType',
     outputs: [],
     stateMutability: 'nonpayable',
@@ -273,8 +441,16 @@ export const scorerContractABI = [
   },
   {
     inputs: [
-      { internalType: 'bytes32', name: 'role', type: 'bytes32' },
-      { internalType: 'address', name: 'callerConfirmation', type: 'address' }
+      {
+        internalType: 'bytes32',
+        name: 'role',
+        type: 'bytes32'
+      },
+      {
+        internalType: 'address',
+        name: 'callerConfirmation',
+        type: 'address'
+      }
     ],
     name: 'renounceRole',
     outputs: [],
@@ -283,8 +459,16 @@ export const scorerContractABI = [
   },
   {
     inputs: [
-      { internalType: 'bytes32', name: 'role', type: 'bytes32' },
-      { internalType: 'address', name: 'account', type: 'address' }
+      {
+        internalType: 'bytes32',
+        name: 'role',
+        type: 'bytes32'
+      },
+      {
+        internalType: 'address',
+        name: 'account',
+        type: 'address'
+      }
     ],
     name: 'revokeRole',
     outputs: [],
@@ -293,26 +477,64 @@ export const scorerContractABI = [
   },
   {
     inputs: [
-      { internalType: 'address', name: 'user', type: 'address' },
-      { internalType: 'string', name: 'scoreType', type: 'string' }
+      {
+        internalType: 'address',
+        name: 'user',
+        type: 'address'
+      },
+      {
+        internalType: 'string',
+        name: 'scoreType',
+        type: 'string'
+      }
     ],
     name: 'score',
-    outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
-    stateMutability: 'view',
-    type: 'function'
-  },
-  {
-    inputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
-    name: 'scoreTypes',
-    outputs: [{ internalType: 'string', name: '', type: 'string' }],
+    outputs: [
+      {
+        internalType: 'uint128',
+        name: '',
+        type: 'uint128'
+      }
+    ],
     stateMutability: 'view',
     type: 'function'
   },
   {
     inputs: [
-      { internalType: 'address', name: 'user', type: 'address' },
-      { internalType: 'string', name: 'scoreType', type: 'string' },
-      { internalType: 'uint256', name: 'newScore', type: 'uint256' }
+      {
+        internalType: 'uint256',
+        name: '',
+        type: 'uint256'
+      }
+    ],
+    name: 'scoreTypes',
+    outputs: [
+      {
+        internalType: 'string',
+        name: '',
+        type: 'string'
+      }
+    ],
+    stateMutability: 'view',
+    type: 'function'
+  },
+  {
+    inputs: [
+      {
+        internalType: 'address',
+        name: 'user',
+        type: 'address'
+      },
+      {
+        internalType: 'string',
+        name: 'scoreType',
+        type: 'string'
+      },
+      {
+        internalType: 'uint128',
+        name: 'newScore',
+        type: 'uint128'
+      }
     ],
     name: 'setScore',
     outputs: [],
@@ -320,14 +542,32 @@ export const scorerContractABI = [
     type: 'function'
   },
   {
-    inputs: [{ internalType: 'bytes4', name: 'interfaceId', type: 'bytes4' }],
+    inputs: [
+      {
+        internalType: 'bytes4',
+        name: 'interfaceId',
+        type: 'bytes4'
+      }
+    ],
     name: 'supportsInterface',
-    outputs: [{ internalType: 'bool', name: '', type: 'bool' }],
+    outputs: [
+      {
+        internalType: 'bool',
+        name: '',
+        type: 'bool'
+      }
+    ],
     stateMutability: 'view',
     type: 'function'
   },
   {
-    inputs: [{ internalType: 'address', name: 'newOwner', type: 'address' }],
+    inputs: [
+      {
+        internalType: 'address',
+        name: 'newOwner',
+        type: 'address'
+      }
+    ],
     name: 'transferOwnership',
     outputs: [],
     stateMutability: 'nonpayable',
