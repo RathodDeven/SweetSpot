@@ -62,7 +62,7 @@ export function Navigation() {
             <NavLink to="/" icon={<Home className="h-5 w-5" />} text="Home" />
 
             <NavLink
-              to="/cookieverse"
+              to="/sweetverse"
               icon={<Globe2 className="h-5 w-5" />}
               text="Sweet Verse"
             />
@@ -195,7 +195,7 @@ export function Navigation() {
                 onClick={toggleMenu}
               />
               <MobileNavLink
-                to="/cookieverse"
+                to="/sweetverse"
                 icon={<Globe2 className="h-5 w-5" />}
                 text="Sweet Verse"
                 onClick={toggleMenu}

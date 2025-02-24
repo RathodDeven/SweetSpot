@@ -1,18 +1,16 @@
 import React, { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Trophy, Clock, Rocket, Globe2 } from 'lucide-react'
-import { LeaderboardTab } from '../sweetverse/LeaderboardTab'
+import { Clock, Rocket, Globe2 } from 'lucide-react'
 import { RoundsTab } from '../sweetverse/RoundsTab'
 import { ProjectsTab } from '../sweetverse/ProjectsTab'
 import { TabNavigation } from '../common/TabNavigation'
 
 const tabs = [
-  // { id: 'leaderboard', label: 'Leaderboard', icon: Trophy },
   { id: 'rounds', label: 'Rounds', icon: Clock },
   { id: 'projects', label: 'Projects', icon: Rocket }
 ]
 
-export function CookieVerse() {
+export function SweetVerse() {
   const [activeTab, setActiveTab] = useState('rounds')
 
   return (
