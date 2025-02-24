@@ -1,14 +1,14 @@
 import { Address } from 'viem'
 
-export const nCookieJarContractAddresses: Record<string, Address> = {
+export const SweetSpotContractAddresses: Record<string, Address> = {
   arbitrumSepolia: '0xF47c6040536D1A1584e4BEe580d65014E2fC55fE',
   celoAlfajores: '0xa6e35CCf2950c637AF0F06e162A3991f50CE210f'
 }
 
-export const nCookieJarContractAddress: Address =
-  nCookieJarContractAddresses.celoAlfajores
+export const SweetSpotContractAddress: Address =
+  SweetSpotContractAddresses.celoAlfajores
 
-export const nCookieJarContractABI = [
+export const SweetSpotContractABI = [
   {
     inputs: [],
     name: 'InvalidInitialization',

@@ -16,9 +16,9 @@ import { getSupportedToken, SUPPORTED_TOKENS } from '../../types/tokens'
 import toast from 'react-hot-toast'
 import { useWriteContract } from 'wagmi'
 import {
-  nCookieJarContractABI,
-  nCookieJarContractAddress
-} from '../../contracts/nCookieJar/nCookieJarContractInfo'
+  SweetSpotContractABI,
+  SweetSpotContractAddress
+} from '../../contracts/sweetspot/SweetSpotContractInfo'
 import { valueInWei } from '../../utils/helpers'
 import { viemPublicClient } from '../../utils/viemClient'
 import {
@@ -92,8 +92,8 @@ export function TokenAllocation() {
       )
 
       const tx = await writeContractAsync({
-        abi: nCookieJarContractABI,
-        address: nCookieJarContractAddress,
+        abi: SweetSpotContractABI,
+        address: SweetSpotContractAddress,
         functionName: 'setAllowedAmount',
         args: [
           recipientAddress,

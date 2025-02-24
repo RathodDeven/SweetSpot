@@ -4,9 +4,9 @@ import { Settings, Clock } from 'lucide-react'
 import toast from 'react-hot-toast'
 import { useWriteContract } from 'wagmi'
 import {
-  nCookieJarContractABI,
-  nCookieJarContractAddress
-} from '../../contracts/nCookieJar/nCookieJarContractInfo'
+  SweetSpotContractABI,
+  SweetSpotContractAddress
+} from '../../contracts/sweetspot/SweetSpotContractInfo'
 import uploadToIPFS from '../../utils/uploadToIPFS'
 import { viemPublicClient } from '../../utils/viemClient'
 
@@ -50,8 +50,8 @@ export function AdminForm() {
       await toast.promise(
         (async () => {
           const tx = await writeContractAsync({
-            abi: nCookieJarContractABI,
-            address: nCookieJarContractAddress,
+            abi: SweetSpotContractABI,
+            address: SweetSpotContractAddress,
             functionName: 'setRound',
             args: [startTimeInEpoch, endTimeInEpoch, uri]
           })

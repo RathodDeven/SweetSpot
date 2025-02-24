@@ -1,9 +1,8 @@
 import React, { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Candy, ChevronRight, Gift, Pencil, Check, X } from 'lucide-react'
-import { SUPPORTED_TOKENS, Token } from '../../types/tokens'
+import { Candy, ChevronRight, Pencil, Check, X } from 'lucide-react'
+import { SUPPORTED_TOKENS } from '../../types/tokens'
 import toast from 'react-hot-toast'
-import { useRouter } from 'next/navigation'
 import {
   useAccount,
   useBalance,
@@ -11,10 +10,9 @@ import {
   useWriteContract
 } from 'wagmi'
 import {
-  nCookieJarContractABI,
-  nCookieJarContractAddress,
-  nCookieJarContractAddresses
-} from '../../contracts/nCookieJar/nCookieJarContractInfo'
+  SweetSpotContractABI,
+  SweetSpotContractAddress
+} from '../../contracts/sweetspot/SweetSpotContractInfo'
 import { Address, erc20Abi, formatUnits } from 'viem'
 import { viemPublicClient } from '../../utils/viemClient'
 import { valueInWei } from '../../utils/helpers'
@@ -110,7 +108,7 @@ export function Deposit({ onClose }: { onClose?: () => void }) {
             abi: erc20Abi,
             address: selectedToken.address!,
             functionName: 'approve',
-            args: [nCookieJarContractAddress as Address, amountBigInt]
+            args: [SweetSpotContractAddress as Address, amountBigInt]
           }),
           {
             error: 'Failed to sign approve token',
@@ -134,8 +132,8 @@ export function Deposit({ onClose }: { onClose?: () => void }) {
 
       const tx = await toast.promise(
         writeContractAsync({
-          abi: nCookieJarContractABI,
-          address: nCookieJarContractAddress as Address,
+          abi: SweetSpotContractABI,
+          address: SweetSpotContractAddress as Address,
           functionName: 'deposit',
           args: [selectedToken.address, amountBigInt],
           value:
