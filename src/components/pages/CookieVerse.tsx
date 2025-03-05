@@ -12,7 +12,7 @@ const tabs = [
   { id: 'projects', label: 'Projects', icon: Rocket }
 ]
 
-export function CookieVerse() {
+export function SweetVerse() {
   const [activeTab, setActiveTab] = useState('rounds')
 
   return (
