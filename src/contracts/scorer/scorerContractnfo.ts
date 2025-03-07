@@ -502,25 +502,6 @@ export const scorerContractABI = [
   {
     inputs: [
       {
-        internalType: 'uint256',
-        name: '',
-        type: 'uint256'
-      }
-    ],
-    name: 'scoreTypes',
-    outputs: [
-      {
-        internalType: 'string',
-        name: '',
-        type: 'string'
-      }
-    ],
-    stateMutability: 'view',
-    type: 'function'
-  },
-  {
-    inputs: [
-      {
         internalType: 'address',
         name: 'user',
         type: 'address'
