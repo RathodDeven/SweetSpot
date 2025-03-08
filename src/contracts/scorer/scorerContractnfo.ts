@@ -1,12 +1,14 @@
 import { Address } from 'viem'
+import { CHAIN_NETWORK } from '../../utils/config'
 
 export const scorerContractAddresses: Record<string, Address> = {
   arbitrumSepolia: '0x48c128c6C7c9360898F156cE7039979768DA4134',
-  celoAlfajores: '0x9E2851e9Cb3425BeAC4A18071505BaaE77e3BdEb'
+  celoAlfajores: '0x9E2851e9Cb3425BeAC4A18071505BaaE77e3BdEb',
+  celo: '0x517082d63bE128bAF9413C898a957d79E3A3A452'
 }
 
 export const scorerContractAddress: Address =
-  scorerContractAddresses.celoAlfajores
+  scorerContractAddresses[CHAIN_NETWORK]
 
 export const scorerContractABI = [
   {
@@ -494,25 +496,6 @@ export const scorerContractABI = [
         internalType: 'uint128',
         name: '',
         type: 'uint128'
-      }
-    ],
-    stateMutability: 'view',
-    type: 'function'
-  },
-  {
-    inputs: [
-      {
-        internalType: 'uint256',
-        name: '',
-        type: 'uint256'
-      }
-    ],
-    name: 'scoreTypes',
-    outputs: [
-      {
-        internalType: 'string',
-        name: '',
-        type: 'string'
       }
     ],
     stateMutability: 'view',

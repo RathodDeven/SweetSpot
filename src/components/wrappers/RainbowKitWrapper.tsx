@@ -11,9 +11,9 @@ import {
   RainbowKitProvider
 } from '@rainbow-me/rainbowkit'
 import { WagmiProvider, http } from 'wagmi'
-import { celoAlfajores } from 'wagmi/chains'
+import { celoAlfajores, celo } from 'wagmi/chains'
 import { QueryClientProvider, QueryClient } from '@tanstack/react-query'
-import { APP_NAME } from '../../utils/config'
+import { APP_NAME, CHAIN_NETWORK } from '../../utils/config'
 import {
   coinbaseWallet,
   injectedWallet,
@@ -24,17 +24,23 @@ import {
 } from '@rainbow-me/rainbowkit/wallets'
 import { useTheme } from './TailwindThemeProvider'
 
-const defaultChains = [celoAlfajores]
+const defaultChains = CHAIN_NETWORK === 'celo' ? [celo] : [celoAlfajores]
 
-const defaultTransports = {
-  [celoAlfajores.id]: http()
-}
+const defaultTransports =
+  CHAIN_NETWORK === 'celo'
+    ? {
+        [celo.id]: http()
+      }
+    : {
+        [celoAlfajores.id]: http()
+      }
 
 const config = getDefaultConfig({
   appName: APP_NAME,
   projectId: String(process.env.NEXT_PUBLIC_RAINBOW_KIT_PROJECT_ID),
   // @ts-ignore
   chains: defaultChains,
+  // @ts-ignore
   transports: defaultTransports,
   wallets: [
     {

@@ -7,9 +7,9 @@ import { DonationSuggestionsModal } from '../donations/DonationSuggestionsModal'
 import toast from 'react-hot-toast'
 import { useAccount, useWriteContract } from 'wagmi'
 import {
-  nCookieJarContractABI,
-  nCookieJarContractAddress
-} from '../../contracts/nCookieJar/nCookieJarContractInfo'
+  SweetSpotContractABI,
+  SweetSpotContractAddress
+} from '../../contracts/sweetspot/SweetSpotContractInfo'
 import { getSupportedToken, SUPPORTED_TOKENS } from '../../types/tokens'
 import { viemPublicClient } from '../../utils/viemClient'
 import {
@@ -55,8 +55,8 @@ export function TokenBalance() {
       await toast.promise(
         (async () => {
           const tx = await writeContractAsync({
-            abi: nCookieJarContractABI,
-            address: nCookieJarContractAddress,
+            abi: SweetSpotContractABI,
+            address: SweetSpotContractAddress,
             functionName: 'claim',
             args: [unclaimedTokens?.[0]?.token]
           })

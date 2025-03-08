@@ -41,7 +41,7 @@ export function Admin() {
       <div className="mb-8">
         <h1 className="text-3xl font-bold text-gray-900">Admin Panel</h1>
         <p className="mt-2 text-gray-600">
-          Manage your nCookieJar distribution settings and treasury
+          Manage your SweetSpot distribution settings and treasury
         </p>
       </div>
 
