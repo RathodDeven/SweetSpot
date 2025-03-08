@@ -1,5 +1,12 @@
 import { createPublicClient, http } from 'viem'
-import { arbitrumSepolia, celoAlfajores, mainnet, polygon } from 'viem/chains'
+import {
+  arbitrumSepolia,
+  celoAlfajores,
+  mainnet,
+  polygon,
+  celo
+} from 'viem/chains'
+import { CHAIN_NETWORK } from './config'
 
 export const viemPublicClientEth = createPublicClient({
   chain: mainnet,
@@ -21,4 +28,10 @@ export const celoAlfajoresPublicClient = createPublicClient({
   transport: http()
 })
 
-export const viemPublicClient = celoAlfajoresPublicClient
+export const celoPublicClient = createPublicClient({
+  chain: celo,
+  transport: http()
+})
+
+export const viemPublicClient =
+  CHAIN_NETWORK === 'celo' ? celoPublicClient : celoAlfajoresPublicClient

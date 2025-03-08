@@ -1,12 +1,14 @@
 import { Address } from 'viem'
+import { CHAIN_NETWORK } from '../../utils/config'
 
 export const SweetSpotContractAddresses: Record<string, Address> = {
   arbitrumSepolia: '0xF47c6040536D1A1584e4BEe580d65014E2fC55fE',
-  celoAlfajores: '0xa6e35CCf2950c637AF0F06e162A3991f50CE210f'
+  celoAlfajores: '0xa6e35CCf2950c637AF0F06e162A3991f50CE210f',
+  celo: '0xeC6D8F428a1e97d0988744BDeD2AE1e4b8D97344'
 }
 
 export const SweetSpotContractAddress: Address =
-  SweetSpotContractAddresses.celoAlfajores
+  SweetSpotContractAddresses[CHAIN_NETWORK]
 
 export const SweetSpotContractABI = [
   {

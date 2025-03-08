@@ -1,5 +1,6 @@
 import { Address } from 'viem'
 import { ZERO_ADDRESS } from '../utils/contants'
+import { CHAIN_NETWORK } from '../utils/config'
 
 export interface Token {
   symbol: string
@@ -78,7 +79,26 @@ export const CELO_ALFAJORES_TOKENS: Token[] = [
   // }
 ]
 
-export const SUPPORTED_TOKENS: Token[] = CELO_ALFAJORES_TOKENS
+export const CELO_TOKENS: Token[] = [
+  {
+    symbol: 'CELO',
+    name: 'CELO ',
+    decimals: 18,
+    // native
+    address: ZERO_ADDRESS,
+    logoUrl: 'https://avatars.githubusercontent.com/u/37552875?s=200&v=4'
+  },
+  {
+    symbol: 'cUSD',
+    name: 'Celo Dollar',
+    decimals: 18,
+    address: '0x765de816845861e75a25fca122bb6898b8b1282a',
+    logoUrl: 'https://celoscan.io/token/images/celodollar_32.png'
+  }
+]
+
+export const SUPPORTED_TOKENS: Token[] =
+  CHAIN_NETWORK === 'celo' ? CELO_TOKENS : CELO_ALFAJORES_TOKENS
 
 export const getSupportedToken = (address: Address) => {
   return SUPPORTED_TOKENS.find(
