@@ -420,22 +420,26 @@ export function TokenAllocation() {
                             </td>
 
                             <td className="px-6 py-4 whitespace-nowrap text-center">
-                              <motion.button
-                                whileHover={{ scale: 1.05 }}
-                                whileTap={{ scale: 0.95 }}
-                                onClick={() =>
-                                  handleRemoveAllocation(
-                                    userAddress,
-                                    allocation.token as Address
-                                  )
-                                }
-                                className="inline-flex items-center space-x-1 text-red-500 hover:text-red-600"
-                              >
-                                <Trash2 className="h-4 w-4" />
-                                <span className="text-sm font-medium">
-                                  Remove
-                                </span>
-                              </motion.button>
+                              {isClaimed ? (
+                                <div>-</div>
+                              ) : (
+                                <motion.button
+                                  whileHover={{ scale: 1.05 }}
+                                  whileTap={{ scale: 0.95 }}
+                                  onClick={() =>
+                                    handleRemoveAllocation(
+                                      userAddress,
+                                      allocation.token as Address
+                                    )
+                                  }
+                                  className="inline-flex items-center space-x-1 text-red-500 hover:text-red-600"
+                                >
+                                  <Trash2 className="h-4 w-4" />
+                                  <span className="text-sm font-medium">
+                                    Remove
+                                  </span>
+                                </motion.button>
+                              )}
                             </td>
                             {allocationIndex === 0 && (
                               <td
