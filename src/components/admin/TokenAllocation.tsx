@@ -128,6 +128,54 @@ export function TokenAllocation() {
     })
   }
 
+  const handleAllocate = async (
+    recipientAddress: Address,
+    tokenSymbol: string,
+    amount: string
+  ) => {
+    console.log('amount', amount)
+    if (!recipientAddress.match(/^0x[a-fA-F0-9]{40}$/)) {
+      toast.error('Please enter a valid Ethereum address')
+      return
+    }
+
+    try {
+      const selectedToken = SUPPORTED_TOKENS.find(
+        (token) => token.symbol === tokenSymbol
+      )
+
+      const tx = await writeContractAsync({
+        abi: SweetSpotContractABI,
+        address: SweetSpotContractAddress,
+        functionName: 'setAllowedAmount',
+        args: [
+          recipientAddress,
+          selectedToken?.address,
+          valueInWei(amount, selectedToken?.decimals!)
+        ]
+      })
+
+      await toast.promise(
+        viemPublicClient.waitForTransactionReceipt({
+          hash: tx,
+          confirmations: 3
+        }),
+        {
+          error: 'Unable to confirm new allocations',
+          loading: 'Confirming allocations',
+          success: 'Amount Allocated to address ' + recipientAddress
+        }
+      )
+
+      await client.refetchQueries({
+        include: ['CurrentRoundAllocatedTokens']
+      })
+    } catch (error) {
+      console.error(error)
+      toast.error('An Error Occured')
+    }
+  }
+
   const handleConfirmAllocations = async () => {
     if (pendingAllocations.length === 0) {
       toast.error('No pending allocations to confirm')
@@ -588,11 +636,11 @@ export function TokenAllocation() {
         )}
       </motion.div>
 
-      {/* <QuickAllocation
+      <QuickAllocation
         userAddress={quickAllocationUser}
         onClose={() => setQuickAllocationUser(null)}
         handleAllocate={handleAllocate}
-      /> */}
+      />
     </div>
   )
 }
