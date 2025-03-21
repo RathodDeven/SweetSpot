@@ -70,9 +70,7 @@ export function QuickAllocation({
           <h3 className="font-medium mb-2">Allocating to:</h3>
           <div className="flex items-center space-x-2 text-gray-600">
             <span>{ensName}</span>
-            <span className="text-gray-400">
-              ({formatAddress(userAddress)})
-            </span>
+            <span className="text-gray-400">{formatAddress(userAddress)}</span>
           </div>
         </div>
 

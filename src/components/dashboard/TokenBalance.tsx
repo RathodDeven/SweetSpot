@@ -63,7 +63,7 @@ export function TokenBalance() {
 
           await viemPublicClient.waitForTransactionReceipt({
             hash: tx,
-            confirmations: 6
+            confirmations: 3
           })
 
           await client.refetchQueries({

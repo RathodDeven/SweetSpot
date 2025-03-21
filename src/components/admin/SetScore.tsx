@@ -40,7 +40,7 @@ const SetScore = ({
           })
           await viemPublicClient.waitForTransactionReceipt({
             hash: tx,
-            confirmations: 5
+            confirmations: 3
           })
 
           await client.refetchQueries({

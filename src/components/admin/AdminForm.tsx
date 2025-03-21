@@ -47,6 +47,10 @@ export function AdminForm() {
 
       const { uri } = await uploadToIPFS(jsonFile)
 
+      console.log('startTimeInEpoch : ', startTimeInEpoch)
+      console.log('endTimeInEpoch : ', endTimeInEpoch)
+      console.log('uri : ', uri)
+
       await toast.promise(
         (async () => {
           const tx = await writeContractAsync({

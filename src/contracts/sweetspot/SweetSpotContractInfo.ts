@@ -12,42 +12,6 @@ export const SweetSpotContractAddress: Address =
 
 export const SweetSpotContractABI = [
   {
-    inputs: [
-      {
-        internalType: 'address',
-        name: 'token',
-        type: 'address'
-      },
-      {
-        internalType: 'address[]',
-        name: 'users',
-        type: 'address[]'
-      },
-      {
-        internalType: 'uint256[]',
-        name: 'amounts',
-        type: 'uint256[]'
-      }
-    ],
-    name: 'bulkSetAllowedAmount',
-    outputs: [],
-    stateMutability: 'nonpayable',
-    type: 'function'
-  },
-  {
-    inputs: [
-      {
-        internalType: 'address',
-        name: 'token',
-        type: 'address'
-      }
-    ],
-    name: 'claim',
-    outputs: [],
-    stateMutability: 'nonpayable',
-    type: 'function'
-  },
-  {
     inputs: [],
     name: 'InvalidInitialization',
     type: 'error'
@@ -162,24 +126,6 @@ export const SweetSpotContractABI = [
     type: 'event'
   },
   {
-    inputs: [
-      {
-        internalType: 'address',
-        name: 'token',
-        type: 'address'
-      },
-      {
-        internalType: 'uint256',
-        name: 'amount',
-        type: 'uint256'
-      }
-    ],
-    name: 'deposit',
-    outputs: [],
-    stateMutability: 'payable',
-    type: 'function'
-  },
-  {
     anonymous: false,
     inputs: [
       {
@@ -203,24 +149,6 @@ export const SweetSpotContractABI = [
     ],
     name: 'Deposit',
     type: 'event'
-  },
-  {
-    inputs: [
-      {
-        internalType: 'address',
-        name: '_scorer',
-        type: 'address'
-      },
-      {
-        internalType: 'address',
-        name: 'owner',
-        type: 'address'
-      }
-    ],
-    name: 'initialize',
-    outputs: [],
-    stateMutability: 'nonpayable',
-    type: 'function'
   },
   {
     anonymous: false,
@@ -255,13 +183,6 @@ export const SweetSpotContractABI = [
     type: 'event'
   },
   {
-    inputs: [],
-    name: 'renounceOwnership',
-    outputs: [],
-    stateMutability: 'nonpayable',
-    type: 'function'
-  },
-  {
     anonymous: false,
     inputs: [
       {
@@ -285,6 +206,200 @@ export const SweetSpotContractABI = [
     ],
     name: 'RoundUpdated',
     type: 'event'
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: true,
+        internalType: 'address',
+        name: 'withdrawer',
+        type: 'address'
+      },
+      {
+        indexed: true,
+        internalType: 'address',
+        name: 'token',
+        type: 'address'
+      },
+      {
+        indexed: false,
+        internalType: 'uint256',
+        name: 'amount',
+        type: 'uint256'
+      }
+    ],
+    name: 'Withdraw',
+    type: 'event'
+  },
+  {
+    stateMutability: 'payable',
+    type: 'fallback'
+  },
+  {
+    inputs: [],
+    name: 'NATIVE_TOKEN',
+    outputs: [
+      {
+        internalType: 'address',
+        name: '',
+        type: 'address'
+      }
+    ],
+    stateMutability: 'view',
+    type: 'function'
+  },
+  {
+    inputs: [
+      {
+        internalType: 'address',
+        name: '',
+        type: 'address'
+      },
+      {
+        internalType: 'address',
+        name: '',
+        type: 'address'
+      }
+    ],
+    name: 'allowedAmounts',
+    outputs: [
+      {
+        internalType: 'uint256',
+        name: '',
+        type: 'uint256'
+      }
+    ],
+    stateMutability: 'view',
+    type: 'function'
+  },
+  {
+    inputs: [
+      {
+        internalType: 'address[]',
+        name: 'tokens',
+        type: 'address[]'
+      },
+      {
+        internalType: 'address[]',
+        name: 'users',
+        type: 'address[]'
+      },
+      {
+        internalType: 'uint256[]',
+        name: 'amounts',
+        type: 'uint256[]'
+      }
+    ],
+    name: 'bulkSetAllowedAmount',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function'
+  },
+  {
+    inputs: [
+      {
+        internalType: 'address',
+        name: 'token',
+        type: 'address'
+      }
+    ],
+    name: 'claim',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function'
+  },
+  {
+    inputs: [],
+    name: 'currentRound',
+    outputs: [
+      {
+        internalType: 'uint64',
+        name: 'start',
+        type: 'uint64'
+      },
+      {
+        internalType: 'uint64',
+        name: 'end',
+        type: 'uint64'
+      },
+      {
+        internalType: 'string',
+        name: 'metadataURI',
+        type: 'string'
+      }
+    ],
+    stateMutability: 'view',
+    type: 'function'
+  },
+  {
+    inputs: [
+      {
+        internalType: 'address',
+        name: 'token',
+        type: 'address'
+      },
+      {
+        internalType: 'uint256',
+        name: 'amount',
+        type: 'uint256'
+      }
+    ],
+    name: 'deposit',
+    outputs: [],
+    stateMutability: 'payable',
+    type: 'function'
+  },
+  {
+    inputs: [
+      {
+        internalType: 'address',
+        name: '_scorer',
+        type: 'address'
+      },
+      {
+        internalType: 'address',
+        name: 'owner',
+        type: 'address'
+      }
+    ],
+    name: 'initialize',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function'
+  },
+  {
+    inputs: [],
+    name: 'owner',
+    outputs: [
+      {
+        internalType: 'address',
+        name: '',
+        type: 'address'
+      }
+    ],
+    stateMutability: 'view',
+    type: 'function'
+  },
+  {
+    inputs: [],
+    name: 'renounceOwnership',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function'
+  },
+  {
+    inputs: [],
+    name: 'scorer',
+    outputs: [
+      {
+        internalType: 'contract IScorer',
+        name: '',
+        type: 'address'
+      }
+    ],
+    stateMutability: 'view',
+    type: 'function'
   },
   {
     inputs: [
@@ -336,6 +451,25 @@ export const SweetSpotContractABI = [
     inputs: [
       {
         internalType: 'address',
+        name: '',
+        type: 'address'
+      }
+    ],
+    name: 'totalBalances',
+    outputs: [
+      {
+        internalType: 'uint256',
+        name: '',
+        type: 'uint256'
+      }
+    ],
+    stateMutability: 'view',
+    type: 'function'
+  },
+  {
+    inputs: [
+      {
+        internalType: 'address',
         name: 'newOwner',
         type: 'address'
       }
@@ -344,35 +478,6 @@ export const SweetSpotContractABI = [
     outputs: [],
     stateMutability: 'nonpayable',
     type: 'function'
-  },
-  {
-    anonymous: false,
-    inputs: [
-      {
-        indexed: true,
-        internalType: 'address',
-        name: 'withdrawer',
-        type: 'address'
-      },
-      {
-        indexed: true,
-        internalType: 'address',
-        name: 'token',
-        type: 'address'
-      },
-      {
-        indexed: false,
-        internalType: 'uint256',
-        name: 'amount',
-        type: 'uint256'
-      }
-    ],
-    name: 'Withdraw',
-    type: 'event'
-  },
-  {
-    stateMutability: 'payable',
-    type: 'fallback'
   },
   {
     inputs: [
@@ -395,110 +500,5 @@ export const SweetSpotContractABI = [
   {
     stateMutability: 'payable',
     type: 'receive'
-  },
-  {
-    inputs: [
-      {
-        internalType: 'address',
-        name: '',
-        type: 'address'
-      },
-      {
-        internalType: 'address',
-        name: '',
-        type: 'address'
-      }
-    ],
-    name: 'allowedAmounts',
-    outputs: [
-      {
-        internalType: 'uint256',
-        name: '',
-        type: 'uint256'
-      }
-    ],
-    stateMutability: 'view',
-    type: 'function'
-  },
-  {
-    inputs: [],
-    name: 'currentRound',
-    outputs: [
-      {
-        internalType: 'uint64',
-        name: 'start',
-        type: 'uint64'
-      },
-      {
-        internalType: 'uint64',
-        name: 'end',
-        type: 'uint64'
-      },
-      {
-        internalType: 'string',
-        name: 'metadataURI',
-        type: 'string'
-      }
-    ],
-    stateMutability: 'view',
-    type: 'function'
-  },
-  {
-    inputs: [],
-    name: 'NATIVE_TOKEN',
-    outputs: [
-      {
-        internalType: 'address',
-        name: '',
-        type: 'address'
-      }
-    ],
-    stateMutability: 'view',
-    type: 'function'
-  },
-  {
-    inputs: [],
-    name: 'owner',
-    outputs: [
-      {
-        internalType: 'address',
-        name: '',
-        type: 'address'
-      }
-    ],
-    stateMutability: 'view',
-    type: 'function'
-  },
-  {
-    inputs: [],
-    name: 'scorer',
-    outputs: [
-      {
-        internalType: 'contract IScorer',
-        name: '',
-        type: 'address'
-      }
-    ],
-    stateMutability: 'view',
-    type: 'function'
-  },
-  {
-    inputs: [
-      {
-        internalType: 'address',
-        name: '',
-        type: 'address'
-      }
-    ],
-    name: 'totalBalances',
-    outputs: [
-      {
-        internalType: 'uint256',
-        name: '',
-        type: 'uint256'
-      }
-    ],
-    stateMutability: 'view',
-    type: 'function'
   }
 ]
