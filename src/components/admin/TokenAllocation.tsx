@@ -125,8 +125,7 @@ export function TokenAllocation() {
 
   const handleRemoveAllocation = async (
     userAddress: Address,
-    tokenAddress: Address,
-    amount: string
+    tokenAddress: Address
   ) => {
     const token = getSupportedToken(tokenAddress)
     try {
@@ -134,11 +133,7 @@ export function TokenAllocation() {
         address: SweetSpotContractAddress,
         abi: SweetSpotContractABI,
         functionName: 'setAllowedAmount',
-        args: [
-          userAddress,
-          token?.address,
-          valueInWei(amount, token?.decimals!)
-        ]
+        args: [userAddress, token?.address, valueInWei(0, token?.decimals!)]
       })
 
       await toast.promise(
@@ -303,8 +298,7 @@ export function TokenAllocation() {
                                   onClick={() =>
                                     handleRemoveAllocation(
                                       userAddress,
-                                      allocation.token as Address,
-                                      allocation.amount
+                                      allocation.token as Address
                                     )
                                   }
                                   className="inline-flex items-center space-x-1 text-red-500 hover:text-red-600"
