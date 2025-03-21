@@ -105,7 +105,7 @@ export function TokenAllocation() {
       await toast.promise(
         viemPublicClient.waitForTransactionReceipt({
           hash: tx,
-          confirmations: 5
+          confirmations: 3
         }),
         {
           error: 'Unable to confirm new allocations',
@@ -120,6 +120,45 @@ export function TokenAllocation() {
     } catch (error) {
       console.error(error)
       toast.error('An Error Occured')
+    }
+  }
+
+  const handleRemoveAllocation = async (
+    userAddress: Address,
+    tokenAddress: Address,
+    amount: string
+  ) => {
+    const token = getSupportedToken(tokenAddress)
+    try {
+      const tx = await writeContractAsync({
+        address: SweetSpotContractAddress,
+        abi: SweetSpotContractABI,
+        functionName: 'setAllowedAmount',
+        args: [
+          userAddress,
+          token?.address,
+          valueInWei(amount, token?.decimals!)
+        ]
+      })
+
+      await toast.promise(
+        viemPublicClient.waitForTransactionReceipt({
+          hash: tx,
+          confirmations: 3
+        }),
+        {
+          error: 'Failed to remove allocation',
+          loading: 'Removing allocation...',
+          success: 'Allocation removed successfully'
+        }
+      )
+
+      await client.refetchQueries({
+        include: ['CurrentRoundAllocatedTokens']
+      })
+    } catch (error) {
+      console.error(error)
+      toast.error('Failed to remove allocation')
     }
   }
 
@@ -157,7 +196,10 @@ export function TokenAllocation() {
                     Status
                   </th>
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Actions
+                    Remove Action
+                  </th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    Add Action
                   </th>
                 </tr>
               </thead>
@@ -253,9 +295,29 @@ export function TokenAllocation() {
                                   )}
                                 </span>
                               </td>
+
+                              <td className="px-6 py-4 whitespace-nowrap text-center">
+                                <motion.button
+                                  whileHover={{ scale: 1.05 }}
+                                  whileTap={{ scale: 0.95 }}
+                                  onClick={() =>
+                                    handleRemoveAllocation(
+                                      userAddress,
+                                      allocation.token as Address,
+                                      allocation.amount
+                                    )
+                                  }
+                                  className="inline-flex items-center space-x-1 text-red-500 hover:text-red-600"
+                                >
+                                  <Trash2 className="h-4 w-4" />
+                                  <span className="text-sm font-medium">
+                                    Remove
+                                  </span>
+                                </motion.button>
+                              </td>
                               {allocationIndex === 0 && (
                                 <td
-                                  className="px-6 py-4 whitespace-nowrap"
+                                  className="px-6 py-4 whitespace-nowrap text-center"
                                   rowSpan={userAllocations.length}
                                 >
                                   <motion.button
@@ -264,11 +326,11 @@ export function TokenAllocation() {
                                     onClick={() =>
                                       setQuickAllocationUser(userAddress)
                                     }
-                                    className="flex items-center space-x-1 text-purple-600 hover:text-purple-700"
+                                    className="inline-flex items-center space-x-1 text-purple-600 hover:text-purple-700"
                                   >
                                     <PlusCircle className="h-4 w-4" />
                                     <span className="text-sm font-medium">
-                                      Add Tokens
+                                      Add
                                     </span>
                                   </motion.button>
                                 </td>
