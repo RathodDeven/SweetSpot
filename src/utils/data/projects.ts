@@ -1,3 +1,5 @@
+import { Project } from '../../types/project'
+
 export const VIDA_VERDE_LINK = 'https://vidaverde.handprotocol.org'
 export const DOCUMENTARY_HUMAN_RIGHTS_LINK =
   'https://giveth.io/project/documentary-about-nigerian-human-trafficking'
@@ -5,7 +7,8 @@ export const DIGITAL_STREET_MUSIC_LINK =
   'https://giveth.io/project/digital-street-musician-doing-free-live-concerts'
 export const BLOOMERSTV_LINK =
   'https://explorer.gitcoin.co/#/projects/0x16429f74cbb2cef6f9f48481b6c8bc49fa12989d75c1f9d82462f8bb91f079eb'
-export const FEATURED_PROJECTS = [
+
+export const ALL_PROJECTS: Project[] = [
   {
     id: '1',
     name: 'Documentary About Nigerian Human Trafficking',
@@ -37,3 +40,5 @@ export const FEATURED_PROJECTS = [
     link: BLOOMERSTV_LINK
   }
 ]
+
+export const FEATURED_PROJECTS: Project[] = ALL_PROJECTS.slice(0, 3)

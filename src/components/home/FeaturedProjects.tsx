@@ -1,7 +1,7 @@
 import React from 'react'
 import { motion } from 'framer-motion'
 import { ExternalLink } from 'lucide-react'
-import { FEATURED_PROJECTS } from '../../utils/data/featuredProjects'
+import { FEATURED_PROJECTS } from '../../utils/data/projects'
 
 export function FeaturedProjects() {
   return (
