@@ -9,7 +9,9 @@ import {
   User,
   Menu,
   X,
-  Bell
+  Bell,
+  Github,
+  Globe
 } from 'lucide-react'
 import { NotificationDropdown } from './navigation/NotificationDropdown'
 import { ProfileDropdown } from './navigation/ProfileDropdown'
@@ -19,6 +21,7 @@ import Link from 'next/link'
 import { useAccount } from 'wagmi'
 import { ConnectButton } from '@rainbow-me/rainbowkit'
 import { useAdminQuery } from '../graphql/generated'
+import { GITHUB_LINK, ORG_LINK } from '../utils/config'
 
 export function Navigation() {
   const { address } = useAccount()
@@ -52,10 +55,34 @@ export function Navigation() {
     >
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between h-16">
-          <Link href="/" className="flex items-center space-x-2 no-underline">
-            <Candy className="h-8 w-8 text-purple-600" />
-            <span className="text-xl font-bold text-gray-900">Sweet Spot</span>
-          </Link>
+          <div className="flex items-center gap-x-4">
+            <Link href="/" className="flex items-center gap-x-2 no-underline">
+              <Candy className="h-8 w-8 text-purple-600" />
+              <span className="text-xl font-bold text-gray-900">
+                Sweet Spot
+              </span>
+            </Link>
+
+            <Link
+              href={ORG_LINK}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-x-1 text-gray-600 hover:text-purple-600 transition-colors"
+            >
+              <Globe className="h-5 w-5" />
+              <span className="text-sm font-medium">Org</span>
+            </Link>
+
+            <Link
+              href={GITHUB_LINK}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-x-1 text-gray-600 hover:text-purple-600 transition-colors"
+            >
+              <Github className="h-5 w-5" />
+              <span className="text-sm font-medium">GitHub</span>
+            </Link>
+          </div>
 
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center space-x-4">

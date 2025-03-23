@@ -19,3 +19,6 @@ export const GRAPHQL_ENDPOINT =
   CHAIN_NETWORK === 'celo'
     ? 'https://api.studio.thegraph.com/query/33698/hand-prod/version/latest'
     : 'https://api.studio.thegraph.com/query/33698/hand/version/latest'
+
+export const GITHUB_LINK = 'https://github.com/HandProtocol/sweetspot'
+export const ORG_LINK = 'https://handprotocol.org'
