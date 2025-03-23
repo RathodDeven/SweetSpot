@@ -94,6 +94,13 @@ export const CELO_TOKENS: Token[] = [
     decimals: 18,
     address: '0x765de816845861e75a25fca122bb6898b8b1282a',
     logoUrl: 'https://celoscan.io/token/images/celodollar_32.png'
+  },
+  {
+    symbol: 'USDGLO',
+    name: 'Glo Dollar',
+    decimals: 18,
+    address: '0x4f604735c1cf31399c6e711d5962b2b3e0225ad3',
+    logoUrl: 'https://avatars.githubusercontent.com/u/131250622?s=48&v=4'
   }
 ]
 
