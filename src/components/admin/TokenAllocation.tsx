@@ -505,7 +505,7 @@ export function TokenAllocation() {
                 />
               </div>
               <p className="text-xs text-gray-500">
-                Enter the recipient's wallet address
+                {"Enter the recipient's wallet address"}
               </p>
             </div>
 
