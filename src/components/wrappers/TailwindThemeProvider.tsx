@@ -4,22 +4,26 @@ import { useContext } from 'react'
 import { useEffect } from 'react'
 import { useState } from 'react'
 import { createContext } from 'react'
-import { DEFAULT_THEME } from '../../utils/config'
+import { DEFAULT_THEME, IS_FIXED_THEME } from '../../utils/config'
 
 interface ContextType {
   theme: 'light' | 'dark'
   toggleTheme: () => void
+  isFixedTheme: boolean
 }
 
 export const ThemeContext = createContext<ContextType>({
   theme: 'light',
-  toggleTheme: () => {}
+  toggleTheme: () => {},
+  isFixedTheme: false
 })
 // import MUITheme from './MUITheme'
 const ThemeProvider = ({ children }: { children: React.ReactNode }) => {
   const [theme, setTheme] = useState<'light' | 'dark'>(DEFAULT_THEME)
 
   const toggleTheme = () => {
+    if (IS_FIXED_THEME) return
+
     if (theme === 'light') {
       document.body.classList.add('dark')
       document.documentElement.setAttribute('data-theme', 'dark')
@@ -34,6 +38,14 @@ const ThemeProvider = ({ children }: { children: React.ReactNode }) => {
   }
 
   useEffect(() => {
+    if (IS_FIXED_THEME) {
+      document.body.classList.add(DEFAULT_THEME)
+      document.documentElement.setAttribute('data-theme', DEFAULT_THEME)
+      window.localStorage.setItem('data-theme', DEFAULT_THEME)
+      setTheme(DEFAULT_THEME)
+      return
+    }
+
     const theme = window.localStorage.getItem('data-theme')
     if (theme) {
       document.body.classList.add(theme)
@@ -64,7 +76,9 @@ const ThemeProvider = ({ children }: { children: React.ReactNode }) => {
   }, [theme])
 
   return (
-    <ThemeContext.Provider value={{ theme, toggleTheme }}>
+    <ThemeContext.Provider
+      value={{ theme, toggleTheme, isFixedTheme: IS_FIXED_THEME }}
+    >
       {children}
     </ThemeContext.Provider>
   )
