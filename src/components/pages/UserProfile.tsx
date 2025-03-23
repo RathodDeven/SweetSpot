@@ -35,6 +35,7 @@ import {
   extractPassportScore,
   getPassportScore
 } from '../../api/gitcoinPassport'
+import { Tooltip } from '@mui/material'
 
 type PassportScoreState = {
   score: number | null
@@ -304,8 +305,6 @@ function ScoreDisplay({
   error?: string | null
   tooltipText: string
 }) {
-  const [showTooltip, setShowTooltip] = useState(false)
-
   return (
     <div className="text-center relative">
       <div
@@ -323,21 +322,15 @@ function ScoreDisplay({
       </div>
       <div className="mt-2 text-sm text-gray-600 flex items-center justify-center">
         {label}
-        <button
-          className="ml-1 focus:outline-none"
-          onMouseEnter={() => setShowTooltip(true)}
-          onMouseLeave={() => setShowTooltip(false)}
-          aria-label={`Information about ${label}`}
-        >
-          <Info className="h-3.5 w-3.5 text-gray-400" />
-        </button>
+        <Tooltip title={tooltipText} arrow placement="top">
+          <button
+            className="ml-1 focus:outline-none"
+            aria-label={`Information about ${label}`}
+          >
+            <Info className="h-3.5 w-3.5 text-gray-400" />
+          </button>
+        </Tooltip>
       </div>
-      {showTooltip && (
-        <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 w-48 p-2 bg-gray-800 text-white text-xs rounded shadow-lg z-10">
-          {tooltipText}
-          <div className="absolute top-full left-1/2 transform -translate-x-1/2 w-2 h-2 rotate-45 bg-gray-800"></div>
-        </div>
-      )}
     </div>
   )
 }
@@ -391,7 +384,6 @@ export function UserProfile({ address }: { address: Address }) {
   }, [address])
 
   const formatMemberSince = (timestamp: number) => {
-    console.log('Timestamp:', timestamp)
     const date = new Date(timestamp * 1000) // Convert seconds to milliseconds
     return new Intl.DateTimeFormat('en-US', {
       month: 'long',
