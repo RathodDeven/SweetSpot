@@ -28,7 +28,7 @@ export function Dashboard() {
           className="flex items-center space-x-2 bg-purple-600 text-white px-4 py-2 rounded-lg"
         >
           <Candy className="h-5 w-5" />
-          <span>Make a Deposit</span>
+          <span>Contribute</span>
         </motion.button>
       </div>
 
@@ -36,7 +36,7 @@ export function Dashboard() {
         onClose={() => setOpen(false)}
         onOpen={() => setOpen(true)}
         open={open}
-        title="Make a Deposit"
+        title="Contribute"
         Icon={<Candy className="h-5 w-5" />}
         classname="w-[600px]"
       >
@@ -54,7 +54,7 @@ export function Dashboard() {
 
       <EmailNotifications /> */}
 
-      <div className="mt-12 pt-8 border-t border-gray-200">
+      {/* <div className="mt-12 pt-8 border-t border-gray-200">
         <div className="text-center">
           <h2 className="text-2xl font-bold mb-4">Want to join Sweet Spot?</h2>
           <p className="text-gray-600 mb-6">
@@ -71,7 +71,7 @@ export function Dashboard() {
             <span>Apply for Sweet Spot</span>
           </motion.button>
         </div>
-      </div>
+      </div> */}
 
       <ApplicationModal
         isOpen={showApplication}

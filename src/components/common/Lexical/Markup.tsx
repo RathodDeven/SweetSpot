@@ -2,6 +2,7 @@ import { Interweave } from 'interweave'
 import type { FC, MouseEvent } from 'react'
 // import { MDBoldMatcher } from './matchers/markdown/MDBoldMatcher'
 import { MDCodeMatcher } from './matchers/markdown/MDCodeMatcher'
+import { MDHeadingMatcher } from './matchers/markdown/MDHeadingMatcher'
 import { MDItalicMatcher } from './matchers/markdown/MDItalicMatcher'
 import { MDLinkMatcher } from './matchers/markdown/MDLinkMatcher'
 import { MDQuoteMatcher } from './matchers/markdown/MDQuoteMatcher'
@@ -26,6 +27,7 @@ const Markup: FC<Props> = ({
   matchOnlyUrl
 }) => {
   const defaultMatchers = [
+    new MDHeadingMatcher('mdHeading'),
     new MDCodeMatcher('mdCode'),
     new MentionMatcher('mention'),
     new MDLinkMatcher('mdLink'),
@@ -43,7 +45,20 @@ const Markup: FC<Props> = ({
       style={style}
       content={trimify(children)}
       escapeHtml
-      allowList={['b', 'i', 'a', 'br', 'code', 'span']}
+      allowList={[
+        'b',
+        'i',
+        'a',
+        'br',
+        'code',
+        'span',
+        'h1',
+        'h2',
+        'h3',
+        'h4',
+        'h5',
+        'p'
+      ]}
       matchers={matchOnlyUrl ? [new UrlMatcher('url')] : defaultMatchers}
       onClick={(event: MouseEvent<HTMLDivElement>) => event.stopPropagation()}
     />
