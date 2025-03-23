@@ -1,7 +1,13 @@
 import { ethers } from 'ethers'
 
-export function formatAddress(address: string): string {
-  return `${address.slice(0, 6)}...${address.slice(-4)}`
+export function formatAddress(
+  address: string,
+  totalLength: number = 13
+): string {
+  if (totalLength < 5) return address // Handle too small lengths
+  const ellipsis = '...'
+  const partLength = Math.floor((totalLength - ellipsis.length) / 2)
+  return `${address.slice(0, partLength)}${ellipsis}${address.slice(-partLength)}`
 }
 
 export function formatEther(wei: string): string {
