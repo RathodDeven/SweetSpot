@@ -172,7 +172,7 @@ export function Deposit({ onClose }: { onClose?: () => void }) {
     >
       <div className="flex items-center space-x-4 mb-8">
         <Candy className="h-8 w-8 text-purple-600" />
-        <h1 className="text-2xl font-bold">Make a Deposit</h1>
+        <h1 className="text-2xl font-bold">Contribute</h1>
       </div>
 
       <form onSubmit={handleSubmit} className="space-y-6">

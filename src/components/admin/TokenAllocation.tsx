@@ -471,101 +471,126 @@ export function TokenAllocation() {
           </table>
         </div>
 
-        <div className="border-t border-gray-200 pt-6">
-          <div className="flex items-center space-x-3 mb-4">
-            <UserPlus className="h-5 w-5 text-purple-600" />
-            <h3 className="text-lg font-semibold">
+        <div className="border-t border-gray-200 pt-8">
+          <div className="flex items-center gap-3 mb-6 bg-purple-50 p-4 rounded-lg">
+            <div className="p-2.5 bg-purple-100 rounded-full">
+              <UserPlus className="h-6 w-6 text-purple-600" />
+            </div>
+            <h3 className="text-xl font-semibold text-gray-800">
               Allocate Token To New User
             </h3>
           </div>
 
           <form
             onSubmit={handleAddUser}
-            className="grid grid-cols-1 md:grid-cols-2 gap-4"
+            className="grid grid-cols-1 md:grid-cols-2 gap-6 bg-white p-6 rounded-lg shadow-sm"
           >
-            {/* <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Member Name
-                </label>
-                <input
-                  type="text"
-                  value={newUser.name}
-                  onChange={(e) =>
-                    setNewUser({ ...newUser, name: e.target.value })
-                  }
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-600 focus:border-transparent"
-                  placeholder="Enter member name"
-                  required
-                />
-              </div> */}
-
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
+            <div className="space-y-2">
+              <label className="block text-sm font-medium text-gray-700">
                 Wallet Address
               </label>
-              <input
-                type="text"
-                value={newUser.address}
-                onChange={(e) =>
-                  setNewUser({ ...newUser, address: e.target.value })
-                }
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-600 focus:border-transparent"
-                placeholder="0x..."
-                required
-              />
+              <div className="relative">
+                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                  <Coins className="h-5 w-5 text-gray-400" />
+                </div>
+                <input
+                  type="text"
+                  value={newUser.address}
+                  onChange={(e) =>
+                    setNewUser({ ...newUser, address: e.target.value })
+                  }
+                  className="w-full pl-10 px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-600 focus:border-transparent transition-colors"
+                  placeholder="0x..."
+                  required
+                />
+              </div>
+              <p className="text-xs text-gray-500">
+                Enter the recipient's wallet address
+              </p>
             </div>
 
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
+            <div className="space-y-2">
+              <label className="block text-sm font-medium text-gray-700">
                 Token
               </label>
-              <select
-                value={newUser.token}
-                onChange={(e) =>
-                  setNewUser({ ...newUser, token: e.target.value })
-                }
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-600 focus:border-transparent"
-              >
-                {SUPPORTED_TOKENS.map((token) => (
-                  <option key={token.symbol} value={token.symbol}>
-                    {token.symbol} - {token.name}
-                  </option>
-                ))}
-              </select>
+              <div className="relative">
+                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                  <Coins className="h-5 w-5 text-gray-400" />
+                </div>
+                <select
+                  value={newUser.token}
+                  onChange={(e) =>
+                    setNewUser({ ...newUser, token: e.target.value })
+                  }
+                  className="w-full pl-10 px-4 py-3 border border-gray-300 rounded-lg appearance-none focus:ring-2 focus:ring-purple-600 focus:border-transparent transition-colors bg-white"
+                >
+                  {SUPPORTED_TOKENS.map((token) => (
+                    <option key={token.symbol} value={token.symbol}>
+                      {token.symbol} - {token.name}
+                    </option>
+                  ))}
+                </select>
+                <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
+                  <svg
+                    className="h-5 w-5 text-gray-400"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M19 9l-7 7-7-7"
+                    />
+                  </svg>
+                </div>
+              </div>
+              <p className="text-xs text-gray-500">
+                Select the token to allocate
+              </p>
             </div>
 
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
+            <div className="space-y-2">
+              <label className="block text-sm font-medium text-gray-700">
                 Initial Allocation Amount
               </label>
-              <input
-                type="number"
-                value={newUser.amount}
-                onChange={(e) =>
-                  setNewUser({ ...newUser, amount: e.target.value })
-                }
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-600 focus:border-transparent"
-                placeholder="Enter amount"
-                min="0"
-                step="0.000001"
-                required
-              />
+              <div className="relative">
+                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                  <Coins className="h-5 w-5 text-gray-400" />
+                </div>
+                <input
+                  type="number"
+                  value={newUser.amount}
+                  onChange={(e) =>
+                    setNewUser({ ...newUser, amount: e.target.value })
+                  }
+                  className="w-full pl-10 px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-600 focus:border-transparent transition-colors"
+                  placeholder="Enter amount"
+                  min="0"
+                  step="0.000001"
+                  required
+                />
+              </div>
+              <p className="text-xs text-gray-500">
+                Specify how many tokens to allocate
+              </p>
             </div>
 
-            <div className="md:col-span-2">
+            <div className="md:col-span-2 pt-4">
               <motion.button
-                whileHover={{ scale: 1.02 }}
+                whileHover={{ scale: 1.01 }}
                 whileTap={{ scale: 0.98 }}
                 type="submit"
-                className="w-full bg-purple-600 text-white py-3 rounded-lg font-medium hover:bg-purple-700 transition-colors"
+                className="w-full bg-gradient-to-r from-purple-600 to-purple-700 text-white py-3.5 rounded-lg font-medium hover:from-purple-700 hover:to-purple-800 transition-all shadow-md flex items-center justify-center gap-2"
               >
-                Add Allocation
+                <Plus className="h-5 w-5" />
+                <span>Add Allocation</span>
               </motion.button>
             </div>
           </form>
         </div>
 
-        {/* Add this after the form */}
         {pendingAllocations.length > 0 && (
           <div className="mt-8 border-t border-gray-200 pt-6">
             <div className="flex justify-between items-center mb-4">

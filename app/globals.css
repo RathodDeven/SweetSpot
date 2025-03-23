@@ -133,11 +133,14 @@
 :root {
   /* background */
   --primary-background: #ebebeb;
-  --secondary-background: #ffffff;
+  --secondary-background: #fff5ff;
 
   /* text */
   --primary-text: #000000;
   --secondary-text: #807b7b;
+
+  /* border */
+  --brand: #9333ea;
 }
 
 [data-theme='dark'] {

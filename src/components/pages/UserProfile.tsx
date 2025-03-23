@@ -11,7 +11,10 @@ import {
   DollarSign,
   Activity,
   BarChart3,
-  Star
+  Star,
+  Copy,
+  CheckCircle,
+  Info
 } from 'lucide-react'
 import {
   formatAddress,
@@ -32,6 +35,7 @@ import {
   extractPassportScore,
   getPassportScore
 } from '../../api/gitcoinPassport'
+import { Tooltip } from '@mui/material'
 
 type PassportScoreState = {
   score: number | null
@@ -283,6 +287,54 @@ function AllocationHistoryTable({
   )
 }
 
+// New component for Score display with tooltip
+function ScoreDisplay({
+  value,
+  label,
+  bgColor,
+  textColor,
+  isLoading = false,
+  error = null,
+  tooltipText
+}: {
+  value: any
+  label: string
+  bgColor: string
+  textColor: string
+  isLoading?: boolean
+  error?: string | null
+  tooltipText: string
+}) {
+  return (
+    <div className="text-center relative">
+      <div
+        className={`inline-flex items-center justify-center w-20 h-20 rounded-full ${bgColor}`}
+      >
+        <div className={`text-2xl font-bold ${textColor}`}>
+          {isLoading ? (
+            <span className="text-base">Loading...</span>
+          ) : error ? (
+            <span className="text-base text-red-500">Error</span>
+          ) : (
+            value
+          )}
+        </div>
+      </div>
+      <div className="mt-2 text-sm text-gray-600 flex items-center justify-center">
+        {label}
+        <Tooltip title={tooltipText} arrow placement="top">
+          <button
+            className="ml-1 focus:outline-none"
+            aria-label={`Information about ${label}`}
+          >
+            <Info className="h-3.5 w-3.5 text-gray-400" />
+          </button>
+        </Tooltip>
+      </div>
+    </div>
+  )
+}
+
 export function UserProfile({ address }: { address: Address }) {
   const { address: connectedAddress } = useAccount()
   const { ensName } = useEns({ address })
@@ -297,6 +349,14 @@ export function UserProfile({ address }: { address: Address }) {
     isLoading: false,
     error: null
   })
+
+  const [copied, setCopied] = useState(false)
+
+  const copyToClipboard = (text: string) => {
+    navigator.clipboard.writeText(text)
+    setCopied(true)
+    setTimeout(() => setCopied(false), 2000)
+  }
 
   useEffect(() => {
     const fetchPassportScore = async () => {
@@ -323,84 +383,95 @@ export function UserProfile({ address }: { address: Address }) {
     fetchPassportScore()
   }, [address])
 
+  const formatMemberSince = (timestamp: number) => {
+    const date = new Date(timestamp * 1000) // Convert seconds to milliseconds
+    return new Intl.DateTimeFormat('en-US', {
+      month: 'long',
+      day: 'numeric',
+      year: 'numeric'
+    }).format(date)
+  }
+
+  const trustScore = data?.user?.scores?.find(
+    (score) => score.scoreType === 'Trust'
+  )?.value
+
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8 space-y-6 min-h-screen h-fit overflow-y-auto">
-      {/* Profile Overview */}
+      {/* Profile Overview - Enhanced */}
       <div className="bg-white rounded-lg shadow-md p-4 sm:p-6">
         <div className="flex flex-col sm:flex-row items-center sm:items-start gap-6">
           <UserAvatar address={address} size="lg" />
+
           <div className="flex-1 text-center sm:text-left">
-            <div className="flex flex-col sm:flex-row items-center gap-2">
+            <div className="flex flex-col sm:flex-row items-center sm:items-baseline gap-2 mb-3">
               <h1 className="text-2xl font-bold">
                 {ensName ?? formatAddress(address as Address)}
               </h1>
               {data?.user?.totalScore > 0 && (
-                <Shield className="h-5 w-5 text-blue-500" />
+                <div className="flex items-center bg-blue-50 px-2 py-1 rounded-full">
+                  <Shield className="h-4 w-4 text-blue-500 mr-1" />
+                  <span className="text-xs font-medium text-blue-600">
+                    Verified
+                  </span>
+                </div>
               )}
             </div>
-            <div className="flex flex-col sm:flex-row items-center gap-4 mt-2">
-              <div className="flex items-center space-x-2 text-gray-600">
-                <Wallet className="h-4 w-4" />
-                <span className="text-sm">{address}</span>
+
+            <div className="flex flex-col sm:flex-row gap-4 mt-2">
+              <div className="flex items-center space-x-2 text-gray-700 bg-gray-50 px-3 py-2 rounded-lg">
+                <Wallet className="h-4 w-4 text-gray-500" />
+                <span className="text-sm font-mono">
+                  {formatAddress(address as Address, 11)}
+                </span>
+                <button
+                  onClick={() => copyToClipboard(address)}
+                  className="focus:outline-none transition-colors"
+                  aria-label="Copy address"
+                >
+                  {copied ? (
+                    <CheckCircle className="h-4 w-4 text-green-500" />
+                  ) : (
+                    <Copy className="h-4 w-4 text-gray-400 hover:text-gray-600" />
+                  )}
+                </button>
               </div>
 
               {data?.user && (
-                <div className="flex items-center space-x-2 text-gray-600">
-                  <Clock className="h-4 w-4" />
-                  <span className="text-sm">
-                    Member since {formatDate(Number(data?.user?.createdAt))}
+                <div className="flex items-center space-x-2 text-gray-700 bg-gray-50 px-3 py-2 rounded-lg">
+                  <Clock className="h-4 w-4 text-gray-500" />
+                  <span className="text-sm font-medium">
+                    Member since{' '}
+                    <span className="font-semibold">
+                      {formatMemberSince(Number(data?.user?.createdAt))}
+                    </span>
                   </span>
                 </div>
               )}
             </div>
           </div>
-          <div className="text-center flex gap-4 justify-center">
-            <div>
-              <div className="inline-flex items-center justify-center w-20 h-20 rounded-full bg-purple-100">
-                <div className="text-2xl font-bold text-purple-600">
-                  {
-                    data?.user?.scores?.find(
-                      (score) => score.scoreType === 'Trust'
-                    )?.value
-                  }
-                </div>
-              </div>
-              <div className="mt-2 text-sm text-gray-600">Trust Score</div>
-            </div>
 
-            <div>
-              <div className="inline-flex items-center justify-center w-20 h-20 rounded-full bg-green-100">
-                <div className="text-2xl font-bold text-green-600">
-                  {passportScore.isLoading ? (
-                    <span className="text-base">Loading...</span>
-                  ) : passportScore.error ? (
-                    <span className="text-base text-red-500">Error</span>
-                  ) : (
-                    passportScore.score
-                  )}
-                </div>
-              </div>
-              <div className="mt-2 text-sm text-gray-600">Passport Score</div>
-            </div>
+          <div className="text-center flex gap-4 justify-center mt-4 sm:mt-0">
+            <ScoreDisplay
+              value={trustScore || '—'}
+              label="Trust Score"
+              bgColor="bg-purple-100"
+              textColor="text-purple-600"
+              tooltipText="Your Trust Score reflects your reputation within the SweetSpot ecosystem based on your activity and contributions."
+            />
+
+            <ScoreDisplay
+              value={passportScore.score}
+              label="Passport Score"
+              bgColor="bg-green-100"
+              textColor="text-green-600"
+              isLoading={passportScore.isLoading}
+              error={passportScore.error}
+              tooltipText="Gitcoin Passport score measures your decentralized identity verification across Web3 platforms."
+            />
           </div>
         </div>
       </div>
-
-      {/* Financial Statistics */}
-      {/* <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <MetricCard
-          title="Total Claimed"
-          value={`$${MOCK_FINANCIAL_STATS.totalClaimed.usdValue.toLocaleString()}`}
-          icon={DollarSign}
-          trend={{ positive: true, value: 12.5 }}
-        />
-        <MetricCard
-          title="Success Rate"
-          value={`${MOCK_FINANCIAL_STATS.successRate}%`}
-          icon={Activity}
-          trend={{ positive: true, value: 5.2 }}
-        />
-      </div> */}
 
       {/* Allocation History */}
       {data?.user?.allocatedTokens &&

@@ -22,7 +22,8 @@ const config: Config = {
         'p-bg': 'var(--primary-background)',
         's-bg': 'var(--secondary-background)',
         's-text': 'var(--secondary-text)',
-        'p-text': 'var(--primary-text)'
+        'p-text': 'var(--primary-text)',
+        brand: 'var(--brand)'
       }
     }
   },

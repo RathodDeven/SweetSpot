@@ -289,42 +289,6 @@ export function AdminStats() {
           </div>
         </div>
       </div>
-
-      <div className="bg-white rounded-lg shadow-md p-6">
-        <h3 className="text-lg font-semibold mb-4">Transaction Activity</h3>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          <div className="p-4 bg-gray-50 rounded-lg">
-            <p className="text-sm text-gray-600">Daily Transactions</p>
-            <p className="text-2xl font-bold mt-1">
-              {MOCK_STATS.treasuryMetrics.transactions.daily}
-            </p>
-            <div className="flex items-center mt-2 text-green-500">
-              <TrendingUp className="h-4 w-4" />
-              <span className="text-sm ml-1">+12.5%</span>
-            </div>
-          </div>
-          <div className="p-4 bg-gray-50 rounded-lg">
-            <p className="text-sm text-gray-600">Weekly Transactions</p>
-            <p className="text-2xl font-bold mt-1">
-              {MOCK_STATS.treasuryMetrics.transactions.weekly}
-            </p>
-            <div className="flex items-center mt-2 text-green-500">
-              <TrendingUp className="h-4 w-4" />
-              <span className="text-sm ml-1">+8.3%</span>
-            </div>
-          </div>
-          <div className="p-4 bg-gray-50 rounded-lg">
-            <p className="text-sm text-gray-600">Monthly Transactions</p>
-            <p className="text-2xl font-bold mt-1">
-              {MOCK_STATS.treasuryMetrics.transactions.monthly}
-            </p>
-            <div className="flex items-center mt-2 text-green-500">
-              <TrendingUp className="h-4 w-4" />
-              <span className="text-sm ml-1">+15.2%</span>
-            </div>
-          </div>
-        </div>
-      </div>
     </div>
   )
 }

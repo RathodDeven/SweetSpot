@@ -6,6 +6,7 @@ import { LoadingTransition } from '../LoadingTransition'
 import { ElectricEffect } from '../effects/ElectricEffect'
 import { FeaturedProjects } from '../home/FeaturedProjects'
 import { useRouter } from 'next/navigation'
+import { RoundsOverview } from '../admin/RoundsOverview'
 
 function HeroSection({ onGetStarted }: { onGetStarted: () => void }) {
   return (
@@ -14,7 +15,7 @@ function HeroSection({ onGetStarted }: { onGetStarted: () => void }) {
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
-      className="relative flex flex-col items-center justify-center min-h-[calc(100vh-4rem)] bg-gradient-to-br from-purple-600/5 via-pink-600/5 to-purple-600/5"
+      className="relative flex flex-col items-center justify-center min-h-[calc(100vh-4rem)] bg-s-bg"
     >
       <ElectricEffect />
 
@@ -89,7 +90,7 @@ export function Home() {
     setIsLoading(true)
     setTimeout(() => {
       push('/onboarding')
-    }, 3000)
+    }, 1000)
   }
 
   return (
@@ -106,10 +107,14 @@ export function Home() {
           >
             <HeroSection onGetStarted={handleGetStarted} />
 
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 space-y-16">
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 space-y-16 mb-10">
               <div>
                 <h2 className="text-2xl font-bold mb-8">Featured Projects</h2>
                 <FeaturedProjects />
+              </div>
+
+              <div>
+                <RoundsOverview />
               </div>
 
               <div>
