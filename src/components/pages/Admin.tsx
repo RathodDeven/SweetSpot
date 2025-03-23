@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { LayoutDashboard, Settings, Users, Wallet, Star } from 'lucide-react'
 import { AdminOverview } from '../admin/AdminOverview'
-import { AdminForm } from '../admin/AdminForm'
+import { SetRoundForm } from '../admin/SetRoundForm'
 import { TokenAllocation } from '../admin/TokenAllocation'
 import { AdminTreasury } from '../admin/AdminTreasury'
 import { UserScores } from '../admin/UserScores'
@@ -24,7 +24,7 @@ export function Admin() {
       case 'overview':
         return <AdminOverview onTabChange={setActiveTab} />
       case 'round':
-        return <AdminForm />
+        return <SetRoundForm />
       case 'allocation':
         return <TokenAllocation />
       case 'treasury':
