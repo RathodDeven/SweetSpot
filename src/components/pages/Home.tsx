@@ -14,7 +14,7 @@ function HeroSection({ onGetStarted }: { onGetStarted: () => void }) {
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
-      className="relative flex flex-col items-center justify-center min-h-[calc(100vh-4rem)] bg-gradient-to-br from-purple-600/5 via-pink-600/5 to-purple-600/5"
+      className="relative flex flex-col items-center justify-center min-h-[calc(100vh-4rem)] bg-s-bg"
     >
       <ElectricEffect />
 
@@ -89,7 +89,7 @@ export function Home() {
     setIsLoading(true)
     setTimeout(() => {
       push('/onboarding')
-    }, 3000)
+    }, 1000)
   }
 
   return (
