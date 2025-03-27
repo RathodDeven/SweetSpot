@@ -1,6 +1,26 @@
-# SweetSpot
+### Sweetspot.wtf
 
-> A decentralized app that lets users earn and stake tokens to support impactful projects through completing quests, staking, and donations. Built with Next.js, RainbowKit, and smart contracts.
+Sweetspot is a decentralized app that streamlines impact funding, grant distribution, and community incentives. Built on Celo, it enables bulk token allocation, round creation, and transparent fund distribution with minimal gas fees. 
+
+**Features:**
+- **Bulk Allocation** – Efficiently distribute funds to multiple addresses.
+- **Rounds & Sweetverse** – Create and manage funding rounds, explore past rounds, and discover ecosystem projects.
+- **Dashboard** – Track active rounds and claimable tokens.
+- **Admin Panel** – Manage rounds, treasury, and wallet scoring.
+
+By leveraging smart contract automation and an intuitive UI, Sweetspot makes Web3 funding seamless, transparent, and cost-efficient.
+
+## Problem We are trying to Solve
+
+Impact funding, grant distribution, and community incentives often suffer from inefficiencies, high gas fees, and complex multi-wallet transactions. Many Web3 projects and DAOs struggle to distribute funds transparently and efficiently, leading to friction in onboarding new users and maintaining trust in decentralized ecosystems.
+
+## Solution we are building
+
+Sweetspot streamlines multi-wallet fund allocation with smart contract automation, reducing transaction overhead and making it easier to distribute funds efficiently on Celo. By integrating batch transactions and enhancing UI/UX, the platform simplifies fund allocation for impact-driven projects, DAOs, and grant programs—ensuring seamless execution while minimizing costs.
+
+## Our mission
+
+Our mission is to create a more accessible, efficient, and transparent way to allocate resources in Web3 ecosystems. By leveraging blockchain automation and an intuitive interface, Sweetspot empowers communities, builders, and funders to distribute capital fairly, reducing barriers to entry and fostering a more inclusive digital economy.
 
 ## Deployed Contracts
 
