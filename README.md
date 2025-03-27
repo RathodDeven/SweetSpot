@@ -7,10 +7,10 @@
 This project consists of two main smart contracts:
 
 1. **Scorer Contract**  
-   - **Celo Mainnet Address:** [`0x517082d63bE128bAF9413C898a957d79E3A3A452`](https://celoscan.io/address/0x517082d63bE128bAF9413C898a957d79E3A3A452)
+   - **Celo Mainnet Address:** 0x517082d63bE128bAF9413C898a957d79E3A3A452 [`celoscan`](https://celoscan.io/address/0x517082d63bE128bAF9413C898a957d79E3A3A452)
 
 2. **SweetSpot Contract**  
-   - **Celo Mainnet Address:** [`0xeC6D8F428a1e97d0988744BDeD2AE1e4b8D97344`](https://celoscan.io/address/0xeC6D8F428a1e97d0988744BDeD2AE1e4b8D97344)
+   - **Celo Mainnet Address:** 0xeC6D8F428a1e97d0988744BDeD2AE1e4b8D97344 [`celoscan`](https://celoscan.io/address/0xeC6D8F428a1e97d0988744BDeD2AE1e4b8D97344)
 
 
 ### Getting Started
