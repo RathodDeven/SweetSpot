@@ -19,16 +19,16 @@ export const ALL_PROJECTS: Project[] = [
     categories: ['Social Impact', 'Education'],
     link: DOCUMENTARY_HUMAN_RIGHTS_LINK
   },
-  {
-    id: '2',
-    name: '+Vida + Verde Venezuela',
-    description:
-      'Our goal is to have a stable Green Roots nucleus, an educational space that involves nearby rural communities to reconnect them with ancestral practices of care and regeneration of nature and to complete the final stages of construction of our Hogar Verde residences.',
-    image:
-      'https://giveth.mypinata.cloud/ipfs/QmcStBE4boayqj8rweKLikbBVyesDxfkDharb3V8rT7mQP',
-    categories: ['Environment', 'Community'],
-    link: VIDA_VERDE_LINK
-  },
+  // {
+  //   id: '2',
+  //   name: '+Vida + Verde Venezuela',
+  //   description:
+  //     'Our goal is to have a stable Green Roots nucleus, an educational space that involves nearby rural communities to reconnect them with ancestral practices of care and regeneration of nature and to complete the final stages of construction of our Hogar Verde residences.',
+  //   image:
+  //     'https://giveth.mypinata.cloud/ipfs/QmcStBE4boayqj8rweKLikbBVyesDxfkDharb3V8rT7mQP',
+  //   categories: ['Environment', 'Community'],
+  //   link: VIDA_VERDE_LINK
+  // },
   {
     id: '3',
     name: 'Open Source Live Streaming Platform on Lens Protocol',
